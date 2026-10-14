@@ -25,7 +25,7 @@ No recurring Messenger monitor or automatic submodule update is enabled by this 
 
 ## Packaging and service boundary
 
-The future Inc package must include required Messenger source/assets/notices during build, so users do not resolve Git submodules or install Messenger separately. An Inc package is not yet produced here.
+The read-only Inc kit includes the exact pinned Messenger `select-service-type.mjs` component and MIT license. Preparation verifies the copied bytes against the clean gitlink checkout and records dependency provenance in the archive. Users of the prepared read-only kit do not resolve submodules or need a separate installed Messenger plugin. See [the skeleton package](PLUGIN-SKELETON.md). Full messaging/service source is not declared by this slice; add required components as those capabilities are implemented.
 
 Onboarding will reuse a compatible existing private Paprika service and its verified authentication, database, history, and receiving preferences; provision one only when needed. Reconfiguration must preserve service identity and be repeatable without duplicates. The source pin does not pin the running service: inspect compatibility and do not automatically downgrade a newer service.
 

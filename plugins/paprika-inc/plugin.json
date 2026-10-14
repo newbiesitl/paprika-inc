@@ -1,0 +1,28 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "paprika-inc",
+  "version": "0.1.0",
+  "description": "Inspect repository-defined companies and plan setup without activating roles or services.",
+  "author": {"name": "Paprika Inc contributors"},
+  "homepage": "https://github.com/newbiesitl/paprika-inc",
+  "license": "MIT",
+  "keywords": ["codex", "company", "roles", "setup-planning"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Paprika Inc",
+        "shortDescription": "Company inspection and plans",
+        "longDescription": "Read-only first slice for local Codex. Show commands, validate a selected repository's portable company definition, inspect declared roles, and prepare a setup plan. A valid definition is not enrollment, adoption, verified project membership, or runtime readiness. The self-contained kit includes both skills, its command helper, a pinned Messenger service-selection component, and the navy Paprika icon. Lifecycle, authenticated service discovery, App binding, installation, deployment, and automatic receiving remain pending. No separate Messenger plugin installation is required for these read-only commands.",
+        "developerName": "Paprika Inc contributors",
+        "category": "Productivity",
+        "capabilities": ["Company definition inspection", "Read-only setup planning"],
+        "websiteURL": "https://github.com/newbiesitl/paprika-inc",
+        "supportURL": "https://github.com/newbiesitl/paprika-inc/issues",
+        "defaultPrompt": ["Show Paprika Inc's available commands.", "Validate this repository's company definition.", "Plan this company's setup."],
+        "logo": "./assets/paprika-inc-icon.png",
+        "composerIcon": "./assets/paprika-inc-icon.png"
+      },
+      "onboardingSkill": "./skills/setup-paprika-inc/SKILL.md"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "format": 1,
+  "commands": [
+    {"name": "help", "aliases": ["commands", "show commands", "available commands", "show available commands", "show me available commands", "show me the available commands"], "repository_required": false, "description": "Show implemented commands and pending capabilities."},
+    {"name": "validate", "aliases": ["validate company", "validate this company", "validate this company's setup", "validate setup", "check company"], "repository_required": true, "description": "Validate the portable manifest and referenced documents."},
+    {"name": "plan", "aliases": ["setup", "init", "initialize", "setup plan", "plan setup", "plan company", "plan this company's setup", "set up this company"], "repository_required": true, "description": "Prepare a read-only setup plan; apply is pending."},
+    {"name": "status", "aliases": ["show status", "company status", "show company status", "inspect company", "inspect this company"], "repository_required": true, "description": "Report definition evidence and unverified runtime dimensions separately."},
+    {"name": "roles", "aliases": ["list roles", "show roles", "list role definitions", "show role definitions"], "repository_required": true, "description": "List declared role IDs, versions, references, and file digests."},
+    {"name": "role", "aliases": ["show role", "show role definition"], "argument": "role_id", "repository_required": true, "description": "Read one exact role definition as data."}
+  ],
+  "unsupported": [
+    {"name": "apply", "aliases": ["apply setup", "initialize now"], "capability": "company.lifecycle.apply"},
+    {"name": "adopt", "aliases": ["adopt company", "adopt roles"], "capability": "company.adoption"},
+    {"name": "create", "aliases": ["create roles", "create role", "provision roles"], "capability": "host.roles.create"},
+    {"name": "onboard", "aliases": ["onboard roles"], "capability": "host.roles.onboard"},
+    {"name": "checkpoint", "aliases": ["save knowledge"], "capability": "company.knowledge.checkpoint"},
+    {"name": "repair", "aliases": [], "capability": "company.lifecycle.reconcile"},
+    {"name": "transfer", "aliases": ["stop", "migrate", "stop and transfer"], "capability": "host.roles.stop_transfer"},
+    {"name": "deploy", "aliases": ["install", "publish", "provision service"], "capability": "service.provision_and_bind"},
+    {"name": "connect", "aliases": ["enable communication", "enable incoming messages", "subscribe"], "capability": "messenger.receiving"}
+  ]
+}
