@@ -1,0 +1,3 @@
+[submodule "vendor/paprika-messenger"]
+	path = vendor/paprika-messenger
+	url = https://github.com/newbiesitl/paprika-messenger.git

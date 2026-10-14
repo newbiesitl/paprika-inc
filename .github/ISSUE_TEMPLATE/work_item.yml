@@ -1,0 +1,35 @@
+name: Feature, improvement, or task
+description: Define an outcome, ownership, and acceptance criteria.
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Work type
+      options: [Feature, Improvement, Task, Research, Dependency adoption]
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Problem and desired outcome
+    validations:
+      required: true
+  - type: input
+    id: parent
+    attributes:
+      label: Parent feature and target milestone
+  - type: input
+    id: owner
+    attributes:
+      label: Proposed owner role and reviewer role
+      description: Logical role IDs; do not publish native chat IDs.
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria and verification
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies, compatibility, and unresolved decisions

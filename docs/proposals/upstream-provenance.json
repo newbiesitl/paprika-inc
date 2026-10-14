@@ -1,0 +1,10 @@
+{
+  "repository": "https://github.com/newbiesitl/paprika-messenger",
+  "pull_request": 33,
+  "commit": "1f21971da1e43e1a27b64e76c84e88603166f81f",
+  "source_sha256": {
+    "docs/proposals/PAPRIKA-VIRTUAL-COMPANY.md": "0c573cd40223b36003d79088821f6a61e5020270ce86e97f98e0de833acbfbcc",
+    "docs/proposals/virtual-company/EXAMPLES.md": "d347408c4c81815e732b2b58643844729447b515d86800a0e6563c5ca4fb7946",
+    "docs/proposals/virtual-company/REVIEW.md": "22010743117536e9f15f0ea717ac7d7fcdf2f4b36c27128edbc709f885f8e9ff"
+  }
+}

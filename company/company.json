@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "definition_version": "0.1.0",
+  "status": "bootstrap_candidate",
+  "company_id": "paprika-inc-development",
+  "repository": "newbiesitl/paprika-inc",
+  "topology": "single_host",
+  "runtime": "codex_local",
+  "constitution": "company/CONSTITUTION.md",
+  "coordinator_role": "chief-architect",
+  "roles": [
+    {"id": "chief-architect", "version": "0.1.0", "definition": "company/roles/chief-architect/agent.md"},
+    {"id": "front-desk", "version": "0.1.0", "definition": "company/roles/front-desk/agent.md"},
+    {"id": "backend-dev", "version": "0.1.0", "definition": "company/roles/backend-dev/agent.md"},
+    {"id": "frontend-dev", "version": "0.1.0", "definition": "company/roles/frontend-dev/agent.md"},
+    {"id": "data-engineer", "version": "0.1.0", "definition": "company/roles/data-engineer/agent.md"}
+  ],
+  "work_tracking": "docs/DEVELOPMENT.md",
+  "knowledge_policy": "private_runtime_location",
+  "runtime_state": "private_enrollment_required",
+  "messaging": {
+    "default_receiving": "on_demand",
+    "background_monitoring": false
+  },
+  "lifecycle": {
+    "max_instances_per_role": 1,
+    "require_verified_project_membership": true,
+    "automatic_takeover": false
+  },
+  "adoption": {
+    "automatic": false,
+    "policy": "docs/architecture/SELF-DEVELOPMENT.md"
+  }
+}

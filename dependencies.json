@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "paprika_messenger": {
+    "repository": "https://github.com/newbiesitl/paprika-messenger.git",
+    "path": "vendor/paprika-messenger",
+    "tag": "v1.6.0",
+    "commit": "776efe80eb801ca850b64516c003325833157240",
+    "plugin_version": "1.6.0",
+    "service_version": "0.8.0",
+    "release_url": "https://github.com/newbiesitl/paprika-messenger/releases/tag/v1.6.0",
+    "release_build_source_commit": "c91f966c146e94875b7ad5780a9c9de0231ae938",
+    "adopted_on": "2026-10-14"
+  }
+}

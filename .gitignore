@@ -1,0 +1,12 @@
+.DS_Store
+.paprika/
+.env*
+!.env.example
+node_modules/
+dist/
+artifacts/
+.sites-runtime/
+.dev-data/
+__pycache__/
+*.pyc
+*.log

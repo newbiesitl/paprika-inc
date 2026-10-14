@@ -1,0 +1,13 @@
+Mode: built-in image_gen reference-image edit
+Reference: user-provided Paprika Messenger logo (IMG_8317.PNG).
+Upstream visual reference: https://github.com/newbiesitl/paprika-messenger/blob/5df854d11dee96dca800aceadc72bca055dcc983/assets/dot-paprika-pixel-icon-v1.png
+Transparent background: false
+
+Final prompt:
+Create the Paprika Inc corporate mascot logo by editing the supplied Paprika Messenger logo. The input image is the authoritative visual reference for the SAME character and pixel-art style. Preserve her recognizable face, large amber-brown eyes, warm peach skin, rosy cheeks, cheerful subtle smile, short tousled orange-red hair with golden highlights, head tilt, thick dark pixel outlines, and charming anime pixel-art proportions. Keep her orange hair: the blue color direction applies to her clothing and background, not her identity.
+
+Replace the red T-shirt with a tasteful, tailored deep navy-blue corporate office suit jacket with clearly readable lapels, a light ivory collared blouse, and a small muted cornflower-blue neck scarf neatly tucked at the collar. Professional, friendly office-woman look, modest neckline. The suit should have mid-blue pixel highlights and darker navy pixel shadows so its structure reads at icon size. Show head, shoulders and enough upper torso that the business attire is immediately visible. Keep the familiar portrait composition, with comfortable margin around her hair, and shoulders continuing through the lower image edge.
+
+Change the dark navy background to a clean pale powder blue that separates clearly from the navy jacket and complements the warm orange hair. Flat uncluttered background, no office scenery. Preserve a small cream pixel speech bubble in the upper right as a subtle family resemblance to Messenger, with three blue dots, dark pixel outline and enough separation from the hair. No lettering, no wordmark, no watermark, no extra characters, no border, no mockup.
+
+Create a polished square 1:1 finished app/logo icon. Crisp deliberately stepped square pixel edges, consistent chunky pixel grid, clean limited color palette, carefully controlled pixel shading, faithful to the supplied reference. Do not turn it into smooth vector art, 3D, photography, or a different character. Deliver a single final logo.

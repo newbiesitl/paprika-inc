@@ -1,0 +1,29 @@
+name: Validate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main, 'codex/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1; same reviewed pin as Messenger
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - name: Validate repository and pinned dependency
+        run: python3 scripts/validate-repository.py
+      - name: Check whitespace
+        run: git show --format= --check HEAD
