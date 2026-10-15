@@ -6,8 +6,8 @@ Installing Paprika Inc must add only the Inc product identity and its navy icon.
 
 | Starting point | This read-only slice | Future service-bound onboarding |
 | --- | --- | --- |
-| Inc only; Messenger product is not installed | Help/inspection/planning work without installing Messenger or starting a service. Service binding stays pending. | Inspect available authenticated Paprika Service/Sites metadata for an existing owner-private service even if the Messenger product is absent. Reuse its verified App/OAuth identity and data. If none is conclusively available, retain a provisioning plan until separately authorized implementation; this slice creates nothing. |
-| Messenger already installed | Add Inc's identity and two Inc skills only. Existing Messenger commands, icon and configuration stay intact. Inc plans remain read-only. | Resolve the same compatible Paprika Service App/OAuth identity, database/history and authoritative delivery/receiver state. Do not copy private stores, install another Messenger package, recreate the App, or add duplicate receivers/routes. Preserve paused/off controls and explicit receiving preferences. |
+| Inc only; Messenger product is not installed | Native on-demand authoring/checkout/bootstrap work without installing Messenger or starting a service. | For requested service access, inspect the selected owner-private service/App and prepare the optional private existing-App export described in [the MVP workflow](mvp-workflow.md). Do not provision a service or claim authentication from a report. |
+| Messenger already installed | Add Inc's identity and two Inc skills only; preserve existing Messenger commands/icon/configuration. | Reuse the same compatible Paprika Service App/OAuth/database/history and authoritative receiver/delivery state. Never copy stores, install another Messenger package, recreate the App, or add duplicate receivers/routes. Preserve paused/off preferences. |
 
 An unavailable tool, failed authentication, uncertain mapping, or several plausible services is not evidence that a new service is needed. Resolve the exact existing identity and compatibility before any future mutation. A required backend connector may separately appear as **Paprika Service**. Do not invent visibility flags, disable a required connector, or rename it to conceal that entry.
 
@@ -15,15 +15,15 @@ An unavailable tool, failed authentication, uncertain mapping, or several plausi
 
 | Record | Current reference | Meaning |
 | --- | --- | --- |
-| Inc package/release version | `0.1.0` | Version of this read-only Inc skill kit; not the service version |
+| Inc package/release version | `0.2.0` | Local MVP skill kit version; not the service version |
 | Bundled Messenger source | Plugin `1.6.0`, source service `0.8.0`, commit `776efe80eb801ca850b64516c003325833157240` | Exact maintained source input; only the allowlisted selection helper and MIT license are included |
 | Running service API/capabilities | Unverified in this slice | Must come from authenticated runtime metadata and real capability checks; not inferred from either package version or a Site publication number |
 
-A newer running service requires compatibility review rather than an automatic downgrade, replacement App, or second database. Source inclusion does not start/deploy a service. The Inc adapter remains a planning boundary; authenticated discovery/binding and full messaging/lifecycle integration are pending. Both products must ultimately use the same compatible service and authoritative delivery state, without introducing a competing receiver or retry store.
+A newer service requires compatibility review rather than downgrade, replacement App or second database. Source inclusion does not start/deploy a service. The optional export references the existing App; live authentication/messaging and full managed lifecycle remain separately verified. Native MVP bootstrap needs no new background receiver. Both products reuse compatible service/authoritative state without competing receiver or retry stores.
 
 ## Build boundary and evidence
 
-Preparation uses an exact reviewed file allowlist. No Messenger plugin/marketplace manifests, public Messenger skills, upstream release packages or installed plugin-cache contents are exported. The only two package discovery manifests are Inc's root manifest and its synchronized compatibility overlay. The generated provenance includes the declared product/skill inventory and exact dependency/hash inventory; the Messenger submodule remains unmodified.
+Preparation uses an exact reviewed file allowlist. No Messenger plugin/marketplace manifests, public Messenger skills, upstream release packages or installed plugin-cache source are exported. The only two product discovery manifests are Inc's root and synchronized compatibility overlay. A private service-bound flavor may additionally contain exactly one `.app.json` for the existing backend App, with matching manifest pointers and provenance; it creates no product/App. Source/version/hash/discovery provenance is retained and Messenger stays unmodified.
 
 The recursive repository checkout is a developer build input, not a plugin marketplace. A future supported local installation must select the prepared Inc kit or its explicit `plugins/paprika-inc` source directory; it must not register the repository root, `vendor/`, or vendored plugin catalogs for discovery.
 

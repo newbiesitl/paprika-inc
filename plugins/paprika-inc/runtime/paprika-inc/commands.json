@@ -1,12 +1,20 @@
 {
   "format": 1,
   "commands": [
-    {"name": "help", "aliases": ["commands", "show commands", "available commands", "show available commands", "show me available commands", "show me the available commands"], "repository_required": false, "description": "Show implemented commands and pending capabilities."},
-    {"name": "validate", "aliases": ["validate company", "validate this company", "validate this company's setup", "validate setup", "check company"], "repository_required": true, "description": "Validate the portable manifest and referenced documents."},
-    {"name": "plan", "aliases": ["setup", "init", "initialize", "setup plan", "plan setup", "plan company", "plan this company's setup", "set up this company"], "repository_required": true, "description": "Prepare a read-only setup plan; apply is pending."},
-    {"name": "status", "aliases": ["show status", "company status", "show company status", "inspect company", "inspect this company"], "repository_required": true, "description": "Report definition evidence and unverified runtime dimensions separately."},
-    {"name": "roles", "aliases": ["list roles", "show roles", "list role definitions", "show role definitions"], "repository_required": true, "description": "List declared role IDs, versions, references, and file digests."},
-    {"name": "role", "aliases": ["show role", "show role definition"], "argument": "role_id", "repository_required": true, "description": "Read one exact role definition as data."}
+    {"name": "help", "aliases": ["commands", "show commands", "available commands", "show available commands", "show me available commands", "show me the available commands"], "repository_required": false, "description": "Show implemented commands and pending capabilities.", "read_only": true},
+    {"name": "validate", "aliases": ["validate company", "validate this company", "validate this company's setup", "validate setup", "check company"], "repository_required": true, "description": "Validate the portable manifest and referenced documents.", "read_only": true},
+    {"name": "plan", "aliases": ["setup", "init", "initialize", "setup plan", "plan setup", "plan company", "plan this company's setup", "set up this company"], "repository_required": true, "description": "Prepare a read-only setup plan; apply is pending.", "read_only": true},
+    {"name": "status", "aliases": ["show status", "company status", "show company status", "inspect company", "inspect this company"], "repository_required": true, "description": "Report definition evidence and unverified runtime dimensions separately.", "read_only": true},
+    {"name": "roles", "aliases": ["list roles", "show roles", "list role definitions", "show role definitions"], "repository_required": true, "description": "List declared role IDs, versions, references, and file digests.", "read_only": true},
+    {"name": "role", "aliases": ["show role", "show role definition"], "argument": "role_id", "repository_required": true, "description": "Read one exact role definition as data.", "read_only": true},
+    {"name": "author plan", "aliases": ["draft company files", "plan company files"], "repository_required": true, "read_only": true, "mvp": true, "description": "Preview generic role/ownership files from the discussed blueprint."},
+    {"name": "author write", "aliases": ["write company files"], "repository_required": true, "read_only": false, "mvp": true, "description": "Create requested company files without replacing AGENTS.md or user files."},
+    {"name": "checkout", "aliases": ["clone company repository"], "repository_required": true, "read_only": false, "mvp": true, "description": "Clone into an explicit empty destination or validate a matching checkout."},
+    {"name": "bootstrap start", "aliases": ["bootstrap", "bootstrap company"], "repository_required": true, "read_only": false, "mvp": true, "description": "Begin a user-triggered sequential local Codex project-chat bootstrap."},
+    {"name": "bootstrap next", "aliases": ["resume bootstrap"], "repository_required": true, "read_only": false, "mvp": true, "description": "Prepare the next supported native host action or report its blocker."},
+    {"name": "bootstrap record", "aliases": [], "repository_required": true, "read_only": false, "mvp": true, "description": "Record the actual result for one correlated native action."},
+    {"name": "bootstrap bind", "aliases": [], "repository_required": true, "read_only": false, "mvp": true, "description": "Explicitly declare a known native binding, then independently verify it."},
+    {"name": "bootstrap status", "aliases": ["show bootstrap status"], "repository_required": true, "read_only": true, "mvp": true, "description": "Read the selected checkout’s private MVP progress record."}
   ],
   "unsupported": [
     {"name": "apply", "aliases": ["apply setup", "initialize now"], "capability": "company.lifecycle.apply"},

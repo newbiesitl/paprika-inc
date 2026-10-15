@@ -1,4 +1,6 @@
-# Read-only Paprika Inc plugin skeleton
+# Original plugin skeleton and package boundary
+
+This page describes the initial 0.1.0 skeleton. The 0.2.0 follow-up implements the explicitly narrower [local MVP](MVP.md): authoring, protected checkout and sequential native bootstrap; it does not require the broader lifecycle gates below before MVP delivery. The exact allowlist/no-duplicate-discovery requirement is preserved, with an explicitly validated optional private existing-App flavor.
 
 Work item: [#2](https://github.com/newbiesitl/paprika-inc/issues/2). Version 0.1.0 is the first implementation slice, built under the existing Backend Dev assignment and definition revision `e1e7f1843de36b2fd60645f6c8f671cbd8e16db0`. It changes no role contract, grant, private registry or live role binding. Chief Architect reviews command/API design and acceptance; Frontend Dev reviews interaction contracts; Data Engineer reviews future persistence/state changes. No state schema or managed lifecycle adoption is introduced here.
 
@@ -39,7 +41,7 @@ Build from a recursive checkout using Python 3.10+:
 
 ```sh
 python3 scripts/prepare-plugin.py
-python3 scripts/validate-plugin.py artifacts/plugin-skeleton/paprika-inc-0.1.0.zip
+python3 scripts/validate-plugin.py artifacts/plugin-skeleton/paprika-inc-0.2.0.zip
 ```
 
 The archive has one `paprika-inc/` root, fixed timestamps/modes, sorted entries, hidden compatibility metadata and a complete hashed payload inventory in `package-provenance.json`. An explicit reviewed file allowlist rejects extra Messenger skills, nested plugin/marketplace manifests and other payload additions. Root/compatibility discovery metadata must share the Inc identity/navy icon and export only `paprika-inc` and `setup-paprika-inc`. Provenance records that discovery inventory with `live_picker_verified: false`. Input bytes determine the archive; no native IDs, machine paths, owner binding, secrets or volatile timestamps are included. Source validation checks declared assets/references, skills, imports, runtime data and license files. Preparation verifies the clean pinned Messenger gitlink/version and exact copied component/license. It writes only the selected build output; source and company inputs are untouched.

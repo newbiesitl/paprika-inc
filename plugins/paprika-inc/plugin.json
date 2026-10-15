@@ -1,24 +1,39 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "paprika-inc",
-  "version": "0.1.0",
-  "description": "Inspect repository-defined companies and plan setup without activating roles or services.",
-  "author": {"name": "Paprika Inc contributors"},
+  "version": "0.2.0",
+  "description": "Discuss and author repository-defined companies, clone safely, and bootstrap persistent local Codex project chats.",
+  "author": {
+    "name": "Paprika Inc contributors"
+  },
   "homepage": "https://github.com/newbiesitl/paprika-inc",
   "license": "MIT",
-  "keywords": ["codex", "company", "roles", "setup-planning"],
+  "keywords": [
+    "codex",
+    "company",
+    "roles",
+    "setup-planning"
+  ],
   "extensions": {
     "com.openai": {
       "interface": {
         "displayName": "Paprika Inc",
-        "shortDescription": "Company inspection and plans",
-        "longDescription": "Read-only first slice for local Codex. Show commands, validate a selected repository's portable company definition, inspect declared roles, and prepare a setup plan. A valid definition is not enrollment, adoption, verified project membership, or runtime readiness. The self-contained kit includes both skills, its command helper, a pinned Messenger service-selection component, and the navy Paprika icon. Lifecycle, authenticated service discovery, App binding, installation, deployment, and automatic receiving remain pending. No separate Messenger plugin installation is required for these read-only commands.",
+        "shortDescription": "Build your local company",
+        "longDescription": "Paprika Inc MVP for local Codex. Discuss a generic roster with your chosen first staff chat, preview and write role contracts and a canonical ownership map when requested, clone an explicit Git repository/revision into an empty folder or validated matching checkout, and bootstrap the requested roles as persistent native project chats with read/report onboarding. A private sequential progress record supports status and verified reuse/resume. Missing saved projects require a one-time add-folder handoff; uncertain creation never blindly retries. One user-triggered bootstrap at a time: enforced singleton/race handling, transfer, background orchestration and self-adoption are future work. The kit has its own navy identity and two Inc skills; it does not install a duplicate Messenger product. It includes pinned Messenger source internally and can reference the same existing Paprika Service App in a private bound export. Installation, actual host/project evidence and service authentication are separately verified.",
         "developerName": "Paprika Inc contributors",
         "category": "Productivity",
-        "capabilities": ["Company definition inspection", "Read-only setup planning"],
+        "capabilities": [
+          "Company role and ownership authoring",
+          "Protected Git checkout",
+          "Sequential native project-chat bootstrap"
+        ],
         "websiteURL": "https://github.com/newbiesitl/paprika-inc",
         "supportURL": "https://github.com/newbiesitl/paprika-inc/issues",
-        "defaultPrompt": ["Show Paprika Inc's available commands.", "Validate this repository's company definition.", "Plan this company's setup."],
+        "defaultPrompt": [
+          "Help me define my company and its roles.",
+          "Write the company files we discussed into my repository.",
+          "Bootstrap this Git company in my selected local Codex project."
+        ],
         "logo": "./assets/paprika-inc-icon.png",
         "composerIcon": "./assets/paprika-inc-icon.png"
       },

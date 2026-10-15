@@ -28,7 +28,7 @@ jobs:
           node-version: '24'
       - name: Validate repository and pinned dependency
         run: python3 scripts/validate-repository.py
-      - name: Test read-only command behavior
+      - name: Test authoring, Git checkout and native host contracts
         run: node --test tests/*.test.mjs
       - name: Test package completeness and determinism
         run: python3 -m unittest discover -s tests -p 'test_*.py' -v

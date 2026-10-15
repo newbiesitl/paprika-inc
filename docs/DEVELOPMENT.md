@@ -16,6 +16,8 @@ Suggested states: Backlog → Ready → In progress → In review → Done, with
 
 ## Initial milestone proposals
 
+The owner has now requested a smaller **local MVP** in [work item #4](https://github.com/newbiesitl/paprika-inc/issues/4): installable Inc skills, conversational role/ownership authoring, protected repository cloning and sequential native project-chat bootstrap with a private resume record. See [scope and acceptance](MVP.md). The MVP explicitly defers singleton/race/claim protocols and transfer/self-adoption machinery. The broader M1–M5 proposals below remain future hardening, not prerequisites for this narrower assignment. Live installation and selected-host/project evidence remain separate from fixture tests and source delivery.
+
 | Milestone | Outcome | Exit evidence |
 | --- | --- | --- |
 | M0 — Repository foundation | Open-source setup, branding, proposal, contracts, pinned Messenger | Repository validation, reviewed contents, successful publication |

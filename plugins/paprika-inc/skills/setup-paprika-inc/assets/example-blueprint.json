@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "company_id": "example-workshop",
+  "repository": "fictional/workshop",
+  "version": "0.1.0",
+  "purpose": "Build a small fictional workshop product.",
+  "coordinator_role": "organizer",
+  "roles": [
+    {
+      "id": "organizer",
+      "version": "0.1.0",
+      "title": "Organizer",
+      "purpose": "Keep scope and review coherent.",
+      "responsibilities": [
+        "Plan scoped outcomes."
+      ],
+      "boundaries": [
+        "Do not deploy or change grants."
+      ],
+      "inputs": [
+        "Human goals."
+      ],
+      "outputs": [
+        "Reviewed plans and acceptance criteria."
+      ],
+      "reviewer_roles": [
+        "artisan"
+      ],
+      "escalation": [
+        "Ask the owner about product changes."
+      ]
+    },
+    {
+      "id": "artisan",
+      "version": "0.1.0",
+      "title": "Artisan",
+      "purpose": "Build the requested product work.",
+      "responsibilities": [
+        "Implement scoped product work."
+      ],
+      "boundaries": [
+        "Do not dispatch new roles or deploy."
+      ],
+      "inputs": [
+        "Reviewed tasks."
+      ],
+      "outputs": [
+        "Code and meaningful tests."
+      ],
+      "reviewer_roles": [
+        "organizer"
+      ],
+      "escalation": [
+        "Raise unclear interfaces."
+      ]
+    }
+  ],
+  "ownership": [
+    {
+      "path": "docs/",
+      "owner_role": "organizer",
+      "reviewer_roles": [
+        "artisan"
+      ]
+    },
+    {
+      "path": "src/",
+      "owner_role": "artisan",
+      "reviewer_roles": [
+        "organizer"
+      ]
+    }
+  ]
+}

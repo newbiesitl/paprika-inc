@@ -145,7 +145,7 @@ def main():
     print(f"Validated {len(roles)} role contracts, {links_checked} local links, "
           f"24 acceptance scenarios, logo provenance, and Messenger "
           f"{dep['plugin_version']} ({dep['commit'][:12]}).")
-    print("Foundation checks only; run command/package checks separately. Managed lifecycle remains unimplemented.")
+    print("Foundation checks only; run MVP command/package checks separately. Advanced managed lifecycle remains future work.")
 
 
 if __name__ == "__main__":

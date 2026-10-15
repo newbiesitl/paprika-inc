@@ -18,7 +18,7 @@ python3 scripts/prepare-plugin.py
 git diff --check
 ```
 
-The foundation validator checks contracts, references, artwork and the exact Messenger checkout. Command tests exercise the implemented read-only behavior; package tests check containment, completeness, exact dependency copies and deterministic archives. These checks do not run a company, install a plugin, prove native host capabilities or certify lifecycle/service coexistence. See [the plugin skeleton](docs/PLUGIN-SKELETON.md). Messenger source changes belong upstream and follow its contribution checks.
+The foundation validator checks contracts, references, artwork and the exact Messenger checkout. Command tests exercise inspection, generic authoring, protected local Git checkout and the sequential native-host contract with fictional fixtures; package tests check standalone authoring, containment, exact dependency copies, optional existing-App export and deterministic archives. These checks do not install a plugin, create real native chats or certify live host/service coexistence. The explicitly scoped local MVP is separate from future singleton/race/transfer/self-adoption hardening. See [the plugin skeleton](docs/PLUGIN-SKELETON.md). Messenger source changes belong upstream and follow its contribution checks.
 
 ## Review and adoption
 
