@@ -18,6 +18,26 @@ COMPONENTS = {
         'plugins/paprika-messenger-private/skills/setup-paprika/scripts/select-service-type.mjs',
     'licenses/PAPRIKA-MESSENGER-MIT.txt': 'LICENSE',
 }
+# Reviewed distribution allowlist, deliberately independent of a recursive copy
+# of vendor/ or an installed plugin. Expanding it requires package review/tests.
+PACKAGE_FILES = frozenset({
+    'plugin.json', '.codex-plugin/plugin.json', 'README.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md',
+    'assets/paprika-inc-icon.png', 'licenses/PAPRIKA-MESSENGER-MIT.txt',
+    'runtime/messenger/select-service-type.mjs',
+    'runtime/paprika-inc/cli.mjs', 'runtime/paprika-inc/commands.json',
+    'runtime/paprika-inc/definition.mjs', 'runtime/paprika-inc/engine.mjs',
+    'runtime/paprika-inc/errors.mjs', 'runtime/paprika-inc/messenger-adapter.mjs',
+    'skills/paprika-inc/SKILL.md', 'skills/paprika-inc/agents/openai.yaml',
+    'skills/paprika-inc/scripts/inc.mjs', 'skills/paprika-inc/references/commands.md',
+    'skills/paprika-inc/references/definition-profile.md',
+    'skills/setup-paprika-inc/SKILL.md', 'skills/setup-paprika-inc/agents/openai.yaml',
+    'skills/setup-paprika-inc/references/boundaries.md',
+    'skills/setup-paprika-inc/references/coexistence.md',
+})
+PUBLIC_SKILLS = ('paprika-inc', 'setup-paprika-inc')
+MANIFEST_FIELDS = {'name', 'version', 'description', 'author', 'homepage', 'license', 'keywords', 'extensions'}
+INTERFACE_FIELDS = {'displayName', 'shortDescription', 'longDescription', 'developerName', 'category',
+                    'capabilities', 'websiteURL', 'supportURL', 'defaultPrompt', 'logo', 'composerIcon'}
 
 
 def require(condition, message):
@@ -33,6 +53,11 @@ def read_json(path):
     return json.loads(path.read_text(encoding='utf-8'))
 
 
+def profile_fields(value, allowed, location):
+    require(isinstance(value, dict), f'{location} must be an object')
+    require(set(value) <= allowed, f'Unsupported {location} fields: {sorted(set(value) - allowed)}')
+
+
 def contained(root, relative):
     require(isinstance(relative, str) and relative and '\\' not in relative,
             'Package references must be relative POSIX paths')
@@ -44,8 +69,9 @@ def contained(root, relative):
     return target
 
 
-def payload_files(root):
+def payload_files(root, provenance_required=False):
     result = []
+    expected = PACKAGE_FILES | ({'package-provenance.json'} if provenance_required else set())
     for path in sorted(root.rglob('*')):
         require(not path.is_symlink(), f'Package symlink: {path.name}')
         if not path.is_file():
@@ -57,24 +83,31 @@ def payload_files(root):
                 f'The read-only kit must not contain service bindings: {name}')
         require(path.suffix in {'.json', '.md', '.mjs', '.txt', '.yaml', '.png'} or name == 'LICENSE',
                 f'Unexpected package payload: {name}')
+        require(name in expected, f'Payload is outside the reviewed build allowlist: {name}')
         result.append({'path': name, 'sha256': digest(path.read_bytes())})
+    missing = expected - {entry['path'] for entry in result}
+    require(not missing, f'Missing allowlisted package files: {sorted(missing)}')
     return result
 
 
 def verify_package(root, provenance_required=False):
     root = Path(root).resolve()
     require(root.is_dir(), 'Plugin root must be a directory')
+    files = payload_files(root, provenance_required)
     manifest = read_json(contained(root, 'plugin.json'))
-    require(isinstance(manifest, dict), 'Plugin manifest must be an object')
+    profile_fields(manifest, MANIFEST_FIELDS | {'$schema'}, 'portable manifest')
+    require(manifest.get('$schema') == 'https://agent-plugins.org/schemas/1.0.0/plugin.schema.json',
+            'Portable manifest must declare the Agent Plugins 1.0 schema')
     require(manifest['name'] == 'paprika-inc' and re.fullmatch(r'\d+\.\d+\.\d+', manifest['version']),
             'Invalid Inc package identity/version')
-    require(not any(key in manifest for key in ['skills', 'mcpServers', 'apps', 'interface']),
-            'Non-portable top-level plugin field')
+    profile_fields(manifest['extensions'], {'com.openai'}, 'portable extensions')
     extension = manifest['extensions']['com.openai']
-    require(isinstance(extension, dict), 'OpenAI extension must be an object')
-    require(extension.get('apps') is None, 'The skeleton declares no required App')
+    profile_fields(extension, {'interface', 'onboardingSkill'}, 'OpenAI extension')
     listing = extension['interface']
-    require(isinstance(listing, dict), 'Listing interface must be an object')
+    profile_fields(listing, INTERFACE_FIELDS, 'listing interface')
+    require(listing.get('displayName') == 'Paprika Inc', 'The product entry must retain the Paprika Inc identity')
+    require(listing.get('logo') == './assets/paprika-inc-icon.png' and listing.get('composerIcon') == listing['logo'],
+            'The Inc product must use its own navy icon')
     for field, maximum in [('displayName', 30), ('shortDescription', 30), ('longDescription', 4000), ('developerName', 80)]:
         value = listing[field]
         require(isinstance(value, str) and 0 < len(value) <= maximum, f'Invalid listing field: {field}')
@@ -85,7 +118,9 @@ def verify_package(root, provenance_required=False):
     require(extension['onboardingSkill'] == './skills/setup-paprika-inc/SKILL.md', 'Incorrect onboarding skill')
     contained(root, extension['onboardingSkill'])
     overlay = read_json(contained(root, '.codex-plugin/plugin.json'))
-    require(isinstance(overlay, dict), 'Compatibility manifest must be an object')
+    profile_fields(overlay, MANIFEST_FIELDS | {'skills', 'interface'}, 'compatibility manifest')
+    profile_fields(overlay['extensions'], {'com.openai'}, 'compatibility extensions')
+    profile_fields(overlay['extensions']['com.openai'], {'onboardingSkill'}, 'compatibility OpenAI extension')
     require(overlay['name'] == manifest['name'] and overlay['version'] == manifest['version'] and
             overlay['interface'] == listing and overlay['skills'] == './skills/' and
             overlay['extensions']['com.openai']['onboardingSkill'] == extension['onboardingSkill'] and
@@ -98,7 +133,9 @@ def verify_package(root, provenance_required=False):
     require(width == height and 48 <= width <= 4096 and len(icon) <= 5 * 1024 * 1024, 'Invalid icon dimensions/size')
     require(digest(icon) == 'c66ead32fc5d6dcf09207fb5c3f1d23becd9355e8ac8507c6eae4ae168e7d902',
             'The kit must preserve the approved navy icon')
-    for name in ['paprika-inc', 'setup-paprika-inc']:
+    discovered_skills = tuple(sorted(path.parent.name for path in root.glob('skills/*/SKILL.md')))
+    require(discovered_skills == PUBLIC_SKILLS, 'Only Inc-namespaced public skills may be exported')
+    for name in discovered_skills:
         skill = contained(root, f'skills/{name}/SKILL.md').read_text()
         require(skill.startswith(f'---\nname: {name}\ndescription: ') and '\n---\n' in skill, 'Invalid skill frontmatter')
         agent = contained(root, f'skills/{name}/agents/openai.yaml').read_text()
@@ -108,7 +145,6 @@ def verify_package(root, provenance_required=False):
                      'runtime/paprika-inc/engine.mjs', 'runtime/paprika-inc/definition.mjs', 'runtime/paprika-inc/cli.mjs',
                      'runtime/paprika-inc/messenger-adapter.mjs', 'skills/paprika-inc/scripts/inc.mjs', *COMPONENTS]:
         contained(root, required)
-    files = payload_files(root)
     for entry in files:
         path = root / entry['path']
         if path.suffix not in {'.md', '.mjs', '.json', '.yaml', '.txt'}:
@@ -132,6 +168,9 @@ def verify_package(root, provenance_required=False):
             for reference in re.findall(r"new URL\([\"']([^\"']+)[\"'], import.meta.url\)", text):
                 target = (path.parent / reference).resolve()
                 require(target.is_relative_to(root) and target.is_file(), f'Missing runtime data in {entry["path"]}: {reference}')
+    discovery = {'plugin_name': manifest['name'], 'display_name': listing['displayName'],
+                 'manifest_paths': ['.codex-plugin/plugin.json', 'plugin.json'],
+                 'public_skills': list(discovered_skills), 'live_picker_verified': False}
     if provenance_required:
         provenance = read_json(contained(root, 'package-provenance.json'))
         inventory = [entry for entry in files if entry['path'] != 'package-provenance.json']
@@ -140,10 +179,12 @@ def verify_package(root, provenance_required=False):
                 'Incorrect package provenance')
         require(provenance['files'] == inventory and provenance['payload_sha256'] == digest(json.dumps(inventory, sort_keys=True, separators=(',', ':')).encode()),
                 'Package payload/provenance mismatch')
+        require(provenance.get('discovery') == discovery, 'Package discovery inventory/provenance mismatch')
         require(provenance['messenger']['commit'] == '776efe80eb801ca850b64516c003325833157240' and
                 provenance['messenger']['plugin_version'] == '1.6.0' and provenance['messenger']['service_version'] == '0.8.0',
                 'Unexpected Messenger provenance')
-    return {'name': manifest['name'], 'version': manifest['version'], 'files': files, 'icon': {'width': width, 'height': height}}
+    return {'name': manifest['name'], 'version': manifest['version'], 'files': files,
+            'icon': {'width': width, 'height': height}, 'discovery': discovery}
 
 
 def dependency_inputs(repository):
@@ -178,7 +219,7 @@ def prepare(repository=ROOT, output=None):
     require(all(entry['path'] != 'package-provenance.json' for entry in inventory), 'Generated provenance belongs in the artifact, not source')
     provenance = {'format': 1, 'plugin_name': verified['name'], 'plugin_version': verified['version'], 'distribution': 'read_only_skill_kit',
                   'messenger': {key: dep[key] for key in ['repository', 'tag', 'commit', 'plugin_version', 'service_version']},
-                  'components': COMPONENTS, 'files': inventory,
+                  'components': COMPONENTS, 'files': inventory, 'discovery': verified['discovery'],
                   'payload_sha256': digest(json.dumps(inventory, sort_keys=True, separators=(',', ':')).encode())}
     output.mkdir(parents=True, exist_ok=True)
     archive = output / f'{verified["name"]}-{verified["version"]}.zip'
@@ -198,7 +239,8 @@ def prepare(repository=ROOT, output=None):
     finally:
         Path(temporary).unlink(missing_ok=True)
     report = {'archive': str(archive), 'version': verified['version'], 'sha256': digest(archive.read_bytes()),
-              'file_count': len(entries), 'distribution': 'read_only_skill_kit', 'installed': False, 'deployed': False}
+              'file_count': len(entries), 'distribution': 'read_only_skill_kit', 'discovery': verified['discovery'],
+              'installed': False, 'deployed': False}
     return report
 
 

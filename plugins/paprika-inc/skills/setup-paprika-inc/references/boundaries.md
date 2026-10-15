@@ -2,6 +2,8 @@
 
 Messenger plugin 1.6.0 / service 0.8.0 is pinned at `776efe80eb801ca850b64516c003325833157240`. This package includes the exact maintained `select-service-type.mjs` component and its MIT license at build time. It preserves an existing `dot-chatgpt-codex` service type without invoking Dot; Inc itself targets local Codex and introduces no Dot workflow. No code imports another installed plugin cache, and read-only Inc commands need no separate Messenger plugin installation.
 
+See [installation coexistence](coexistence.md) for the Inc-only and Messenger-already-installed paths, separate version records, the no-duplicate-product/command requirement, and the pending fresh-chat picker check. Bundled reusable source never registers Messenger's plugin or exports its public skills.
+
 The future service adapter must use the owner's existing authenticated private service where compatible. Package version, Site publication number and runtime service version are distinct. Check ownership/privacy, configuration, actual authenticated runtime capabilities and existing bindings first. Unavailable metadata remains unverified. Do not provision, redeploy, reconfigure or downgrade an existing service to satisfy a local version check. Preserve its App/OAuth identity, database, history, receivers, delivery store and paused/off preferences. No service source, hosting config, endpoint, App binding or authentication is declared by this read-only package.
 
 The local adapter accepts only a caller-supplied report:

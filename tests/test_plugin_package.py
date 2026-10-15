@@ -30,6 +30,110 @@ class PluginPackageTests(unittest.TestCase):
         self.assertEqual(result['icon'], {'width': 1254, 'height': 1254})
         self.assertTrue(any(file['path'] == 'runtime/messenger/select-service-type.mjs' for file in result['files']))
 
+    def test_discovery_inventory_has_one_inc_identity_and_only_inc_skills(self):
+        result = package.verify_package(ROOT / package.PLUGIN)
+        self.assertEqual(result['discovery'], {
+            'plugin_name': 'paprika-inc', 'display_name': 'Paprika Inc',
+            'manifest_paths': ['.codex-plugin/plugin.json', 'plugin.json'],
+            'public_skills': ['paprika-inc', 'setup-paprika-inc'], 'live_picker_verified': False,
+        })
+        self.assertEqual({entry['path'] for entry in result['files']}, package.PACKAGE_FILES)
+
+    def test_extra_messenger_skills_and_nested_plugin_or_marketplace_manifests_fail(self):
+        extras = [
+            'skills/paprika-messenger/SKILL.md', 'skills/setup-paprika/SKILL.md',
+            'runtime/messenger/plugin.json', 'runtime/messenger/.codex-plugin/plugin.json',
+            'runtime/messenger/.claude-plugin/plugin.json', '.agents/plugins/marketplace.json',
+            '.claude-plugin/marketplace.json', 'vendor/paprika-messenger/plugin-public/plugin.json',
+            'skills/paprika-inc/commands/paprika-messenger.md',
+        ]
+        for relative in extras:
+            with self.subTest(relative=relative), tempfile.TemporaryDirectory(dir=self.base) as scratch:
+                target = Path(scratch) / 'paprika-inc'
+                shutil.copytree(ROOT / package.PLUGIN, target)
+                extra = target / relative
+                extra.parent.mkdir(parents=True, exist_ok=True)
+                extra.write_text('---\nname: paprika-messenger\ndescription: Accidental duplicate.\n---\n'
+                                 if extra.name == 'SKILL.md' else '{}')
+                with self.assertRaisesRegex(ValueError, 'reviewed build allowlist'):
+                    package.verify_package(target)
+
+    def test_manifest_profiles_reject_other_product_registration_and_visibility_flags(self):
+        for kind in ['product-label', 'plugin-registration', 'compatibility-registration',
+                     'extension-visibility', 'listing-visibility', 'missing-schema']:
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory(dir=self.base) as scratch:
+                target = Path(scratch) / 'paprika-inc'
+                shutil.copytree(ROOT / package.PLUGIN, target)
+                portable_path = target / 'plugin.json'
+                compatibility_path = target / '.codex-plugin/plugin.json'
+                portable = json.loads(portable_path.read_text())
+                compatibility = json.loads(compatibility_path.read_text())
+                if kind == 'product-label':
+                    portable['extensions']['com.openai']['interface']['displayName'] = 'Paprika Messenger'
+                    compatibility['interface']['displayName'] = 'Paprika Messenger'
+                elif kind == 'plugin-registration':
+                    portable['plugins'] = [{'name': 'paprika-messenger-private'}]
+                elif kind == 'compatibility-registration':
+                    compatibility['plugins'] = [{'name': 'paprika-messenger-private'}]
+                elif kind == 'extension-visibility':
+                    portable['extensions']['com.openai']['visibility'] = 'hidden'
+                elif kind == 'listing-visibility':
+                    portable['extensions']['com.openai']['interface']['visibility'] = 'hidden'
+                    compatibility['interface']['visibility'] = 'hidden'
+                else:
+                    del portable['$schema']
+                portable_path.write_text(json.dumps(portable))
+                compatibility_path.write_text(json.dumps(compatibility))
+                with self.assertRaises(ValueError):
+                    package.verify_package(target)
+
+    def test_rehashed_archive_cannot_smuggle_a_second_messenger_skill(self):
+        report = package.prepare(ROOT, self.base / 'build')
+        with zipfile.ZipFile(report['archive']) as original:
+            entries = {info.filename: original.read(info) for info in original.infolist()}
+        extra = 'skills/paprika-messenger/SKILL.md'
+        content = b'---\nname: paprika-messenger\ndescription: Accidental duplicate.\n---\n'
+        entries['paprika-inc/' + extra] = content
+        provenance = json.loads(entries['paprika-inc/package-provenance.json'])
+        provenance['files'].append({'path': extra, 'sha256': package.digest(content)})
+        provenance['files'].sort(key=lambda entry: entry['path'])
+        provenance['payload_sha256'] = package.digest(json.dumps(provenance['files'], sort_keys=True, separators=(',', ':')).encode())
+        if 'discovery' in provenance:
+            provenance['discovery']['public_skills'].append('paprika-messenger')
+        entries['paprika-inc/package-provenance.json'] = json.dumps(provenance).encode()
+        tampered = self.base / 'duplicate-discovery.zip'
+        with zipfile.ZipFile(tampered, 'w') as archive:
+            for name, data in entries.items():
+                archive.writestr(name, data)
+        with self.assertRaisesRegex(ValueError, 'reviewed build allowlist'):
+            package.verify_archive(tampered)
+
+    def test_inc_and_pinned_messenger_export_distinct_product_and_skill_inventories(self):
+        report = package.prepare(ROOT, self.base / 'build')
+        extracted = self.base / 'extracted'
+        with zipfile.ZipFile(report['archive']) as archive:
+            archive.extractall(extracted)
+        inc = extracted / 'paprika-inc'
+        messenger = ROOT / 'vendor/paprika-messenger/plugins/paprika-messenger-private'
+        products, public_skills = {}, {}
+        for root in [inc, messenger]:
+            portable = json.loads((root / 'plugin.json').read_text())
+            compatibility = json.loads((root / '.codex-plugin/plugin.json').read_text())
+            self.assertEqual(portable['name'], compatibility['name'])
+            self.assertEqual(portable['extensions']['com.openai']['interface']['displayName'], compatibility['interface']['displayName'])
+            products[portable['name']] = portable['extensions']['com.openai']['interface']['displayName']
+            public_skills[portable['name']] = {
+                next(line.removeprefix('name: ') for line in path.read_text().splitlines() if line.startswith('name: '))
+                for path in root.glob('skills/*/SKILL.md')
+            }
+        self.assertEqual(products, {'paprika-inc': 'Paprika Inc', 'paprika-messenger-private': 'Paprika Messenger'})
+        self.assertEqual(public_skills['paprika-inc'], {'paprika-inc', 'setup-paprika-inc'})
+        self.assertEqual(public_skills['paprika-messenger-private'], {'paprika-messenger', 'setup-paprika'})
+        self.assertFalse(public_skills['paprika-inc'] & public_skills['paprika-messenger-private'])
+        self.assertFalse(report['discovery']['live_picker_verified'])
+        self.assertFalse(report['installed'])
+        self.assertFalse(report['deployed'])
+
     def test_missing_assets_modules_and_runtime_data_fail(self):
         for relative in ['assets/paprika-inc-icon.png', 'runtime/paprika-inc/errors.mjs', 'runtime/paprika-inc/commands.json',
                          'skills/paprika-inc/references/commands.md', 'runtime/messenger/select-service-type.mjs']:
