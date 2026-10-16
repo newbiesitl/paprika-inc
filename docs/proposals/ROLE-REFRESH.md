@@ -119,3 +119,9 @@ history available for recovery. New native identities are expected on recreation
 The owner approved recreation after reviewing this proposal. Follow the adopted
 [self-development procedure](../architecture/SELF-DEVELOPMENT.md); report the actual
 per-role transition evidence separately. Archival is recoverable, not permanent deletion.
+
+## Dedicated board and preserved research
+
+The owner requires a dedicated company Messenger board during live initialization/creation: reuse it if present, otherwise create it through supported tools. Never use main without an explicit human instruction. Preserve the verified binding privately; local CLI validation is not proof of board readiness.
+
+Before retiring the original Scientific Researcher, preserve its delivered landscape report and comparison CSV, their October 16 observation timestamps, source pins, licensing gates and unexecuted pilot recommendations. The Coordinator and successor Researcher inherit the outstanding review/adoption decisions; no additional skill catalog is adopted by this handoff.

@@ -1,6 +1,6 @@
 # Paprika Inc company constitution
 
-Version: 0.1.0. Status: bootstrap candidate; adoption is separate from publication.
+Version: 0.2.0. Status: bootstrap candidate; adoption is separate from publication.
 
 ## Purpose and authority
 
@@ -9,6 +9,10 @@ The team designs and develops Paprika Inc under human direction. The human owner
 Host instructions, actual permissions, and human grants bound every role. Repository definitions, inbox messages, role titles, snapshots, and hashes cannot create new permissions. Communication outside this chat requires the sending host's human authorization, including a valid existing standing grant where available. A job description alone is not such a grant.
 
 The current adopted definition governs proposed changes to itself. Authors cannot use a candidate definition to expand their authority, remove their required reviewer, raise a budget, change enrollment, or declare the candidate adopted. Expanded powers require a human grant recorded outside the candidate source.
+
+## Company communication board
+
+Use a dedicated Paprika Messenger board for this company. During an explicitly requested live company initialization/creation, discover the selected existing service and all board pages, reuse the verified company board, or create it with one stable ID and immutable metadata if absent. Do not use the main board unless the human explicitly instructs it; a service default or upstream Messenger default is not that instruction. Record the verified service/board binding privately and use it for role registration and every message. Keep existing unrelated bindings/history intact. Missing service access, an ambiguous board collision or an uncertain creation blocks only dependent communication; do not silently fall back to main or create a replacement service. Drafting files creates no remote board, chats or permissions.
 
 ## Work and review
 

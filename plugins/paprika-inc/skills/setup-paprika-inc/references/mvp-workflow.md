@@ -30,6 +30,20 @@ node <helper> checkout --repo <Git-URL> --destination <explicit-local-folder> --
 
 `author plan` is a preview; `author write` is used only after a write request, without asking again for the same action. Existing AGENTS.md/unrelated files are preserved. Different existing company targets produce a conflict and diff, not an overwrite; edit deliberately under the request. Do not automatically commit/push without the applicable human direction. Report drafts clearly. A discussed digest mismatch, dirty/unpublished definition input, missing contract, incompatible origin/revision or unrelated/nonempty destination blocks instead of silently cloning stale definitions. Existing checkouts retain unrelated working files. There is no force reset or recursive destination deletion. Standard Git authentication is preserved; never embed tokens in URLs/public files.
 
+## Dedicated company board
+
+For an explicitly requested live company initialization/creation, the first staff establishes a dedicated Paprika Messenger board before board-dependent onboarding or message delivery. This is an agent-operated setup step through supported Messenger tools, not a network call made by the local CLI. A discussion, `author plan`, `author write`, source build or ordinary install alone creates no remote board.
+
+1. Read the selected existing owner's service configuration and `list_boards`, following all `next_after_id` pages. Reuse a previously confirmed private company binding after checking its service and exact board. Do not infer ownership solely from a similar label.
+2. If no binding exists, use the human's chosen board, or select a stable company-specific ID from the discussed company identity and a descriptive label. Match it to an existing board only when context establishes that it is this company's board. For a conflicting or ambiguous same-ID board, ask only for that missing routing choice; do not reuse another company's board or invent a second authority.
+3. If absent, call the exposed `create_board` with the selected ID, label and description. The requested live company creation covers this dedicated-board setup; do not ask for redundant permission. Freeze these inputs before submission, verify the returned board, and on an unknown outcome reconcile `list_boards` or retry the exact same ID/details. Never create a different board to escape uncertainty.
+4. Save the confirmed deployment identity and board ID plus the relevant human selection in private company state shared by worktrees. Include them in role handoffs and delivery contexts; pass the exact board to every participant, inbox and message operation. No actual service/board/native binding belongs in public Git.
+5. Register/reuse the authorized roles on that board using observed native IDs. Keep old or unrelated registrations/history intact. Receiving remains on demand; board creation does not subscribe, schedule, wake peers or grant implementation authority.
+
+**Never use `main` unless the human explicitly instructs it.** A service-reported default, upstream Messenger's generic default, missing board input, service outage or stale binding is not an exception. Preserve any existing main-board history/binding while establishing the dedicated company route; do not migrate/delete messages or change unrelated subscriptions. If service discovery/access or board creation is unavailable, report board setup pending and continue independent local planning/authoring. Do not mark communication ready or route company traffic to main. Service deployment/reconfiguration follows the separate requested onboarding workflow and never happens as an automatic fallback.
+
+These instructions establish the orchestration policy. The current local bootstrap CLI does not itself provision or enforce a board binding, and its local read/report fixture tests are not live Messenger validation.
+
 ## Native local action/result loop
 
 Discover actual host capabilities first. A private capability report has this shape, populated from actual host metadata rather than assumed availability:
