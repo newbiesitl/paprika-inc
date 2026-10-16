@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "kind": "public_abstract_level_illustration",
+  "access_date": "2026-10-16",
+  "method": "Purposeful two-record selection and direct public arXiv abstract/metadata page retrieval through browser tooling; not a database search or upstream helper/API test.",
+  "search_queries": [],
+  "screening": {"selected": 2, "included": 2, "excluded": 0, "exhaustive": false},
+  "sources": [
+    {"id": "S1", "arxiv": "1409.0473v7", "url": "https://arxiv.org/abs/1409.0473v7", "version_date": "2016-05-19", "evidence_read": ["abstract", "metadata"], "full_text_read": false},
+    {"id": "S2", "arxiv": "1706.03762v7", "url": "https://arxiv.org/abs/1706.03762v7", "version_date": "2023-08-02", "evidence_read": ["abstract", "metadata"], "full_text_read": false}
+  ],
+  "paid_calls": false,
+  "confidential_inputs": false,
+  "native_skill_discovery_tested": false,
+  "upstream_helper_execution": false,
+  "independent_review": "pending"
+}

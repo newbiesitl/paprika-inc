@@ -1,9 +1,11 @@
 import { authorCompany } from './authoring.mjs';
 import { checkoutCompany } from './checkout.mjs';
 import { beginBootstrap, nextBootstrap, recordBootstrap, bindBootstrapRole, bootstrapStatus } from './bootstrap.mjs';
+import { projectSkills } from './skill-packs.mjs';
 
 export async function executeMvp(options) {
   const command = options.command;
+  if (command.startsWith('skills ')) return projectSkills(options);
   if (command === 'author plan' || command === 'author write') return authorCompany({ ...options, write: command === 'author write' });
   if (command === 'checkout') {
     const result = await checkoutCompany({ source: options.repository, ...options });

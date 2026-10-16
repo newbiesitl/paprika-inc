@@ -9,7 +9,7 @@ export function parseArguments(argv) {
     '--spec': 'specPath', '--host-capabilities': 'hostCapabilitiesPath', '--result': 'hostResultPath',
     '--destination': 'destination', '--revision': 'revision', '--definition-digest': 'expectedDigest',
     '--roles': 'roles', '--action': 'actionId', '--role-id': 'roleId', '--thread-id': 'threadId',
-    '--initial-role': 'initialRole', '--initial-thread-id': 'initialThreadId', '--project-id': 'projectId' };
+    '--initial-role': 'initialRole', '--initial-thread-id': 'initialThreadId', '--project-id': 'projectId', '--skill-set': 'skillSet' };
   for (let index = 0; index < argv.length; index++) {
     const token = argv[index];
     if (Object.hasOwn(flags, token)) {

@@ -37,7 +37,7 @@ class PluginPackageTests(unittest.TestCase):
             'manifest_paths': ['.codex-plugin/plugin.json', 'plugin.json'],
             'public_skills': ['paprika-inc', 'setup-paprika-inc'], 'live_picker_verified': False,
         })
-        self.assertEqual({entry['path'] for entry in result['files']}, package.PACKAGE_FILES)
+        self.assertEqual({entry['path'] for entry in result['files']}, package.expected_package_files(ROOT / package.PLUGIN))
 
     def test_extra_messenger_skills_and_nested_plugin_or_marketplace_manifests_fail(self):
         extras = [

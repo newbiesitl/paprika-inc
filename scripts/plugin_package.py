@@ -30,6 +30,7 @@ PACKAGE_FILES = frozenset({
     'runtime/paprika-inc/errors.mjs', 'runtime/paprika-inc/messenger-adapter.mjs',
     'runtime/paprika-inc/ownership.mjs', 'runtime/paprika-inc/authoring.mjs',
     'runtime/paprika-inc/checkout.mjs', 'runtime/paprika-inc/bootstrap.mjs', 'runtime/paprika-inc/mvp.mjs',
+    'runtime/paprika-inc/skill-catalog.mjs', 'runtime/paprika-inc/skill-packs.mjs',
     'skills/paprika-inc/SKILL.md', 'skills/paprika-inc/agents/openai.yaml',
     'skills/paprika-inc/scripts/inc.mjs', 'skills/paprika-inc/references/commands.md',
     'skills/paprika-inc/references/definition-profile.md',
@@ -38,6 +39,8 @@ PACKAGE_FILES = frozenset({
     'skills/setup-paprika-inc/references/coexistence.md',
     'skills/setup-paprika-inc/references/mvp-workflow.md',
     'skills/setup-paprika-inc/assets/example-blueprint.json',
+    'skills/setup-paprika-inc/assets/scientific-blueprint.json',
+    'skills/setup-paprika-inc/references/research-core.md',
 })
 PUBLIC_SKILLS = ('paprika-inc', 'setup-paprika-inc')
 MANIFEST_FIELDS = {'name', 'version', 'description', 'author', 'homepage', 'license', 'keywords', 'extensions'}
@@ -76,7 +79,7 @@ def contained(root, relative):
 
 def payload_files(root, provenance_required=False, bound=False):
     result = []
-    expected = PACKAGE_FILES | ({'package-provenance.json'} if provenance_required else set())
+    expected = expected_package_files(root) | ({'package-provenance.json'} if provenance_required else set())
     if bound:
         expected |= {'.app.json'}
     for path in sorted(root.rglob('*')):
@@ -88,13 +91,40 @@ def payload_files(root, provenance_required=False, bound=False):
                 f'Private/generated directory in package: {name}')
         require(not path.name.startswith('.env') and path.name not in {'mcp.json', '.mcp.json', 'paprika-connection.json'} and (path.name != '.app.json' or bound),
                 f'Only an explicitly prepared private bound kit may contain its one existing App reference: {name}')
-        require(path.suffix in {'.json', '.md', '.mjs', '.txt', '.yaml', '.png'} or name == 'LICENSE',
+        require(path.suffix in {'.json', '.md', '.mjs', '.txt', '.yaml', '.png'} or name == 'LICENSE' or
+                name.startswith('runtime/skill-packs/research-core/') and path.suffix in {'.py', '.bib'},
                 f'Unexpected package payload: {name}')
         require(name in expected, f'Payload is outside the reviewed build allowlist: {name}')
         result.append({'path': name, 'sha256': digest(path.read_bytes())})
     missing = expected - {entry['path'] for entry in result}
     require(not missing, f'Missing allowlisted package files: {sorted(missing)}')
     return result
+
+
+def expected_package_files(root):
+    prefix = 'runtime/skill-packs/research-core/'
+    skills = ['paper-lookup', 'literature-review', 'citation-management', 'scientific-critical-thinking']
+    catalog_path = 'runtime/skill-packs/catalog.json'
+    catalog = read_json(contained(root, catalog_path))
+    manifest_bytes = contained(root, prefix + 'pack.json').read_bytes()
+    pack = json.loads(manifest_bytes)
+    require(catalog['schema_version'] == 1 and set(catalog['sets']) == {'research-core'} and
+            catalog['sets']['research-core'] == {'manifest_sha256': digest(manifest_bytes), 'source_commit': 'a1043ef544e3a100c28e70a736b6cf32554d0677', 'package_version': '2.72.0', 'skills': skills}, 'Invalid research catalog/pin')
+    require(pack['schema_version'] == 1 and pack['id'] == 'research-core' and pack['skills'] == skills and
+            pack['source'] == {'repository': 'https://github.com/K-Dense-AI/scientific-agent-skills.git', 'commit': 'a1043ef544e3a100c28e70a736b6cf32554d0677', 'package_version': '2.72.0'}, 'Invalid research source/selection')
+    extra = set()
+    for file in pack['files']:
+        relative = file['path']
+        require(isinstance(relative, str) and re.fullmatch(r'(paper-lookup|literature-review|citation-management|scientific-critical-thinking)/(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_.-]+\.(md|py|bib)', relative) and '..' not in relative,
+                'Unexpected research resource path')
+        require(not relative.endswith('/SKILL.md') or relative.count('/') == 1, 'Nested discovery skill in research payload')
+        name = prefix + relative
+        require(name not in extra and digest(contained(root, name).read_bytes()) == file['sha256'], 'Research resource digest mismatch: ' + relative)
+        extra.add(name)
+    for skill in skills:
+        for name in ['SKILL.md', 'INC-PORTABILITY.md', 'LICENSE.upstream.md']:
+            require(prefix + skill + '/' + name in extra, 'Missing research skill, portability guidance or license')
+    return PACKAGE_FILES | extra | {catalog_path, prefix + 'pack.json'}
 
 
 def verify_package(root, provenance_required=False):
@@ -160,7 +190,7 @@ def verify_package(root, provenance_required=False):
         contained(root, required)
     for entry in files:
         path = root / entry['path']
-        if path.suffix not in {'.md', '.mjs', '.json', '.yaml', '.txt'}:
+        if path.suffix not in {'.md', '.mjs', '.json', '.yaml', '.txt', '.py', '.bib'}:
             continue
         text = path.read_text(encoding='utf-8')
         require('/Users/' not in text and 'C:\\Users\\' not in text and '.codex/plugins/cache/' not in text,
@@ -193,6 +223,7 @@ def verify_package(root, provenance_required=False):
         require(provenance['files'] == inventory and provenance['payload_sha256'] == digest(json.dumps(inventory, sort_keys=True, separators=(',', ':')).encode()),
                 'Package payload/provenance mismatch')
         require(provenance.get('discovery') == discovery, 'Package discovery inventory/provenance mismatch')
+        require(provenance.get('research_core') == read_json(root / 'runtime/skill-packs/catalog.json')['sets']['research-core'], 'Research provenance mismatch')
         require(bool(provenance.get('existing_service_binding')) == bound, 'Service binding/provenance mismatch')
         if bound:
             binding = validate_service_binding(provenance['existing_service_binding'])
@@ -205,6 +236,11 @@ def verify_package(root, provenance_required=False):
 
 
 def dependency_inputs(repository):
+    # This also checks every emitted byte against the unchanged pinned submodule.
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from research_pack import verify as verify_research
+    verify_research(repository)
     dep = read_json(repository / 'dependencies.json')['paprika_messenger']
     require(dep['path'] == 'vendor/paprika-messenger' and dep['commit'] == '776efe80eb801ca850b64516c003325833157240' and
             dep['plugin_version'] == '1.6.0' and dep['service_version'] == '0.8.0', 'Skeleton baseline differs from adopted dependency metadata')
@@ -262,6 +298,7 @@ def prepare(repository=ROOT, output=None, service_binding=None):
     provenance = {'format': 1, 'plugin_name': verified['name'], 'plugin_version': verified['version'], 'distribution': DISTRIBUTION,
                   'messenger': {key: dep[key] for key in ['repository', 'tag', 'commit', 'plugin_version', 'service_version']},
                   'components': COMPONENTS, 'files': inventory, 'discovery': verified['discovery'],
+                  'research_core': read_json(source / 'runtime/skill-packs/catalog.json')['sets']['research-core'],
                   'payload_sha256': digest(json.dumps(inventory, sort_keys=True, separators=(',', ':')).encode()), 'existing_service_binding': binding}
     output.mkdir(parents=True, exist_ok=True)
     archive = output / f'{verified["name"]}-{verified["version"]}.zip'

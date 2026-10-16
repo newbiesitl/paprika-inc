@@ -14,7 +14,10 @@
     {"name": "bootstrap next", "aliases": ["resume bootstrap"], "repository_required": true, "read_only": false, "mvp": true, "description": "Prepare the next supported native host action or report its blocker."},
     {"name": "bootstrap record", "aliases": [], "repository_required": true, "read_only": false, "mvp": true, "description": "Record the actual result for one correlated native action."},
     {"name": "bootstrap bind", "aliases": [], "repository_required": true, "read_only": false, "mvp": true, "description": "Explicitly declare a known native binding, then independently verify it."},
-    {"name": "bootstrap status", "aliases": ["show bootstrap status"], "repository_required": true, "read_only": true, "mvp": true, "description": "Read the selected checkout’s private MVP progress record."}
+    {"name": "bootstrap status", "aliases": ["show bootstrap status"], "repository_required": true, "read_only": true, "mvp": true, "description": "Read the selected checkout’s private MVP progress record."},
+    {"name": "skills plan", "aliases": [], "repository_required": true, "read_only": true, "mvp": true, "description": "Preview selected project-local skills, integrity conflicts and local capability limitations."},
+    {"name": "skills install", "aliases": [], "repository_required": true, "read_only": false, "mvp": true, "description": "Materialize only explicitly selected bundled skills into the selected Git project."},
+    {"name": "skills status", "aliases": [], "repository_required": true, "read_only": true, "mvp": true, "description": "Report per-skill integrity, local dependencies and unverified external access separately."}
   ],
   "unsupported": [
     {"name": "apply", "aliases": ["apply setup", "initialize now"], "capability": "company.lifecycle.apply"},

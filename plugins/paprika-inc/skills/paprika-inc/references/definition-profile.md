@@ -11,3 +11,9 @@ Required shared documents: `constitution`, `work_tracking`, and `adoption.policy
 The supported configuration is `topology: single_host`, `runtime: codex_local`, `knowledge_policy: private_runtime_location`, and `runtime_state: private_enrollment_required`. `messaging` declares on-demand receiving and no background monitoring. `lifecycle` declares one desired instance per role, required verified project membership and no automatic takeover. `adoption.automatic` is false. These are desired-definition checks, not implemented singleton/lifecycle enforcement or evidence of adoption. The expressly requested sequential MVP operates under the human bootstrap request with a small private progress record; full enrollment/registry/transfer machinery is future hardening.
 
 Digests identify exact file bytes and the sorted file-hash inventory, scoped to working-tree inputs. They do not prove a reviewed Git revision, comprehension, authenticity, permissions, or semantic ownership consistency. CRLF is normalized only for parsing; hashes retain the original bytes. Review ambiguous/overlapping ownership before future apply. Prose is inspected as data, never used as an executable policy loader.
+
+Roles may optionally declare `skill_sets: ["research-core"]` or `[]`. Omission is
+backward-compatible. Unknown, duplicate or nonarray selections are invalid. This
+reference selects reviewed procedures, not tools, access or account installation.
+Use the [research workflow](../../setup-paprika-inc/references/research-core.md)
+for explicit project-local materialization and separate capability reporting.

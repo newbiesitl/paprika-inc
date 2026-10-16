@@ -3,6 +3,8 @@ import { resolve, join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { checkoutCompany, inspectCheckout, git } from './checkout.mjs';
 import { IncError, requireInput as check } from './errors.mjs';
+import { projectSkills } from './skill-packs.mjs';
+import { sha } from './skill-catalog.mjs';
 
 const prefix = 'mcp__codex_app__';
 export const requiredHostTools = ['list_projects', 'create_thread', 'list_threads', 'read_thread', 'wait_threads'].map(name => prefix + name);
@@ -60,7 +62,8 @@ export function bootstrapSummary(state) {
     revision: state.revision, definition_input_sha256: state.definition_digest, destination: state.destination,
     project_id: state.project_id, host_id: 'local', roles: state.roles.map(role => ({ role_id: role.id, thread_id: role.thread_id,
       status: role.phase, project_verified: role.project_verified, thread_verified: role.thread_verified,
-      onboarded: role.phase === 'ready', blockers: role.blockers })),
+      onboarded: role.phase === 'ready', blockers: role.blockers, skill_sets: role.skill_sets || [], skill_report: role.skill_report || null,
+      skill_report_sha256: role.skill_report_sha256 || null, skill_sources: role.skill_sources || [] })),
     as_of: state.updated_at, evidence: 'recorded_native_tool_results_not_live_rechecked',
     limits: { one_user_bootstrap_at_a_time: true, singleton_enforced: false, concurrency_safe: false, background_receiving: false, automatic_adoption: false } };
 }
@@ -108,7 +111,7 @@ export async function beginBootstrap(options) {
       phase: 'discover_project', project_id: null, selected_project_id: options.projectId ?? null, pending_action: null, created_at: now(),
       roles: requested.map(id => {
         const role = checkout.definition.roles.find(role => role.id === id), initial = options.initialRole === id && options.initialThreadId;
-        return { id, version: role.version, definition: role.definition, contract_sha256: role.sha256, request_id: randomUUID(),
+        return { id, version: role.version, definition: role.definition, contract_sha256: role.sha256, request_id: randomUUID(), skill_sets: role.skill_sets,
           thread_id: initial || null, phase: initial ? 'verify_membership' : 'pending', onboarding_submitted: false,
           project_verified: false, thread_verified: false, blockers: [] };
       }) };
@@ -121,6 +124,7 @@ function onboardingPrompt(state, role) {
   return `The human requested this roster's local MVP bootstrap. This assignment is READ/REPORT ONLY, not implementation dispatch or a permission expansion. Respect existing human and host instructions.\n\n` +
     `Selected checkout: ${state.destination}\nPinned revision: ${state.revision}\nRole: ${role.id} / ${role.version}\n` +
     `Read ${state.manifest_path}, ${state.ownership_path}, and ${role.definition}, plus applicable shared instructions. Ownership is canonical only in ${state.ownership_path}. Do not write files, create chats, deploy, subscribe, message others or perform arbitrary implementation work.\n\n` +
+    (role.skill_report ? `Selected skill sets: ${JSON.stringify(role.skill_sets)}. Read these installed skill/portability paths too: ${JSON.stringify(role.skill_sources)}. Local installation/capability observations: ${JSON.stringify(role.skill_report)}. Report missing installation, missing dependencies, unsupported cross-skill routes and unverified external access separately. Optional PDF/paid/figures/Scholar routes are disabled; they do not gate basic Markdown/appraisal. Do not run API calls or optional helpers during onboarding. Installation does not certify native skill discovery or research readiness. Include skill_report_sha256=${role.skill_report_sha256} in the receipt to identify the report you reviewed.\n\n` : '') +
     `Report responsibilities, ownership, boundaries, inputs/outputs, review relationships and blockers in this chat. Then return one JSON object in a fenced JSON block with: request_id=${role.request_id}, role_id=${role.id}, role_version=${role.version}, source_revision=${state.revision}, contract_sha256=<computed SHA256 of the role file>, ownership_sha256=<computed SHA256 of the ownership map>, sources_read=<relative source paths actually read>, state=ready or blocked, blockers=<array>. Expected contract hash ${role.contract_sha256}; ownership hash ${state.ownership_sha256}. A response is not adoption or new authority. The caller independently checks native project/host/cwd evidence.`;
 }
 
@@ -142,6 +146,12 @@ function actionOutput(state, action) {
 
 export async function nextBootstrap({ repository }) {
   const { root, state } = await verifiedState(repository);
+  for (const role of state.roles.filter(role => role.skill_sets?.length && role.phase !== 'ready')) {
+    const report = await projectSkills({ repository: root, command: 'skills status', roles: role.id, manifestPath: state.manifest_path });
+    role.skill_report = { skills: report.skills, local_observations: report.local_observations, limits: report.limits };
+    role.skill_report_sha256 = sha(JSON.stringify(role.skill_report));
+    role.skill_sources = report.skills.filter(skill => skill.state === 'intact').flatMap(skill => [skill.path + '/SKILL.md', skill.path + '/INC-PORTABILITY.md']);
+  }
   if (state.pending_action) {
     if (['create', 'onboard'].includes(state.pending_action.kind)) return { ok: false, command: 'bootstrap next', status: 'submission_unresolved', action_id: state.pending_action.id,
       next_step: 'The write was prepared before native submission. Its outcome is unresolved; inspect native records and explicitly bind the confirmed chat. Do not blindly issue it again.' };
@@ -233,16 +243,24 @@ export async function recordBootstrap({ repository, actionId, hostResult }) {
     try { nativeVerified = result.thread?.id === role.thread_id && result.thread.kind === 'codex' && result.thread.ephemeral !== true && result.thread.hostId === 'local' && await realpath(result.thread.cwd) === state.destination; } catch { /* Unverified. */ }
     check(nativeVerified && role.project_verified, 'native_identity_mismatch', 'Native read-back did not independently verify the selected thread, local host, project and cwd.');
     role.thread_verified = true;
-    const receipt = receiptFromThread(result), requiredSources = [state.manifest_path, state.ownership_path, role.definition];
+    let skillReportCurrent = true;
+    if (role.skill_report) {
+      try {
+        const current = await projectSkills({ repository: root, command: 'skills status', roles: role.id, manifestPath: state.manifest_path });
+        skillReportCurrent = sha(JSON.stringify({skills: current.skills, local_observations: current.local_observations, limits: current.limits})) === role.skill_report_sha256;
+      } catch { skillReportCurrent = false; }
+    }
+    const receipt = receiptFromThread(result), requiredSources = [state.manifest_path, state.ownership_path, role.definition, ...(role.skill_sources || [])];
     const matches = receipt && receipt.request_id === role.request_id && receipt.role_id === role.id && receipt.role_version === role.version &&
       receipt.source_revision === state.revision && receipt.contract_sha256 === role.contract_sha256 && receipt.ownership_sha256 === state.ownership_sha256 &&
       Array.isArray(receipt.sources_read) && requiredSources.every(path => receipt.sources_read.includes(path)) &&
+      skillReportCurrent && (!role.skill_report || receipt.skill_report_sha256 === role.skill_report_sha256) &&
       ['ready', 'blocked'].includes(receipt.state) && Array.isArray(receipt.blockers) && receipt.blockers.every(item => typeof item === 'string' && item.length <= 1000);
     if (matches && receipt.state === 'ready' && receipt.blockers.length === 0) { role.phase = 'ready'; role.blockers = []; }
     else {
       const finished = ['completed', 'failed', 'interrupted'].includes(result.turns?.[0]?.status);
       role.phase = finished ? 'onboarding_blocked' : 'awaiting_onboarding';
-      role.blockers = matches && receipt.blockers.length ? receipt.blockers.slice(0, 10) : [finished ? 'completed_matching_read_report_receipt_required' : 'matching_read_report_receipt_pending'];
+      role.blockers = !skillReportCurrent ? ['skill_report_changed_since_request'] : matches && receipt.blockers.length ? receipt.blockers.slice(0, 10) : [finished ? 'completed_matching_read_report_receipt_required' : 'matching_read_report_receipt_pending'];
     }
   }
   state.pending_action = null;

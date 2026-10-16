@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { resolve, join } from 'node:path';
 import { IncError, requireInput as check } from './errors.mjs';
 import { validateOwnership } from './ownership.mjs';
+import { validateSkillSets } from './skill-catalog.mjs';
 
 const limit = 256 * 1024;
 const identifier = /^[a-z][a-z0-9-]{0,95}$/;
@@ -117,7 +118,8 @@ export async function inspectDefinition(repository, manifestPath = 'company/comp
     'invalid_roles', 'roles must contain between 1 and 100 role definitions.');
   const ids = new Set(), paths = new Set(), roles = [];
   for (const role of manifest.roles) {
-    fields(role, ['id', 'version', 'definition'], 'role');
+    fields(role, ['id', 'version', 'definition', 'skill_sets'], 'role');
+    const skillSets = validateSkillSets(role.skill_sets);
     check(typeof role.id === 'string' && identifier.test(role.id), 'invalid_identifier', 'Each role ID must be a stable lowercase identifier.');
     check(!ids.has(role.id), 'duplicate_role', `Duplicate role ID: ${role.id}.`);
     ids.add(role.id);
@@ -131,7 +133,7 @@ export async function inspectDefinition(repository, manifestPath = 'company/comp
       'contract_id_mismatch', `Contract ${role.definition} must declare Role ID: \`${role.id}\` exactly once.`, { file: role.definition });
     check(declaredVersions.length === 1 && declaredVersions[0].trim() === `Role version: ${role.version}`,
       'contract_version_mismatch', `Contract ${role.definition} must declare Role version: ${role.version} exactly once.`, { file: role.definition });
-    roles.push({ id: role.id, version: role.version, definition: role.definition, sha256: contract.sha256, text: contract.text });
+    roles.push({ id: role.id, version: role.version, definition: role.definition, sha256: contract.sha256, text: contract.text, skill_sets: skillSets });
   }
   check(ids.has(manifest.coordinator_role), 'missing_coordinator', 'coordinator_role must reference a declared role.');
   const shared = [];
