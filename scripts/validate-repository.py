@@ -40,8 +40,9 @@ def document(path):
 
 
 def main():
-    from research_pack import verify as verify_research
-    research = verify_research(ROOT)
+    from skill_packs import verify as verify_packs
+    packs = verify_packs(ROOT)
+    research = packs['research-core']
     for path in ("README.md", "AGENTS.md", "LICENSE", "CONTRIBUTING.md",
                  "SECURITY.md", "SUPPORT.md", "CODE_OF_CONDUCT.md",
                  "THIRD_PARTY_NOTICES.md", ".github/CODEOWNERS"):
@@ -148,7 +149,7 @@ def main():
           f"24 acceptance scenarios, logo provenance, and Messenger "
           f"{dep['plugin_version']} ({dep['commit'][:12]}).")
     print("Foundation checks only; run MVP command/package checks separately. Advanced managed lifecycle remains future work.")
-    print(f"Research-core: {len(research['selected_skills'])} selected skills; {research['file_count']} composed files match the immutable source. No API or native discovery certification.")
+    print(f"Skill packs: {', '.join(sorted(packs))}; composed files match reviewed immutable sources. No API, UI or review-quality certification.")
 
 
 if __name__ == "__main__":

@@ -20,11 +20,11 @@ JSON is written to stdout. Exit codes: `0` for a returned command result, `2` fo
 `definition_valid` means the [supported local checks](definition-profile.md) passed. Legacy `status` describes the future advanced managed-lifecycle dimensions and points to MVP commands; `bootstrap status` reads the private sequential record with as-of, non-live-rechecked evidence. Exact native identity/project/cwd and completed matching role receipts are separate readiness dimensions. Unknown does not imply absence, and no single `connected: true` field is emitted.
 
 `--service-report` accepts a small non-secret JSON observation for planning. It is always caller-reported and unverified; see [boundaries](../../setup-paprika-inc/references/boundaries.md). Do not send credentials, tokens, native IDs or message histories to this helper.
-# Research-core commands
+# Optional skill-pack commands
 
 `skills plan`, `skills install`, and `skills status` use `--repo <Git-project-root>`
 and the manifest's selected skill sets. `--roles <role-ids>` narrows manifest
-selection; `--skill-set research-core` explicitly selects the one bundled set.
+selection; `--skill-set research-core`, `--skill-set engineering-core`, or the comma-separated union explicitly selects the bounded bundled sets.
 Only install writes project files and private progress. See the
 [research workflow](../../setup-paprika-inc/references/research-core.md) for conflict,
 resume, portability and capability semantics. No upstream plugin is installed.

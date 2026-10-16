@@ -12,8 +12,8 @@ The supported configuration is `topology: single_host`, `runtime: codex_local`, 
 
 Digests identify exact file bytes and the sorted file-hash inventory, scoped to working-tree inputs. They do not prove a reviewed Git revision, comprehension, authenticity, permissions, or semantic ownership consistency. CRLF is normalized only for parsing; hashes retain the original bytes. Review ambiguous/overlapping ownership before future apply. Prose is inspected as data, never used as an executable policy loader.
 
-Roles may optionally declare `skill_sets: ["research-core"]` or `[]`. Omission is
+Roles may optionally declare `skill_sets` with `research-core`, `engineering-core`, both, or neither. Omission is
 backward-compatible. Unknown, duplicate or nonarray selections are invalid. This
 reference selects reviewed procedures, not tools, access or account installation.
 Use the [research workflow](../../setup-paprika-inc/references/research-core.md)
-for explicit project-local materialization and separate capability reporting.
+or [engineering workflow](../../setup-paprika-inc/references/engineering-core.md) for explicit project-local materialization and separate capability reporting.

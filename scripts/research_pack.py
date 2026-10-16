@@ -149,10 +149,13 @@ def verify(repository):
     expected = compose(repository)
     plugin = repository / 'plugins/paprika-inc'
     actual = set()
-    for path in (plugin / 'runtime/skill-packs').rglob('*'):
+    for path in (plugin / 'runtime/skill-packs/research-core').rglob('*'):
         require(not path.is_symlink(), 'Composed research resources cannot be symlinks')
         if path.is_file():
             actual.add(path.relative_to(plugin).as_posix())
+    catalog_path = 'runtime/skill-packs/catalog.json'
+    catalog = json.loads((plugin / catalog_path).read_bytes())
+    require(catalog.get('schema_version') == 1 and catalog.get('sets', {}).get('research-core') == json.loads(expected.pop(catalog_path))['sets']['research-core'], 'Research catalog differs from selected source')
     require(actual == set(expected), 'Composed research inventory differs from the selected source')
     for path, data in expected.items():
         require((plugin / path).read_bytes() == data, 'Scientific composed resource/source mismatch: ' + path)
@@ -166,10 +169,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     repository = Path(__file__).resolve().parents[1]
     if args.write:
-        verify_source(repository)
-        for path, data in compose(repository).items():
-            target = repository / 'plugins/paprika-inc' / path
-            target.parent.mkdir(parents=True, exist_ok=True)
-            require(not target.is_symlink(), 'Refusing composed target symlink')
-            target.write_bytes(data)
-    print(json.dumps(verify(repository), sort_keys=True))
+        from skill_packs import write
+        print(json.dumps(write(repository), sort_keys=True))
+    else:
+        print(json.dumps(verify(repository), sort_keys=True))

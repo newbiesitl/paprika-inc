@@ -20,3 +20,7 @@ and scientific-critical-thinking are selected. Their original license declaratio
 and exact LICENSE.upstream.md files are preserved under runtime/skill-packs/.
 The internal pack.json records original/emitted hashes and the documented Inc
 portability prelude and companion. No upstream plugin or full catalog is exported.
+
+## Optional engineering-core
+
+Selected review sections come from DietrichGebert/ponytail at commit 742e0abae1501e12d1254a81d05f16bba10d08c1, MIT, Copyright (c) 2026 DietrichGebert. The exact notice accompanies each generated skill. Original Paprika guidance adapts ideas from multica-ai/andrej-karpathy-skills at 2c606141936f1eeef17fa3043a72095b4765b9c2 and Ponytail; Karpathy source prose is not redistributed. The pack records sources, selections and transformations.

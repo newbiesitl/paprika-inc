@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "path": "docs/research/",
+      "owner_role": "scientific-researcher",
+      "reviewer_roles": [
+        "chief-architect"
+      ]
+    },
+    {
+      "path": "docs/qa/",
+      "owner_role": "qa",
+      "reviewer_roles": [
+        "chief-architect"
+      ]
+    }
+  ]
+}

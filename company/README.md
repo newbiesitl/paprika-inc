@@ -1,8 +1,8 @@
 # The company developing Paprika Inc
 
-This is the portable definition of Paprika Inc's own development team. It is one consumer of the future company engine, which must also work with other repositories and rosters. The engine must not hard-code these five roles.
+This is the portable definition of Paprika Inc's own development team. It is one consumer of the future company engine, which must also work with other repositories and rosters. The engine must not hard-code this roster.
 
-**Definition status: bootstrap candidate, version 0.1.0.** These files create no live agents, perform no onboarding, and do not replace existing human-assigned chat responsibilities. Runtime lifecycle enforcement is not implemented.
+**Definition status: bootstrap candidate, version 0.3.0.** These files create no live agents, perform no onboarding, and do not replace existing human-assigned chat responsibilities. Runtime lifecycle enforcement is not implemented.
 
 | Stable role ID | Contract | Primary outcome |
 | --- | --- | --- |
@@ -11,6 +11,8 @@ This is the portable definition of Paprika Inc's own development team. It is one
 | `backend-dev` | [Backend Dev](roles/backend-dev/agent.md) | Reliable company engine, host adapters, and service integration |
 | `frontend-dev` | [Frontend Dev](roles/frontend-dev/agent.md) | Clear setup, status, and recovery interactions |
 | `data-engineer` | [Data Engineer](roles/data-engineer/agent.md) | Durable contracts, assignments, knowledge, and migration integrity |
+| `scientific-researcher` | [Scientific Researcher](roles/scientific-researcher/agent.md) | Traceable research and evidence appraisal |
+| `qa` | [QA Engineer](roles/qa/agent.md) | Independent validation and release-readiness evidence |
 
 [company.json](company.json) is the machine-readable index; individual `agent.md` files are the canonical job descriptions. [The constitution](CONSTITUTION.md) defines shared boundaries. Assignment ownership belongs to a logical role, not a machine or native chat ID.
 
