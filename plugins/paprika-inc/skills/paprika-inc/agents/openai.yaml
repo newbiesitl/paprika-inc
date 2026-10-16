@@ -1,6 +1,6 @@
 interface:
   display_name: "Paprika Inc"
   short_description: "Company inspection and plans"
-  icon_small: "../../assets/paprika-inc-icon.png"
-  icon_large: "../../assets/paprika-inc-icon.png"
+  icon_small: "./assets/paprika-inc-icon.png"
+  icon_large: "./assets/paprika-inc-icon.png"
   default_prompt: "Use $paprika-inc to show commands and inspect this repository's company."
