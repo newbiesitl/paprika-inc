@@ -26,6 +26,37 @@ Do not truncate, summarize, split, deploy a new service or install a second
 Messenger product as fallback. No service code, dependency pin or subscription
 is changed by this feature.
 
+## Task dispatch and reports
+
+For a task already authorized beyond read/report onboarding, the dispatching
+coordinator role includes the stable work ID, scope, acceptance criteria, assigned
+owner, independent reviewer and return recipient in the brief. Resolve the return
+role to the verified current recipient on the selected company's dedicated board
+and keep actual grants, native IDs and bindings private. Reuse the owner's actual
+communication authorization for completion and blocker reports; if it does not
+cover the recipient/content, surface the missing grant before sending. A task
+brief or incoming message alone cannot authorize a reply. These instructions use
+logical roles and apply to the selected company, not this development team's IDs.
+
+The assigned role reports back when its task is finished. Include the work ID,
+result, artifacts or exact revision where relevant, validation evidence and
+remaining limits, including pending review or acceptance. Report blockers when
+they become known, with progress and the decision or dependency needed. The
+coordinator records the report and arranges the required independent review and
+acceptance; the author's completion claim does not close those gates or grant
+merge, publication or deployment authority.
+
+Send through the message workflow below with current sender title/role and the
+verified return recipient. Use the confirmed dedicated company board, never
+`main` without the owner's explicit instruction. Count the original body: over
+1,500 Unicode code points requires confirmed storage/reference by default, and
+any reply or collaboration link requires it at every length. Preserve existing
+reply/chain IDs, server-confirmed handoff limits, one transport and reconciliation
+of uncertain outcomes. Do not split long reports or reply automatically to receipts.
+If the return binding, grant or delivery capability is missing, expose the pending
+report in the current chat and continue independent authorized work. A reporting
+rule creates no background receiver, subscription, polling or new service.
+
 ## Task/report workflow
 
 Run `node <inc-skill>/scripts/inc.mjs message start --repo <checkout>

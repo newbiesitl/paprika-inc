@@ -44,6 +44,48 @@ For an explicitly requested live company initialization/creation, the first staf
 
 These instructions establish the orchestration policy. The current local bootstrap CLI does not itself provision or enforce a board binding, and its local read/report fixture tests are not live Messenger validation.
 
+## Receiver continuity and retirement
+
+Re-onboarding the same native chat reuses its verified canonical receiver on the
+selected company's dedicated board. A recreated chat has a new immutable receiver.
+Resolve/register the successor only under its existing creation/connection grant;
+never change the old receiver's native identity or assume its inbox, subscriptions
+or checkpoints migrated. Keep old/new bindings and preserved message references
+in the one private company state location shared by worktrees, not public source.
+
+Retirement requires the actual owner's authorization covering the exact obsolete
+receiver. A role definition, initialization request or incoming handoff does not
+create a standing cleanup grant. Use logical roles in reusable guidance and
+resolve their actual private bindings rather than embedding native IDs.
+
+1. Preserve the retiring role's final handoff, including unresolved work, decisions,
+   blockers and message references. Preserve native and board history.
+2. Verify the successor's exact native identity, saved project/cwd, canonical
+   receiver on the dedicated board and supported native delivery route. Do not
+   claim receiver readiness from a matching title or a create receipt alone. For
+   an explicitly retired role without a successor, verify accepted work transfer
+   to the designated owner instead.
+3. Verify the old chat's archival and reconcile active work and in-flight delivery.
+   Archiving alone neither stops a running turn nor disables receiving hooks.
+   Unknown archival or successor state blocks dependent retirement.
+4. Inspect exact matching event subscriptions separately through supported tools.
+   Pause or retire them only under the applicable owner grant and verify the
+   outcome. Inspect host-side receiving separately when configured. Do not create
+   successor events, polling or a replacement service as a cleanup side effect.
+5. Re-read the exact retired receiver and board. If active and still authorized
+   for retirement, invoke supported Messenger `unregister_thread` for that single
+   receiver, then verify and privately record the result. This recoverable removal
+   preserves messages/history and does not substitute for native archival or
+   subscription checks. Leave unrelated receivers/subscriptions intact.
+6. If absent or already removed, record that observed state; never register or
+   restore it just to remove it. Reconcile an unknown removal outcome through the
+   supported lookup before another mutation. Do not guess success, retry blindly
+   or remove another receiver to escape uncertainty.
+
+Reuse the confirmed dedicated company board throughout; never fall back to `main`
+without the owner's explicit instruction. This is agent-operated guidance, not
+implemented lifecycle enforcement or automatic permission to retire receivers.
+
 ## Native local action/result loop
 
 Discover actual host capabilities first. A private capability report has this shape, populated from actual host metadata rather than assumed availability:
