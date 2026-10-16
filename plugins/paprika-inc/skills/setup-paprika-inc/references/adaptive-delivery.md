@@ -67,6 +67,16 @@ file. Start freezes the body/policy but performs no external write.
 
 Run `message next --repo <checkout> --operation <request_id>
 --delivery-context <private-json> --message-context <observations-json>`.
+
+Immediately before each `message next` that prepares a new native action, refresh
+actual sender metadata and the other relevant observations using
+[native message presentation](native-message-presentation.md). Refresh again
+before preparing the native notice after storage or long-running build/review
+checks; an earlier storage snapshot is not automatically current. Re-read the
+actual sources, never just restamp cached JSON. Preserve the five-minute validity
+window and unavailable-metadata fallback. Once an action is frozen or submitted,
+do not rewrite or resend it for a newer title or badge; reconcile uncertainty
+through the existing workflow.
 The delivery context contains:
 
 - `deployment`, `board`, and resolved active `sender`/`recipient` objects with

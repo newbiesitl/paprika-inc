@@ -37,6 +37,31 @@ and pass model/thinking in native creation. Defaults remain defaults when no cho
 was made. Do not claim a template's preference is applied by the MVP helper: it
 does not yet read model profiles. Do not silently substitute unsupported models.
 
+## Delegate reviewed merges
+
+During role discussion, recommend delegating reviewed PR merges to Release
+Engineer after independent QA and relevant architect/domain acceptance. Obtain
+or reuse the selected owner's actual scoped merge grant and record it privately
+with repository, scope, conditions and any explicitly covered existing PR-only
+maintainer exception. Another company's owner can choose a different policy;
+templates, role names and skill text never grant permissions themselves.
+
+Before each authorized merge, verify exact-head acceptance, required passing CI,
+current base, resolved review conversations, dependency order and permitted merge
+method. Reconcile updated branches with reviewed content and request new review
+for material changes. Reuse an unchanged standing grant without repeated owner
+confirmation. Keep independent review with other roles; the merging role cannot
+self-approve or claim a different GitHub identity from its actual credentials.
+
+If an author cannot formally approve their own PR, report that GitHub gate.
+Use an existing PR-only maintainer exception only when the owner's actual grant
+explicitly covers that exception and purpose, preserving every other protection.
+Do not create exceptions, weaken rules, force push, push directly to a protected
+branch or evade host approval denials. Surface the denial for owner decision and
+supported reconciliation; resolve uncertain outcomes before another mutation.
+Merge delegation alone authorizes no tagging, publication, installation, service
+deployment or changes to an existing App/board. Keep those grants separate.
+
 ## Researcher model recommendation
 
 For researcher roles, recommend `gpt-6-astra` with `thinking: xhigh` (extra-high
