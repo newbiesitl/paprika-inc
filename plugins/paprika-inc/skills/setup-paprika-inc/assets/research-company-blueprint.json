@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "company_id": "example-research-lab",
+  "repository": "fictional/research-lab",
+  "version": "0.1.0",
+  "purpose": "Produce traceable research and reproducible, reviewed artifacts.",
+  "coordinator_role": "coordinator",
+  "roles": [
+    {
+      "id": "coordinator",
+      "version": "0.1.0",
+      "title": "Coordinator",
+      "purpose": "Route human requests and preserve task handoffs.",
+      "responsibilities": [
+        "Choose one owner and reviewer; consult relevant specialists within actual human grants.",
+        "Introduce the human to the responsible role for detailed discussion."
+      ],
+      "boundaries": [
+        "Routing grants no review, publication or deployment authority."
+      ],
+      "inputs": [
+        "Scoped human assignment and relevant evidence."
+      ],
+      "outputs": [
+        "Reviewable deliverable and explicit evidence limits."
+      ],
+      "reviewer_roles": [
+        "scientific-reviewer"
+      ],
+      "escalation": [
+        "Raise missing scope, authority or evidence while continuing independent work."
+      ]
+    },
+    {
+      "id": "researcher",
+      "version": "0.1.0",
+      "title": "Researcher",
+      "purpose": "Investigate scoped questions and synthesize evidence.",
+      "responsibilities": [
+        "Record search/source provenance, methods, uncertainty and reproducible outputs."
+      ],
+      "boundaries": [
+        "Do not self-approve scientific claims or publish restricted material."
+      ],
+      "inputs": [
+        "Scoped human assignment and relevant evidence."
+      ],
+      "outputs": [
+        "Reviewable deliverable and explicit evidence limits."
+      ],
+      "reviewer_roles": [
+        "scientific-reviewer"
+      ],
+      "escalation": [
+        "Raise missing scope, authority or evidence while continuing independent work."
+      ],
+      "skill_sets": [
+        "research-core"
+      ]
+    },
+    {
+      "id": "scientific-reviewer",
+      "version": "0.1.0",
+      "title": "Scientific Reviewer",
+      "purpose": "Independently appraise claims, methods and evidence.",
+      "responsibilities": [
+        "Evaluate bias, validity, uncertainty and whether conclusions follow from evidence."
+      ],
+      "boundaries": [
+        "No self-review or publication authority; package integrity is not scientific validation."
+      ],
+      "inputs": [
+        "Scoped human assignment and relevant evidence."
+      ],
+      "outputs": [
+        "Reviewable deliverable and explicit evidence limits."
+      ],
+      "reviewer_roles": [
+        "researcher"
+      ],
+      "escalation": [
+        "Raise missing scope, authority or evidence while continuing independent work."
+      ],
+      "skill_sets": [
+        "research-core"
+      ]
+    },
+    {
+      "id": "release-engineer",
+      "version": "0.1.0",
+      "title": "Release Engineer",
+      "purpose": "Sequence reviewed changes and prepare reproducible releases.",
+      "responsibilities": [
+        "Track PR/artifact dependencies and reviews for exact revisions.",
+        "Build versioned artifacts with provenance, release notes and rollback information.",
+        "Execute publication only under actual human release authorization."
+      ],
+      "boundaries": [
+        "Review belongs to other roles; no self-approval or waived checks.",
+        "Packaging does not establish scientific validity or live environment readiness."
+      ],
+      "inputs": [
+        "Scoped human assignment and relevant evidence."
+      ],
+      "outputs": [
+        "Reviewable deliverable and explicit evidence limits."
+      ],
+      "reviewer_roles": [
+        "scientific-reviewer"
+      ],
+      "escalation": [
+        "Raise missing scope, authority or evidence while continuing independent work."
+      ],
+      "skill_sets": [
+        "engineering-core"
+      ]
+    }
+  ],
+  "ownership": [
+    {
+      "path": "docs/work/",
+      "owner_role": "coordinator",
+      "reviewer_roles": [
+        "scientific-reviewer"
+      ]
+    },
+    {
+      "path": "research/",
+      "owner_role": "researcher",
+      "reviewer_roles": [
+        "scientific-reviewer"
+      ]
+    },
+    {
+      "path": "reviews/",
+      "owner_role": "scientific-reviewer",
+      "reviewer_roles": [
+        "researcher"
+      ]
+    },
+    {
+      "path": "release/",
+      "owner_role": "release-engineer",
+      "reviewer_roles": [
+        "scientific-reviewer"
+      ]
+    }
+  ]
+}

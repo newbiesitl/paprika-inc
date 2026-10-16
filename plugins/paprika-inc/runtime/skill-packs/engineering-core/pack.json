@@ -1,0 +1,74 @@
+{
+  "excluded": [
+    "upstream plugin manifests",
+    "upstream AGENTS.md",
+    "session-wide personas",
+    "lifecycle hooks",
+    "automatic command routing",
+    "Ponytail lite/full/ultra modes",
+    "mandatory output slogans",
+    "blanket stop-and-ask rule",
+    "Karpathy verbatim redistribution"
+  ],
+  "files": [
+    {
+      "origin": "skill-packs/engineering-core/paprika-code-review/INC-PORTABILITY.md",
+      "path": "paprika-code-review/INC-PORTABILITY.md",
+      "sha256": "f454a4fa67507c57302df40eceb82a7a06f3ace6554598a8d6e3d27c18db989e",
+      "transformation": "paprika-authored"
+    },
+    {
+      "origin": "ponytail:LICENSE",
+      "path": "paprika-code-review/LICENSE.upstream.md",
+      "sha256": "fb1bc6909ac3ef82d5c22106e32ef682b0cff66788fa915fb9b53b15c9d2f3ab",
+      "transformation": "exact-license-copy"
+    },
+    {
+      "origin": "skill-packs/engineering-core/paprika-code-review/SKILL.md.in",
+      "path": "paprika-code-review/SKILL.md",
+      "sha256": "55bc1d7da8e7ff1b45fecfdec9ee35e54e796f888bd0e2fdd18f7a981a2ae2ea",
+      "transformation": "paprika-authored"
+    },
+    {
+      "origin": "skill-packs/engineering-core.json",
+      "path": "paprika-code-review/references/adoption.json",
+      "sha256": "1c3649d4d9e07620fd0c267293b0dee7f3fb84c2aafce1536ea1cfa7c7843269",
+      "transformation": "exact-adoption-record"
+    },
+    {
+      "origin": "ponytail:skills/ponytail-review/SKILL.md",
+      "path": "paprika-code-review/references/connected-review.md",
+      "sha256": "3551b8347d5e53f570bde3afbd3abd16f544f0a851a34318f90294d26b4f7867",
+      "transformation": "complete-selected-h2-sections-v1"
+    },
+    {
+      "origin": "skill-packs/engineering-core/paprika-code-review/references/engineering-guidance.md",
+      "path": "paprika-code-review/references/engineering-guidance.md",
+      "sha256": "2264c5f724072ae5a68615d0438876efb34ec1905e55d56dc783af750163fc8d",
+      "transformation": "paprika-authored"
+    }
+  ],
+  "id": "engineering-core",
+  "requirements": {
+    "executables": [],
+    "hooks": false,
+    "network": false
+  },
+  "schema_version": 1,
+  "selection_sha256": "1c3649d4d9e07620fd0c267293b0dee7f3fb84c2aafce1536ea1cfa7c7843269",
+  "skills": [
+    "paprika-code-review"
+  ],
+  "sources": {
+    "karpathy_guidelines": {
+      "commit": "2c606141936f1eeef17fa3043a72095b4765b9c2",
+      "path": "vendor/karpathy-guidelines",
+      "repository": "https://github.com/multica-ai/andrej-karpathy-skills.git"
+    },
+    "ponytail": {
+      "commit": "742e0abae1501e12d1254a81d05f16bba10d08c1",
+      "path": "vendor/ponytail",
+      "repository": "https://github.com/DietrichGebert/ponytail.git"
+    }
+  }
+}

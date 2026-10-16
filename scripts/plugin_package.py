@@ -45,6 +45,10 @@ PACKAGE_FILES = frozenset({
     'skills/setup-paprika-inc/assets/example-blueprint.json',
     'skills/setup-paprika-inc/assets/scientific-blueprint.json',
     'skills/setup-paprika-inc/references/research-core.md',
+    'skills/setup-paprika-inc/references/engineering-core.md',
+    'skills/setup-paprika-inc/references/role-recommendations.md',
+    'skills/setup-paprika-inc/assets/it-company-blueprint.json',
+    'skills/setup-paprika-inc/assets/research-company-blueprint.json',
     'skills/setup-paprika-inc/references/native-message-presentation.md',
 })
 PUBLIC_SKILLS = ('paprika-inc', 'setup-paprika-inc')
@@ -135,7 +139,7 @@ def expected_package_files(root):
     catalog = read_json(contained(root, catalog_path))
     manifest_bytes = contained(root, prefix + 'pack.json').read_bytes()
     pack = json.loads(manifest_bytes)
-    require(catalog['schema_version'] == 1 and set(catalog['sets']) == {'research-core'} and
+    require(catalog['schema_version'] == 1 and set(catalog['sets']) == {'research-core', 'engineering-core'} and
             catalog['sets']['research-core'] == {'manifest_sha256': digest(manifest_bytes), 'source_commit': 'a1043ef544e3a100c28e70a736b6cf32554d0677', 'package_version': '2.72.0', 'skills': skills}, 'Invalid research catalog/pin')
     require(pack['schema_version'] == 1 and pack['id'] == 'research-core' and pack['skills'] == skills and
             pack['source'] == {'repository': 'https://github.com/K-Dense-AI/scientific-agent-skills.git', 'commit': 'a1043ef544e3a100c28e70a736b6cf32554d0677', 'package_version': '2.72.0'}, 'Invalid research source/selection')
@@ -151,7 +155,28 @@ def expected_package_files(root):
     for skill in skills:
         for name in ['SKILL.md', 'INC-PORTABILITY.md', 'LICENSE.upstream.md']:
             require(prefix + skill + '/' + name in extra, 'Missing research skill, portability guidance or license')
-    return PACKAGE_FILES | extra | {catalog_path, prefix + 'pack.json'}
+    return PACKAGE_FILES | extra | {catalog_path, prefix + 'pack.json'} | engineering_package_files(root, catalog)
+
+
+def engineering_package_files(root, catalog):
+    prefix = 'runtime/skill-packs/engineering-core/'
+    skills = ['paprika-code-review']
+    sources = {
+        'karpathy_guidelines': {'repository': 'https://github.com/multica-ai/andrej-karpathy-skills.git', 'path': 'vendor/karpathy-guidelines', 'commit': '2c606141936f1eeef17fa3043a72095b4765b9c2'},
+        'ponytail': {'repository': 'https://github.com/DietrichGebert/ponytail.git', 'path': 'vendor/ponytail', 'commit': '742e0abae1501e12d1254a81d05f16bba10d08c1'},
+    }
+    manifest_bytes = contained(root, prefix + 'pack.json').read_bytes()
+    pack = json.loads(manifest_bytes)
+    require(pack['schema_version'] == 1 and pack['id'] == 'engineering-core' and pack['skills'] == skills and pack['sources'] == sources, 'Invalid engineering source/selection')
+    require(catalog['sets']['engineering-core'] == {'manifest_sha256': digest(manifest_bytes), 'source_commits': {key: value['commit'] for key, value in sources.items()}, 'skills': skills}, 'Invalid engineering catalog/pins')
+    selected = {'paprika-code-review/' + name for name in ['SKILL.md', 'INC-PORTABILITY.md', 'LICENSE.upstream.md', 'references/engineering-guidance.md', 'references/connected-review.md', 'references/adoption.json']}
+    require(len(pack['files']) == len(selected) and {file['path'] for file in pack['files']} == selected, 'Unexpected engineering resource inventory')
+    for file in pack['files']:
+        require(digest(contained(root, prefix + file['path']).read_bytes()) == file['sha256'], 'Engineering resource digest mismatch: ' + file['path'])
+    adoption_bytes = contained(root, prefix + 'paprika-code-review/references/adoption.json').read_bytes()
+    adoption = json.loads(adoption_bytes)
+    require(digest(adoption_bytes) == pack['selection_sha256'] and adoption['sources'] == sources and adoption['id'] == 'engineering-core' and adoption['skills'] == skills, 'Engineering adoption record mismatch')
+    return {prefix + path for path in selected} | {prefix + 'pack.json'}
 
 
 def verify_package(root, provenance_required=False):
@@ -255,6 +280,7 @@ def verify_package(root, provenance_required=False):
         require(provenance['files'] == inventory and provenance['payload_sha256'] == digest(json.dumps(inventory, sort_keys=True, separators=(',', ':')).encode()),
                 'Package payload/provenance mismatch')
         require(provenance.get('discovery') == discovery, 'Package discovery inventory/provenance mismatch')
+        require(provenance.get('skill_packs') == read_json(root / 'runtime/skill-packs/catalog.json')['sets'], 'Skill pack provenance mismatch')
         require(provenance.get('research_core') == read_json(root / 'runtime/skill-packs/catalog.json')['sets']['research-core'], 'Research provenance mismatch')
         require(bool(provenance.get('existing_service_binding')) == bound, 'Service binding/provenance mismatch')
         if bound:
@@ -271,8 +297,8 @@ def dependency_inputs(repository):
     # This also checks every emitted byte against the unchanged pinned submodule.
     import sys
     sys.path.insert(0, str(Path(__file__).resolve().parent))
-    from research_pack import verify as verify_research
-    verify_research(repository)
+    from skill_packs import verify as verify_packs
+    verify_packs(repository)
     dep = read_json(repository / 'dependencies.json')['paprika_messenger']
     require(dep['path'] == 'vendor/paprika-messenger' and dep['commit'] == '776efe80eb801ca850b64516c003325833157240' and
             dep['plugin_version'] == '1.6.0' and dep['service_version'] == '0.8.0', 'Skeleton baseline differs from adopted dependency metadata')
@@ -331,6 +357,7 @@ def prepare(repository=ROOT, output=None, service_binding=None):
                   'messenger': {key: dep[key] for key in ['repository', 'tag', 'commit', 'plugin_version', 'service_version']},
                   'components': COMPONENTS, 'files': inventory, 'discovery': verified['discovery'],
                   'research_core': read_json(source / 'runtime/skill-packs/catalog.json')['sets']['research-core'],
+                  'skill_packs': read_json(source / 'runtime/skill-packs/catalog.json')['sets'],
                   'payload_sha256': digest(json.dumps(inventory, sort_keys=True, separators=(',', ':')).encode()), 'existing_service_binding': binding}
     output.mkdir(parents=True, exist_ok=True)
     archive = output / f'{verified["name"]}-{verified["version"]}.zip'

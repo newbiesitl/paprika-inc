@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "company_id": "example-software-studio",
+  "repository": "fictional/software-studio",
+  "version": "0.1.0",
+  "purpose": "Deliver reviewed software through reproducible releases.",
+  "coordinator_role": "coordinator",
+  "roles": [
+    {
+      "id": "coordinator",
+      "version": "0.1.0",
+      "title": "Coordinator",
+      "purpose": "Route human requests and preserve task handoffs.",
+      "responsibilities": [
+        "Choose one owner and reviewer; consult relevant specialists within actual human grants.",
+        "Introduce the human to the responsible role for detailed discussion."
+      ],
+      "boundaries": [
+        "Routing grants no review, publication or deployment authority."
+      ],
+      "inputs": [
+        "Scoped human assignment and relevant evidence."
+      ],
+      "outputs": [
+        "Reviewable deliverable and explicit evidence limits."
+      ],
+      "reviewer_roles": [
+        "architect"
+      ],
+      "escalation": [
+        "Raise missing scope, authority or evidence while continuing independent work."
+      ]
+    },
+    {
+      "id": "architect",
+      "version": "0.1.0",
+      "title": "Architect",
+      "purpose": "Own design and technical acceptance.",
+      "responsibilities": [
+        "Define interfaces and acceptance criteria.",
+        "Review substantive changes independently."
+      ],
+      "boundaries": [
+        "Obtain independent review of own changes."
+      ],
+      "inputs": [
+        "Scoped human assignment and relevant evidence."
+      ],
+      "outputs": [
+        "Reviewable deliverable and explicit evidence limits."
+      ],
+      "reviewer_roles": [
+        "qa"
+      ],
+      "escalation": [
+        "Raise missing scope, authority or evidence while continuing independent work."
+      ],
+      "skill_sets": [
+        "engineering-core"
+      ]
+    },
+    {
+      "id": "developer",
+      "version": "0.1.0",
+      "title": "Developer",
+      "purpose": "Implement the selected software outcome.",
+      "responsibilities": [
+        "Build the scoped behavior with proportionate tests and recovery evidence."
+      ],
+      "boundaries": [
+        "Do not publish or expand scope without authority."
+      ],
+      "inputs": [
+        "Scoped human assignment and relevant evidence."
+      ],
+      "outputs": [
+        "Reviewable deliverable and explicit evidence limits."
+      ],
+      "reviewer_roles": [
+        "architect",
+        "qa"
+      ],
+      "escalation": [
+        "Raise missing scope, authority or evidence while continuing independent work."
+      ],
+      "skill_sets": [
+        "engineering-core"
+      ]
+    },
+    {
+      "id": "qa",
+      "version": "0.1.0",
+      "title": "QA",
+      "purpose": "Provide independent quality evidence.",
+      "responsibilities": [
+        "Trace affected callers, test regressions and report evidence limits."
+      ],
+      "boundaries": [
+        "No self-approval or release authority."
+      ],
+      "inputs": [
+        "Scoped human assignment and relevant evidence."
+      ],
+      "outputs": [
+        "Reviewable deliverable and explicit evidence limits."
+      ],
+      "reviewer_roles": [
+        "architect"
+      ],
+      "escalation": [
+        "Raise missing scope, authority or evidence while continuing independent work."
+      ],
+      "skill_sets": [
+        "engineering-core"
+      ]
+    },
+    {
+      "id": "release-engineer",
+      "version": "0.1.0",
+      "title": "Release Engineer",
+      "purpose": "Sequence reviewed changes and prepare reproducible releases.",
+      "responsibilities": [
+        "Track PR/artifact dependencies and reviews for exact revisions.",
+        "Build versioned artifacts with provenance, release notes and rollback information.",
+        "Execute publication only under actual human release authorization."
+      ],
+      "boundaries": [
+        "Review belongs to other roles; no self-approval or waived checks.",
+        "Packaging does not establish scientific validity or live environment readiness."
+      ],
+      "inputs": [
+        "Scoped human assignment and relevant evidence."
+      ],
+      "outputs": [
+        "Reviewable deliverable and explicit evidence limits."
+      ],
+      "reviewer_roles": [
+        "architect",
+        "qa"
+      ],
+      "escalation": [
+        "Raise missing scope, authority or evidence while continuing independent work."
+      ],
+      "skill_sets": [
+        "engineering-core"
+      ]
+    }
+  ],
+  "ownership": [
+    {
+      "path": "docs/work/",
+      "owner_role": "coordinator",
+      "reviewer_roles": [
+        "architect"
+      ]
+    },
+    {
+      "path": "docs/design/",
+      "owner_role": "architect",
+      "reviewer_roles": [
+        "qa"
+      ]
+    },
+    {
+      "path": "src/",
+      "owner_role": "developer",
+      "reviewer_roles": [
+        "architect",
+        "qa"
+      ]
+    },
+    {
+      "path": "tests/",
+      "owner_role": "qa",
+      "reviewer_roles": [
+        "developer"
+      ]
+    },
+    {
+      "path": "release/",
+      "owner_role": "release-engineer",
+      "reviewer_roles": [
+        "architect",
+        "qa"
+      ]
+    }
+  ]
+}

@@ -7,7 +7,7 @@ import { randomUUID } from 'node:crypto';
 import { inspectDefinition, repositoryRoot } from './definition.mjs';
 import { git } from './checkout.mjs';
 import { IncError, requireInput as check } from './errors.mjs';
-import { researchPack, validateSkillSets, sha } from './skill-catalog.mjs';
+import { skillPack, validateSkillSets, provenance, validProvenance, sameProvenance, sha } from './skill-catalog.mjs';
 
 // These checks are local observations, never authentication or network probes.
 export async function probeCapabilities() {
@@ -29,7 +29,8 @@ export async function probeCapabilities() {
   return { python3: interpreter, executables, credential_presence: credentials, network: 'not_tested', authentication: 'not_tested', full_text_access: 'not_tested', packages_installed: false };
 }
 
-export function capabilityReport(name, probe) {
+export function capabilityReport(name, probe = {}) {
+  if (name === 'paprika-code-review') return [{ id: 'connected_code_review', state: 'guidance_available', network_required: false, execution_tested: false, efficacy: 'not_benchmarked' }];
   const python = minor => Array.isArray(probe.python3?.version) && (probe.python3.version[0] > 3 || probe.python3.version[0] === 3 && probe.python3.version[1] >= minor);
   const local = (id, available) => ({ id, state: available ? 'local_dependencies_present' : 'local_dependency_missing', execution_tested: false });
   const external = (id, available) => ({ ...local(id, available), state: available ? 'external_access_unverified' : 'local_dependency_missing' });
@@ -38,6 +39,7 @@ export function capabilityReport(name, probe) {
   if (name === 'paper-lookup') return [guidance, local('local_parsers', python(11)), external('public_source_retrieval', probe.executables?.curl === true), optional('restricted_full_text')];
   if (name === 'literature-review') return [guidance, local('local_record_processing', python(10)), external('doi_verification', python(10) && probe.python3.requests === true), optional('pdf_export'), optional('paid_ai_figures'), optional('parallel', false)];
   if (name === 'citation-management') return [guidance, local('local_bibtex_formatting', python(9)), external('metadata_search_and_validation', python(9) && probe.python3.requests === true), optional('google_scholar'), optional('parallel', false)];
+  check(name === 'scientific-critical-thinking', 'invalid_skill_pack', 'Unknown capability profile.');
   return [guidance, { id: 'critical_appraisal', state: 'guidance_available', network_required: false }, optional('scientific_schematics', false)];
 }
 
@@ -112,22 +114,24 @@ async function inspect(ctx, pack) {
   for (const name of pack.skills) {
     const path = '.agents/skills/' + name, present = await safePath(ctx.root, path, true), record = ctx.project.skills[name];
     let state = 'not_installed';
-    check(!record || ['pending', 'installed'].includes(record.state) && /^[0-9a-f]{64}$/.test(record.manifest_sha256) && /^[0-9a-f]{40}$/.test(record.source_commit), 'invalid_skill_record', 'Preserve and reconcile an invalid managed skill record.');
+    check(!record || ['pending', 'installed'].includes(record.state) && /^[0-9a-f]{64}$/.test(record.manifest_sha256) && validProvenance(record), 'invalid_skill_record', 'Preserve and reconcile an invalid managed skill record.');
     if (present) {
       if (!record) state = 'unmanaged_conflict';
-      else if (record.manifest_sha256 !== pack.manifest_sha256 || record.source_commit !== pack.source.commit) state = 'managed_version_conflict';
+      else if (record.manifest_sha256 !== pack.manifest_sha256 || !sameProvenance(record, pack)) state = 'managed_version_conflict';
       else state = await identical(join(ctx.root, path), pack.files, name) ? (record.state === 'pending' ? 'recoverable' : 'intact') : 'modified_conflict';
     } else if (record && record.state !== 'pending') state = 'managed_files_missing';
-    result.push({ name, path, state, source_commit: pack.source.commit, manifest_sha256: pack.manifest_sha256, file_count: pack.files.filter(file => file.path.startsWith(name + '/')).length });
+    result.push({ name, path, state, skill_set: pack.id, ...provenance(pack), manifest_sha256: pack.manifest_sha256, file_count: pack.files.filter(file => file.path.startsWith(name + '/')).length });
   }
   return result;
 }
 
 export async function projectSkills(options) {
   const command = options.command || 'skills status', write = command === 'skills install', ctx = await context(options.repository);
-  const sets = await selection(options), pack = sets.length ? await researchPack() : null;
-  const probe = options.probe || (pack ? await probeCapabilities() : null);
-  let entries = pack ? await inspect(ctx, pack) : [];
+  const sets = await selection(options), packs = await Promise.all(sets.map(skillPack));
+  check(new Set(packs.flatMap(pack => pack.skills)).size === packs.reduce((sum, pack) => sum + pack.skills.length, 0), 'invalid_skill_pack', 'Selected packs contain duplicate skill names.');
+  const probe = options.probe || (sets.includes('research-core') ? await probeCapabilities() : null);
+  const inspectAll = async () => (await Promise.all(packs.map(pack => inspect(ctx, pack)))).flat();
+  let entries = await inspectAll();
   const conflicts = entries.filter(entry => !['not_installed', 'intact', 'recoverable'].includes(entry.state));
   check(!write || !conflicts.length, 'skill_install_conflict', 'Resolve existing unmanaged, missing or modified project skills before installation. No files were replaced.', { skills: conflicts });
   const completed = [];
@@ -138,12 +142,13 @@ export async function projectSkills(options) {
     try {
       // Reload after the lock; do not overwrite a concurrent worktree's journal.
       Object.assign(ctx, await context(options.repository));
-      entries = await inspect(ctx, pack);
+      entries = await inspectAll();
       check(entries.every(entry => ['not_installed', 'intact', 'recoverable'].includes(entry.state)), 'skill_install_conflict', 'Project skill files changed after planning.');
       for (const entry of entries) {
+        const pack = packs.find(pack => pack.id === entry.skill_set);
         if (entry.state === 'intact') continue;
         if (entry.state === 'recoverable') { ctx.project.skills[entry.name].state = 'installed'; await save(ctx); completed.push(entry.name); continue; }
-        ctx.project.skills[entry.name] = { state: 'pending', source_commit: pack.source.commit, manifest_sha256: pack.manifest_sha256,
+        ctx.project.skills[entry.name] = { state: 'pending', ...provenance(pack), manifest_sha256: pack.manifest_sha256,
           files: pack.files.filter(file => file.path.startsWith(entry.name + '/')).map(({path, sha256}) => ({path, sha256})) };
         await save(ctx); // Intent precedes visible files; interrupted installs can resume without adopting unmanaged files.
         await safePath(ctx.root, '.agents/skills', true);
@@ -164,10 +169,10 @@ export async function projectSkills(options) {
     } catch (error) {
       throw new IncError('partial_skill_install', 'Installation stopped. Earlier managed successes are preserved; inspect skills status and resume after resolving the reported failure.', { completed_skills: completed, cause: error.code || 'io_failure' });
     } finally { await rm(lock, { recursive: true }); }
-    entries = await inspect(ctx, pack);
+    entries = await inspectAll();
   }
   return { ok: !conflicts.length, command, read_only: !write, applied: write && completed.length > 0, skill_sets: sets,
-    skills: entries.map(entry => ({ ...entry, capabilities: capabilityReport(entry.name, probe) })), local_observations: probe,
+    skills: entries.map(entry => ({ ...entry, capabilities: capabilityReport(entry.name, probe || {}) })), local_observations: probe,
     no_op: write && completed.length === 0, scope: 'selected_git_project_only', source_fallback: false,
-    limits: ['No host skill discovery, API access, authentication or scientific correctness verified.', 'Optional paid services, PDF export, figures and Scholar are disabled.', 'Project discovery is shared; role references are not access controls.', 'Cooperating installs serialize; external concurrent file changes require manual reconciliation.'] };
+    limits: ['No host skill discovery, API access, authentication, scientific correctness or review quality verified.', 'Optional paid services, PDF export, figures and Scholar are disabled.', 'Project discovery is shared; role references are not access controls.', 'Cooperating installs serialize; external concurrent file changes require manual reconciliation.'] };
 }
