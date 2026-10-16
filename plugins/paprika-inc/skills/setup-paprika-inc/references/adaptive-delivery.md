@@ -13,7 +13,11 @@ is neither UTF-8 bytes, UTF-16 length nor grapheme count. At the default limit
 of **1,500**, bodies of 1,499 and 1,500 may be inline; 1,501 requires reference
 delivery. `delivery_policy: {short_message_limit: 1500, force_reference: false}`
 configures the limit (1..15000) or forces reference even for a short body. There
-is no force-inline bypass. The selected policy freezes with the original body.
+is no force-inline bypass. Any supplied `collaboration_id` or `reply_to_id`
+requires storage/reference at every length, including a short report such as
+`Done.`. This preserves the stored parent and server chain counting/stop checks;
+raising the short limit does not bypass this rule. Omit unused optional IDs
+rather than passing null/invalid identifiers. The selected policy freezes with the original body.
 Never divide a long task into native messages to evade reference delivery.
 
 The existing service accepts at most 16,000 UTF-8 bytes. Larger payloads remain
@@ -60,6 +64,11 @@ a confirmed ID/timestamp, intended receiver, author, intact body and reply
 correlation permit the next native notification. Its content is branding,
 observed sender title/role, canonical IDs/labels, board/message ID and minimal
 retrieval instructions; it contains no body, excerpt, topic or attachments.
+The confirmation must also retain any supplied collaboration ID. Linked
+collaboration posts require valid server-confirmed `handoff_depth` and
+`handoff_limit`; notices and send results display that Handoff N/M, never counts
+from sender metadata or prose. Reply/chain IDs in the notice come from the
+confirmed message. Rejected, exhausted or stopped posts expose no native action.
 Native submission confirms neither recipient retrieval nor acceptance.
 
 Use `message status` for routing/status without printing the private body.
@@ -92,6 +101,10 @@ without `content`. Absent or truncated history stays blocked.
 Do not infer non-submission from a missing receipt or retry on another host.
 An abandoned lock or conflicting/corrupt journal requires explicit reconciliation.
 There is no native retry from uncertainty or automatic stale-lock takeover.
+Legacy inline-linked journals stay frozen and blocked as
+`linked_operation_unreconciled`. Reconcile any previous submission before an
+explicit storage-first replacement; the helper never rewrites a pending mode,
+drops IDs or resends to escape uncertainty.
 
 ## Create/onboard
 

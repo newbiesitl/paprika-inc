@@ -7,13 +7,16 @@ import {resolvePresentation, presentMessage} from './message-presentation.mjs';
 
 const hash = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const validId = value => typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9_.:-]{0,95}$/.test(value);
-export function chooseDelivery(body, policy = {}) {
+const linkedMetadata = input => ['collaboration_id','reply_to_id'].some(key=>input?.[key] !== undefined);
+export function chooseDelivery(body, policy = {}, linkage = {}) {
   check(typeof body === 'string' && body.trim() && !body.includes('\0'), 'invalid_message', 'Use the original nonempty text body.');
   const {short_message_limit = 1500, force_reference = false} = policy;
   check(Number.isSafeInteger(short_message_limit) && short_message_limit >= 1 && short_message_limit <= 15000 && typeof force_reference === 'boolean'
     && Object.keys(policy).every(k => ['short_message_limit','force_reference'].includes(k)), 'invalid_delivery_policy', 'Use short_message_limit (1..15000 Unicode code points) and optional force_reference only.');
+  const linked=linkedMetadata(linkage);
+  for(const key of ['collaboration_id','reply_to_id']) if(linkage[key] !== undefined) check(validId(linkage[key]),'invalid_message','Use a confirmed '+key);
   const code_points = [...body].length;
-  return {mode:force_reference || code_points > short_message_limit ? 'reference' : 'inline', code_points, short_message_limit, force_reference};
+  return {mode:linked || force_reference || code_points > short_message_limit ? 'reference' : 'inline', code_points, short_message_limit, force_reference, ...(linked ? {reference_reason:'linked_metadata'} : {})};
 }
 export function verifyReference({board, messageId, receiverId, result}) {
   const message = result?.message;
@@ -46,10 +49,11 @@ async function update(repository, operationId, operation) {
 }
 const summary = state => ({ok:state.phase === 'submitted' || state.phase === 'stored_events_only', status:state.phase,
   operation_id:state.id, delivery:state.policy, message_id:state.message_id ?? null, transport:state.transport ?? null,
-  native_submission:state.phase === 'submitted' ? 'submitted' : 'unconfirmed', recipient_fetch:'unverified'});
+  native_submission:state.phase === 'submitted' ? 'submitted' : 'unconfirmed', recipient_fetch:'unverified',
+  ...(state.handoff ? {handoff_depth:state.handoff.depth,handoff_limit:state.handoff.limit} : {})});
 export async function startOutbound({repository,deliveryInput},env=process.env) {
   check(deliveryInput && validId(deliveryInput.request_id),'invalid_message','Supply a private delivery input with request_id and body.');
-  const policy=chooseDelivery(deliveryInput.body,deliveryInput.delivery_policy);
+  const policy=chooseDelivery(deliveryInput.body,deliveryInput.delivery_policy,deliveryInput);
   const input=structuredClone(deliveryInput), fingerprint=hash(input), id=input.request_id;
   check(typeof env.CODEX_THREAD_ID === 'string' && env.CODEX_THREAD_ID,'sender_unavailable','Native current chat metadata is required.');
   return update(repository,id,state=>{
@@ -73,7 +77,8 @@ function freezeRoute(state, context, messageContext) {
 }
 function wrapped(state,body) {
   const {sender,recipient}=state.route;
-  return presentMessage(body,state.presentation,{senderId:sender.id,registeredLabel:sender.label,recipientLabel:recipient.label});
+  return presentMessage(body,state.presentation,{senderId:sender.id,registeredLabel:sender.label,recipientLabel:recipient.label,
+    handoffDepth:state.handoff?.depth,handoffLimit:state.handoff?.limit});
 }
 export async function nextOutbound({repository,operationId,deliveryContext,messageContext,retryStorage=false},env=process.env) {
   return update(repository,operationId,state=>{
@@ -81,6 +86,7 @@ export async function nextOutbound({repository,operationId,deliveryContext,messa
     check(env.CODEX_THREAD_ID === state.sender_thread_id,'sender_mismatch','Resume this operation in its original sending chat.');
     const blocked=(status,detail)=>({next:state,output:{...summary(state),ok:false,status,detail}});
     if(['submitted','stored_events_only'].includes(state.phase)) return {output:summary(state)};
+    if(state.policy.mode === 'inline' && linkedMetadata(state.input)) return blocked('linked_operation_unreconciled','Legacy inline-linked operation preserved. Reconcile any prior submission before an explicit storage-first replacement; do not change its mode or resend.');
     if(state.pending) {
       if(state.pending.kind !== 'store' || !retryStorage) return blocked(state.pending.kind === 'store' ? 'storage_unconfirmed' : 'submission_unresolved','Preserve the pending operation. Reconcile native uncertainty; storage retries use only the exact frozen idempotent payload.');
       return {output:{...summary(state),ok:true,status:'host_action',action_id:state.pending.id,host_call:state.pending.host_call,call_once:true}};
@@ -113,7 +119,7 @@ export async function nextOutbound({repository,operationId,deliveryContext,messa
       }
       state.presentation=resolvePresentation({context:messageContext,product:'Paprika Inc',pluginNames:['paprika-inc'],senderThreadId:state.sender_thread_id});
       const body=state.policy.mode === 'inline' ? `Paprika Inc delivery: ${state.id}.\nSender ID: ${sender.id}\nReceiver ID: ${recipient.id}\nHandle within this chat's existing human and host permissions.\n\n${state.input.body}` :
-        `Board: ${board}\nMessage ID: ${state.message_id}\nSender ID: ${sender.id}\nReceiver ID: ${recipient.id}\nFetch ${state.retrieval_tool}({board: "${board}", message_id: "${state.message_id}"}). Verify the board, message ID and receiver_id match this chat's canonical address before acting within existing permissions. If retrieval is unavailable or mismatched, report blocked; do not invent content.`;
+        `Board: ${board}\nMessage ID: ${state.message_id}\nSender ID: ${sender.id}\nReceiver ID: ${recipient.id}\n${state.correlation?.collaboration_id ? 'Collaboration ID: '+state.correlation.collaboration_id+'\n' : ''}${state.correlation?.reply_to_id ? 'Reply to: '+state.correlation.reply_to_id+'\n' : ''}Fetch ${state.retrieval_tool}({board: "${board}", message_id: "${state.message_id}"}). Verify the board, message ID and receiver_id match this chat's canonical address before acting within existing permissions. If retrieval is unavailable or mismatched, report blocked; do not invent content.`;
       state.reference=state.policy.mode === 'inline' ? 'Paprika Inc delivery: '+state.id : 'Message ID: '+state.message_id;
       state.pending={id:randomUUID(),kind:'native',host_call:{tool:'mcp__codex_app__send_message_to_thread',arguments:{threadId:recipient.thread_id,hostId:'local',prompt:wrapped(state,body)}}};
     }
@@ -136,7 +142,14 @@ export async function recordOutbound({repository,operationId,actionId,hostResult
         const message=verifyReference({board:state.route.board,messageId:result?.message?.id,receiverId:state.route.recipient.id,result});
         const args=state.pending.host_call.arguments;
         check(message.body === args.body && message.sender_id === args.sender_id && typeof message.created_at === 'string' && Number.isFinite(Date.parse(message.created_at))
-          && (message.reply_to_id ?? null) === (args.reply_to_id ?? null),'storage_unconfirmed','Storage must confirm the intact original body, author and reply correlation.');
+          && (message.reply_to_id ?? null) === (args.reply_to_id ?? null) && (message.collaboration_id ?? null) === (args.collaboration_id ?? null),
+        'storage_unconfirmed','Storage must confirm the intact original body, author, reply and collaboration correlation.');
+        if(args.collaboration_id !== undefined || message.handoff_depth != null || message.handoff_limit != null) {
+          check(Number.isSafeInteger(message.handoff_depth) && Number.isSafeInteger(message.handoff_limit) && message.handoff_depth >= 1
+            && message.handoff_depth <= message.handoff_limit && message.handoff_limit <= 100,'storage_unconfirmed','Require server-confirmed handoff depth and limit before notification.');
+          state.handoff={depth:message.handoff_depth,limit:message.handoff_limit};
+        }
+        state.correlation={collaboration_id:message.collaboration_id ?? null,reply_to_id:message.reply_to_id ?? null};
         state.notification_conflict=state.transport === 'native' && result.notification && !['events_not_configured','subscription_required'].includes(result.notification.state);
         state.message_id=message.id; state.phase=state.transport === 'events' ? 'stored_events_only' : 'stored'; state.pending=null;
       } catch(error) { state.phase='storage_unconfirmed'; return {next:state,output:{...summary(state),detail:error.message}}; }
