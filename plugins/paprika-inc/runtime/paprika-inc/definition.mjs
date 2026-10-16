@@ -3,6 +3,8 @@ import { lstat, open, readdir, realpath } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { resolve, join } from 'node:path';
 import { IncError, requireInput as check } from './errors.mjs';
+import { validateOwnership } from './ownership.mjs';
+import { validateSkillSets } from './skill-catalog.mjs';
 
 const limit = 256 * 1024;
 const identifier = /^[a-z][a-z0-9-]{0,95}$/;
@@ -93,7 +95,7 @@ export async function inspectDefinition(repository, manifestPath = 'company/comp
   const manifestFile = await readDocument(root, manifestPath);
   const manifest = parseJson(manifestFile.text, manifestPath);
   fields(manifest, ['schema_version', 'definition_version', 'status', 'company_id', 'repository', 'topology', 'runtime',
-    'constitution', 'coordinator_role', 'roles', 'work_tracking', 'knowledge_policy', 'runtime_state', 'messaging', 'lifecycle', 'adoption'], 'manifest');
+    'constitution', 'coordinator_role', 'roles', 'ownership', 'work_tracking', 'knowledge_policy', 'runtime_state', 'messaging', 'lifecycle', 'adoption'], 'manifest');
   equal(manifest.schema_version, 1, 'schema_version');
   for (const field of ['definition_version', 'status', 'company_id', 'repository', 'coordinator_role']) string(manifest[field], field);
   check(semver.test(manifest.definition_version), 'invalid_version', 'definition_version must be a semantic version.');
@@ -116,7 +118,8 @@ export async function inspectDefinition(repository, manifestPath = 'company/comp
     'invalid_roles', 'roles must contain between 1 and 100 role definitions.');
   const ids = new Set(), paths = new Set(), roles = [];
   for (const role of manifest.roles) {
-    fields(role, ['id', 'version', 'definition'], 'role');
+    fields(role, ['id', 'version', 'definition', 'skill_sets'], 'role');
+    const skillSets = validateSkillSets(role.skill_sets);
     check(typeof role.id === 'string' && identifier.test(role.id), 'invalid_identifier', 'Each role ID must be a stable lowercase identifier.');
     check(!ids.has(role.id), 'duplicate_role', `Duplicate role ID: ${role.id}.`);
     ids.add(role.id);
@@ -130,10 +133,16 @@ export async function inspectDefinition(repository, manifestPath = 'company/comp
       'contract_id_mismatch', `Contract ${role.definition} must declare Role ID: \`${role.id}\` exactly once.`, { file: role.definition });
     check(declaredVersions.length === 1 && declaredVersions[0].trim() === `Role version: ${role.version}`,
       'contract_version_mismatch', `Contract ${role.definition} must declare Role version: ${role.version} exactly once.`, { file: role.definition });
-    roles.push({ id: role.id, version: role.version, definition: role.definition, sha256: contract.sha256, text: contract.text });
+    roles.push({ id: role.id, version: role.version, definition: role.definition, sha256: contract.sha256, text: contract.text, skill_sets: skillSets });
   }
   check(ids.has(manifest.coordinator_role), 'missing_coordinator', 'coordinator_role must reference a declared role.');
   const shared = [];
+  let ownership = null;
+  if (manifest.ownership !== undefined) {
+    const doc = await readDocument(root, manifest.ownership);
+    ownership = validateOwnership(parseJson(doc.text, doc.path), [...ids]);
+    shared.push({ path: doc.path, sha256: doc.sha256 });
+  }
   for (const path of [manifest.constitution, manifest.work_tracking, manifest.adoption.policy]) {
     const doc = await readDocument(root, path);
     check(doc.text.trim(), 'empty_document', `Shared document ${path} must not be empty.`, { file: path });
@@ -141,5 +150,5 @@ export async function inspectDefinition(repository, manifestPath = 'company/comp
   }
   const files = [{ path: manifestFile.path, sha256: manifestFile.sha256 },
     ...roles.map(role => ({ path: role.definition, sha256: role.sha256 })), ...shared].sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
-  return { manifest, roles, files, definition_input_sha256: hash(JSON.stringify(files)), input_scope: 'working_tree_files' };
+  return { manifest, roles, ownership, files, definition_input_sha256: hash(JSON.stringify(files)), input_scope: 'working_tree_files' };
 }

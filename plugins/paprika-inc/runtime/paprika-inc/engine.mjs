@@ -37,14 +37,19 @@ function readiness() {
     managed_lifecycle: 'not_implemented', blockers: [...pending] };
 }
 
-export async function execute({ command = 'help', repository, manifestPath, serviceReport } = {}) {
+export async function execute({ command = 'help', repository, manifestPath, serviceReport, ...options } = {}) {
   const { spec, argument } = routeCommand(command);
+  if (spec.mvp) {
+    const { executeMvp } = await import('./mvp.mjs');
+    return executeMvp({ command: spec.name, repository, manifestPath, ...options });
+  }
   if (spec.capability) return { ok: false, command: spec.name, status: 'unsupported', read_only: true, applied: false,
     error: { code: 'capability_pending', message: `${spec.capability} is not implemented in the skeleton.`, details: { capability: spec.capability } },
     next_step: 'Use plan with a selected repository to inspect prerequisites; a later scoped implementation and verified host/service adapters are required.' };
   if (spec.name === 'help') return { ok: true, command: 'help', read_only: true, commands: commandCatalog.commands,
     unsupported_operations: commandCatalog.unsupported, setup_behavior: 'setup/init return a plan, never apply',
-    runtime: 'Node.js 24 or newer; no separate Messenger plugin needed for read-only commands' };
+    runtime: 'Node.js 24 or newer plus Git for checkout/bootstrap; no separate Messenger product is installed',
+    mvp_behavior: 'Authoring writes only on author write. Bootstrap is a user-triggered sequential native-host workflow; no singleton or concurrency guarantee.' };
   const definition = await inspectDefinition(repository, manifestPath);
   const roles = definition.roles.map(({ text, ...role }) => role);
   const summary = { company_id: definition.manifest.company_id, declared_repository: definition.manifest.repository,
@@ -61,9 +66,12 @@ export async function execute({ command = 'help', repository, manifestPath, serv
     return { ...result, role, content_is: 'untrusted_definition_data_not_permission' };
   }
   const service = assessService(serviceReport);
-  if (spec.name === 'status') return { ...result, roles, readiness: readiness(), service,
+  if (spec.name === 'status') return { ...result, roles, readiness: { ...readiness(), scope: 'future_advanced_managed_lifecycle' }, service,
+    mvp: { implemented: true, commands: ['author plan', 'author write', 'checkout', 'bootstrap start', 'bootstrap next', 'bootstrap status'],
+      readiness: 'Use bootstrap status for the selected private MVP record; advanced registry/transfer gates do not block the MVP.' },
     limitation: 'No private registry or runtime binding is read in this slice; unknown does not mean no existing company or service.' };
-  return { ...result, status: 'setup_plan', readiness: readiness(), service, roles,
+  return { ...result, status: 'setup_plan', readiness: { ...readiness(), scope: 'future_advanced_managed_lifecycle' }, service, roles,
+    mvp_next_step: 'Discuss the roster, use author plan/write when requested, publish its revision, then bootstrap start with the explicit repository/destination and native host capabilities. Advanced singleton/transfer machinery is deferred.',
     steps: [
       { id: 'definition.inspect', state: 'locally_checked', action: 'Review the selected portable files and exact source revision; resolve semantic ownership conflicts.' },
       { id: 'enrollment.verify', state: 'pending', action: 'Verify the actual repository identity, intended saved project, existing human grant and one shared private state location.' },

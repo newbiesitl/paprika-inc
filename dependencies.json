@@ -10,5 +10,12 @@
     "release_url": "https://github.com/newbiesitl/paprika-messenger/releases/tag/v1.6.0",
     "release_build_source_commit": "c91f966c146e94875b7ad5780a9c9de0231ae938",
     "adopted_on": "2026-10-14"
+  },
+  "scientific_agent_skills": {
+    "repository": "https://github.com/K-Dense-AI/scientific-agent-skills.git",
+    "path": "vendor/scientific-agent-skills",
+    "commit": "a1043ef544e3a100c28e70a736b6cf32554d0677",
+    "package_version": "2.72.0",
+    "selection": "skill-packs/research-core.json"
   }
 }

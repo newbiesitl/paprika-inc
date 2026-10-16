@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "id": "research-core",
+  "source_dependency": "scientific_agent_skills",
+  "skills": [
+    "paper-lookup",
+    "literature-review",
+    "citation-management",
+    "scientific-critical-thinking"
+  ]
+}

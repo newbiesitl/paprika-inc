@@ -37,7 +37,7 @@ class PluginPackageTests(unittest.TestCase):
             'manifest_paths': ['.codex-plugin/plugin.json', 'plugin.json'],
             'public_skills': ['paprika-inc', 'setup-paprika-inc'], 'live_picker_verified': False,
         })
-        self.assertEqual({entry['path'] for entry in result['files']}, package.PACKAGE_FILES)
+        self.assertEqual({entry['path'] for entry in result['files']}, package.expected_package_files(ROOT / package.PLUGIN))
 
     def test_extra_messenger_skills_and_nested_plugin_or_marketplace_manifests_fail(self):
         extras = [
@@ -166,6 +166,40 @@ class PluginPackageTests(unittest.TestCase):
         self.assertEqual(dep['commit'], '776efe80eb801ca850b64516c003325833157240')
         self.assertEqual(dep['plugin_version'], '1.6.0')
 
+    def test_private_bound_kit_references_one_existing_app_without_messenger_discovery(self):
+        binding = {'schema_version': 1, 'app_id': 'connector_FictionalService', 'service_origin': 'https://service.example.invalid',
+                   'service_api_version': '0.9.0', 'service_type': 'dot-chatgpt-codex',
+                   'capabilities': ['get_service_config', 'list_boards', 'get_inbox'],
+                   'observation': 'caller_supplied_native_metadata_not_verified_by_builder'}
+        report = package.prepare(ROOT, self.base / 'bound', service_binding=binding)
+        verified = package.verify_archive(Path(report['archive']))
+        self.assertTrue(report['references_existing_service_app'])
+        self.assertFalse(report['service_authentication_verified_by_builder'])
+        self.assertFalse(report['installed']); self.assertFalse(report['deployed'])
+        self.assertEqual(verified['discovery']['public_skills'], ['paprika-inc', 'setup-paprika-inc'])
+        with zipfile.ZipFile(report['archive']) as archive:
+            apps = json.loads(archive.read('paprika-inc/.app.json'))
+            self.assertEqual(apps, {'apps': {'paprika-service': {'id': binding['app_id']}}})
+            for name in ['plugin.json', '.codex-plugin/plugin.json']:
+                manifest = json.loads(archive.read('paprika-inc/' + name))
+                self.assertEqual(manifest['name'], 'paprika-inc')
+                self.assertEqual(manifest['extensions']['com.openai']['apps'], './.app.json')
+            provenance = json.loads(archive.read('paprika-inc/package-provenance.json'))
+            self.assertEqual(provenance['existing_service_binding']['service_api_version'], '0.9.0')
+            self.assertEqual(provenance['messenger']['service_version'], '0.8.0')
+        self.assertFalse((ROOT / package.PLUGIN / '.app.json').exists())
+
+    def test_service_binding_rejects_plugin_ids_credentials_and_unverified_claims(self):
+        valid = {'schema_version': 1, 'app_id': 'connector_FictionalService', 'service_origin': 'https://service.example.invalid',
+                 'service_api_version': '0.8.1', 'service_type': 'chatgpt-codex',
+                 'capabilities': ['get_service_config', 'list_boards', 'get_inbox'],
+                 'observation': 'caller_supplied_native_metadata_not_verified_by_builder'}
+        for changes in [{'app_id': 'plugins_fictional'}, {'service_origin': 'https://secret@service.example.invalid'},
+                        {'capabilities': []}, {'capabilities': [{}]}, {'observation': 'builder_verified_authentication'},
+                        {'second_app_id': 'connector_AnotherService'}]:
+            with self.subTest(changes=changes), self.assertRaises(ValueError):
+                package.validate_service_binding({**valid, **changes})
+
     def test_build_is_byte_deterministic_and_extracted_helper_works_without_source(self):
         first = package.prepare(ROOT, self.base / 'one')
         second = package.prepare(ROOT, self.base / 'two')
@@ -204,6 +238,26 @@ class PluginPackageTests(unittest.TestCase):
                     archive.writestr(name, '{}')
                 with self.assertRaises(ValueError):
                     package.verify_archive(unsafe)
+
+    def test_extracted_mvp_authors_generic_files_without_source_or_messenger_installation(self):
+        report = package.prepare(ROOT, self.base / 'build')
+        extracted, target = self.base / 'standalone-kit', self.base / 'selected-company'
+        target.mkdir()
+        (target / 'AGENTS.md').write_text('# Existing user directions\n')
+        with zipfile.ZipFile(report['archive']) as archive:
+            archive.extractall(extracted)
+        plugin = extracted / 'paprika-inc'
+        helper = plugin / 'skills/paprika-inc/scripts/inc.mjs'
+        blueprint = plugin / 'skills/setup-paprika-inc/assets/example-blueprint.json'
+        authored = subprocess.run(['node', str(helper), 'author', 'write', '--repo', str(target), '--spec', str(blueprint)], cwd=self.base, capture_output=True, text=True, check=True)
+        data = json.loads(authored.stdout)
+        self.assertTrue(data['applied'])
+        self.assertFalse(data['live_roles_created'])
+        self.assertEqual((target / 'AGENTS.md').read_text(), '# Existing user directions\n')
+        roles = subprocess.run(['node', str(helper), 'roles', '--repo', str(target)], cwd=self.base, capture_output=True, text=True, check=True)
+        self.assertEqual([role['id'] for role in json.loads(roles.stdout)['roles']], ['organizer', 'artisan'])
+        self.assertTrue((target / 'company/ownership.json').is_file())
+        self.assertFalse((plugin / '.app.json').exists())
 
     def test_builder_refuses_outputs_that_overlap_source(self):
         for path in [ROOT, ROOT.parent, ROOT / 'plugins/paprika-inc', ROOT / 'tests']:

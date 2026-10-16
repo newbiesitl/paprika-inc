@@ -1,10 +1,12 @@
 {
   "name": "paprika-inc-development",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "license": "MIT",
-  "engines": {"node": ">=24"},
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "test": "node --test tests/*.test.mjs",
     "test:package": "python3 -m unittest discover -s tests -p 'test_*.py' -v",

@@ -19,7 +19,7 @@ Versioned JSON documents the settings; editing it does not apply GitHub controls
 
 ## Validation and dependency maintenance
 
-The required `validate` job checks portable definitions, documentation references, logo provenance, the exact Messenger gitlink/manifests, read-only command behavior, package completeness and deterministic preparation. These local checks are not a substitute for future live host, service/coexistence, lifecycle, installation and migration evidence. See [the implemented slice](PLUGIN-SKELETON.md).
+The required `validate` job checks portable definitions, documentation references, logo provenance, the exact Messenger gitlink/manifests, inspection/authoring, protected Git checkout, sequential native-host contracts, package completeness and deterministic preparation. These local checks are not a substitute for future live host, service/coexistence, lifecycle, installation and migration evidence. See [the MVP scope and live acceptance](MVP.md) and [the initial skeleton boundary](PLUGIN-SKELETON.md).
 
 GitHub Actions dependencies are pinned to full commit SHAs. Dependabot checks them weekly on Monday at 10:00 Asia/Tokyo, up to three open PRs. Messenger is updated through the manual [adoption process](DEPENDENCIES.md), not a floating branch or automated merge. Enable private vulnerability reporting, dependency alerts, and supported secret scanning/push protection through repository settings.
 
