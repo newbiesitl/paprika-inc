@@ -39,6 +39,89 @@ class PluginPackageTests(unittest.TestCase):
         })
         self.assertEqual({entry['path'] for entry in result['files']}, package.expected_package_files(ROOT / package.PLUGIN))
 
+    def test_each_skill_uses_its_own_approved_icon(self):
+        approved = (ROOT / 'assets/paprika-inc-logo-navy-v1.png').read_bytes()
+        for skill in package.PUBLIC_SKILLS:
+            with self.subTest(skill=skill):
+                root = ROOT / package.PLUGIN / 'skills' / skill
+                metadata = (root / 'agents/openai.yaml').read_text()
+                for field in ['icon_small', 'icon_large']:
+                    self.assertIn(f'  {field}: "./assets/paprika-inc-icon.png"\n', metadata)
+                self.assertEqual((root / 'assets/paprika-inc-icon.png').read_bytes(), approved)
+
+    def test_skill_icons_reject_escaping_and_noncanonical_paths(self):
+        for skill in package.PUBLIC_SKILLS:
+            other = next(name for name in package.PUBLIC_SKILLS if name != skill)
+            for field in ['icon_small', 'icon_large']:
+                for reference in ['../../assets/paprika-inc-icon.png',
+                                  f'../{other}/assets/paprika-inc-icon.png',
+                                  '/assets/paprika-inc-icon.png', 'assets/paprika-inc-icon.png',
+                                  './assets/../assets/paprika-inc-icon.png',
+                                  './assets//paprika-inc-icon.png', './assets\\paprika-inc-icon.png']:
+                    with self.subTest(skill=skill, field=field, reference=reference), tempfile.TemporaryDirectory(dir=self.base) as scratch:
+                        target = Path(scratch) / 'paprika-inc'
+                        shutil.copytree(ROOT / package.PLUGIN, target)
+                        path = target / 'skills' / skill / 'agents/openai.yaml'
+                        text = path.read_text()
+                        path.write_text(text.replace(f'  {field}: "./assets/paprika-inc-icon.png"',
+                                                     f'  {field}: {json.dumps(reference)}'))
+                        with self.assertRaises(ValueError):
+                            package.verify_package(target)
+
+    def test_skill_icon_metadata_cannot_be_missing_duplicated_or_nonstring(self):
+        for skill in package.PUBLIC_SKILLS:
+            for field in ['icon_small', 'icon_large']:
+                for replacement in ['', f'  {field}: null\n', f'  {field}: []\n',
+                                    f'  {field}: "./assets/paprika-inc-icon.png"\n' * 2]:
+                    with self.subTest(skill=skill, field=field, replacement=replacement), tempfile.TemporaryDirectory(dir=self.base) as scratch:
+                        target = Path(scratch) / 'paprika-inc'
+                        shutil.copytree(ROOT / package.PLUGIN, target)
+                        path = target / 'skills' / skill / 'agents/openai.yaml'
+                        path.write_text(path.read_text().replace(f'  {field}: "./assets/paprika-inc-icon.png"\n', replacement))
+                        with self.assertRaises(ValueError):
+                            package.verify_package(target)
+
+    def test_each_skill_icon_must_be_present_regular_and_approved(self):
+        for skill in package.PUBLIC_SKILLS:
+            for kind in ['missing', 'symlink', 'tampered']:
+                with self.subTest(skill=skill, kind=kind), tempfile.TemporaryDirectory(dir=self.base) as scratch:
+                    target = Path(scratch) / 'paprika-inc'
+                    shutil.copytree(ROOT / package.PLUGIN, target)
+                    path = target / 'skills' / skill / 'assets/paprika-inc-icon.png'
+                    if kind == 'tampered':
+                        path.write_bytes(path.read_bytes() + b'changed')
+                    else:
+                        path.unlink()
+                        if kind == 'symlink':
+                            path.symlink_to(target / 'assets/paprika-inc-icon.png')
+                    with self.assertRaises(ValueError):
+                        package.verify_package(target)
+
+    def test_rehashed_archive_cannot_restore_escaping_skill_icon_paths(self):
+        report = package.prepare(ROOT, self.base / 'build')
+        with zipfile.ZipFile(report['archive']) as original:
+            original_entries = {info.filename: original.read(info) for info in original.infolist()}
+        for skill in package.PUBLIC_SKILLS:
+            for field in ['icon_small', 'icon_large']:
+                with self.subTest(skill=skill, field=field):
+                    entries = dict(original_entries)
+                    relative = f'skills/{skill}/agents/openai.yaml'
+                    key = 'paprika-inc/' + relative
+                    entries[key] = entries[key].replace(f'  {field}: "./assets/paprika-inc-icon.png"'.encode(),
+                                                        f'  {field}: "../../assets/paprika-inc-icon.png"'.encode())
+                    provenance = json.loads(entries['paprika-inc/package-provenance.json'])
+                    for entry in provenance['files']:
+                        if entry['path'] == relative:
+                            entry['sha256'] = package.digest(entries[key])
+                    provenance['payload_sha256'] = package.digest(json.dumps(provenance['files'], sort_keys=True, separators=(',', ':')).encode())
+                    entries['paprika-inc/package-provenance.json'] = json.dumps(provenance).encode()
+                    tampered = self.base / 'escaping-icon.zip'
+                    with zipfile.ZipFile(tampered, 'w') as archive:
+                        for name, data in entries.items():
+                            archive.writestr(name, data)
+                    with self.assertRaisesRegex(ValueError, 'Unsafe skill icon reference'):
+                        package.verify_archive(tampered)
+
     def test_extra_messenger_skills_and_nested_plugin_or_marketplace_manifests_fail(self):
         extras = [
             'skills/paprika-messenger/SKILL.md', 'skills/setup-paprika/SKILL.md',
@@ -212,7 +295,15 @@ class PluginPackageTests(unittest.TestCase):
             archive.extractall(extracted)
             self.assertTrue(all(info.date_time == (1980, 1, 1, 0, 0, 0) for info in archive.infolist()))
             self.assertTrue(all(name.startswith('paprika-inc/') for name in archive.namelist()))
-        helper = extracted / 'paprika-inc/skills/paprika-inc/scripts/inc.mjs'
+        plugin = extracted / 'paprika-inc'
+        approved = (ROOT / 'assets/paprika-inc-logo-navy-v1.png').read_bytes()
+        for skill in package.PUBLIC_SKILLS:
+            root = plugin / 'skills' / skill
+            metadata = (root / 'agents/openai.yaml').read_text()
+            for field in ['icon_small', 'icon_large']:
+                self.assertIn(f'  {field}: "./assets/paprika-inc-icon.png"\n', metadata)
+            self.assertEqual((root / 'assets/paprika-inc-icon.png').read_bytes(), approved)
+        helper = plugin / 'skills/paprika-inc/scripts/inc.mjs'
         result = subprocess.run(['node', str(helper), 'help'], cwd=self.base, capture_output=True, text=True, check=True)
         self.assertEqual(json.loads(result.stdout)['command'], 'help')
         result = subprocess.run(['node', str(helper), 'validate', '--repo', str(ROOT)], cwd=self.base, capture_output=True, text=True, check=True)
