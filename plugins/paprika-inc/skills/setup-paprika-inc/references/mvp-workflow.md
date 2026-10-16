@@ -86,7 +86,16 @@ python3 scripts/prepare-plugin.py --service-binding <private-native-report.json>
 
 Only that private export adds `.app.json`, containing exactly one existing required App, with matching Inc manifest pointers and binding provenance. The builder cannot authenticate caller metadata and never creates an App/service, registers OAuth or installs a Messenger product/skills. Save/install/connect only when requested through supported host tooling, then verify authenticated configuration/board access separately. A required **Paprika Service** App may appear separately; no unsupported visibility workaround is used.
 
-Inc is 0.2.0; bundled Messenger source remains plugin 1.6.0 / source service 0.8.0 at its exact pin. The running API is independently observed. A newer API requires capability review, never automatic downgrade/replacement. This MVP creates no receiver registration, subscription, schedule or background runner.
+Inc is 0.3.0; bundled Messenger source remains plugin 1.6.0 / source service 0.8.0 at its exact pin. The running API is independently observed. A newer API requires capability review, never automatic downgrade/replacement. This MVP creates no receiver registration, subscription, schedule or background runner.
+
+## Optional research selection
+
+For a discussed scientific role, use the [research-core workflow](research-core.md)
+and its contained blueprint. Explicitly install the selected project-local skills
+after checkout and before read/report onboarding. A missing installation remains
+visible in the role's report. Native identity checks stay the same, and skill
+report receipts additionally identify installed paths and the reviewed report
+digest. No optional service calls or research dispatch happen during bootstrap.
 
 ## Evidence limits
 

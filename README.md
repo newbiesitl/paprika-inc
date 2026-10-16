@@ -4,7 +4,7 @@
 
 An open-source virtual-company framework for repository-defined AI teams, built on [Paprika Messenger](https://github.com/newbiesitl/paprika-messenger).
 
-**Status: first local MVP, with live installation/native-host acceptance pending.** Inc 0.2.0 adds conversational generic role/ownership authoring, protected Git checkout and a sequential supported-native-host project-chat bootstrap with private status/resume. The package remains independently installable; enforced singleton/race handling, transfer, background orchestration and automatic adoption are future hardening.
+**Status: first local MVP, with live installation/native-host acceptance pending.** Inc 0.3.0 adds conversational generic role/ownership authoring, protected Git checkout and a sequential supported-native-host project-chat bootstrap with private status/resume. The package remains independently installable; enforced singleton/race handling, transfer, background orchestration and automatic adoption are future hardening.
 
 ## What we are building
 
@@ -30,7 +30,7 @@ Prepare a self-contained source kit with Python 3.10 or newer:
 
 ```sh
 python3 scripts/prepare-plugin.py
-python3 scripts/validate-plugin.py artifacts/plugin-skeleton/paprika-inc-0.2.0.zip
+python3 scripts/validate-plugin.py artifacts/plugin-skeleton/paprika-inc-0.3.0.zip
 ```
 
 The deterministic archive is a local MVP skill kit; preparation performs no installation/publication/deployment. An optional private export can reference one existing Paprika Service App without registering another product/service. Native on-demand bootstrap requires no separate Messenger product. See [MVP scope and acceptance](docs/MVP.md) and [the original skeleton/package boundary](docs/PLUGIN-SKELETON.md).
@@ -71,3 +71,14 @@ The submodule is pinned by commit, not a floating branch. See [dependency adopti
 Read [Contributing](CONTRIBUTING.md), [Support](SUPPORT.md), [Security](SECURITY.md), the [Code of Conduct](CODE_OF_CONDUCT.md), and [Maintaining](docs/MAINTAINING.md). Repository definitions describe roles; they do not create chats, grant permissions, or start autonomous work.
 
 Paprika Inc is distributed under the [MIT license](LICENSE). See [third-party notices](THIRD_PARTY_NOTICES.md) for Messenger and imported documentation.
+
+## Optional scientific research workflows
+
+Inc 0.3.0 adds an explicitly selected `research-core` set for project-local
+installation: paper lookup, literature review, citation management and critical
+appraisal. Source is pinned as a second unchanged submodule; only four selected
+skills and their resources are bundled internally. Installing Inc does not install
+the upstream plugin or activate research skills globally. See
+[setup and capability boundaries](plugins/paprika-inc/skills/setup-paprika-inc/references/research-core.md),
+[the fictional researcher and public pilot](examples/scientific-research/README.md),
+and [the governing proposal](docs/proposals/SCIENTIFIC-RESEARCH-SKILLS.md).

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "sets": {
+    "research-core": {
+      "manifest_sha256": "988d91a74704904dd08598ab5ca39d9b06018d52dddf5fece717f0cb7df4b101",
+      "package_version": "2.72.0",
+      "skills": [
+        "paper-lookup",
+        "literature-review",
+        "citation-management",
+        "scientific-critical-thinking"
+      ],
+      "source_commit": "a1043ef544e3a100c28e70a736b6cf32554d0677"
+    }
+  }
+}

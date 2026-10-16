@@ -34,3 +34,21 @@ M1–M5 are proposed future work, not activated assignments or completed functio
 Chief Architect decomposes approved outcomes and resolves interfaces. Backend Dev owns runtime delivery, Frontend Dev owns interactions, Data Engineer owns state semantics, and Front Desk handles attributed intake and authorized external status. Cross-role review follows their [contracts](../company/README.md).
 
 A progress report links the relevant issue/PR/commit, explains what is verified, lists remaining blockers and decisions, and identifies the next action. Keep private instance bindings and sensitive knowledge in the configured private state location, not in public issue descriptions.
+
+## Research-core follow-up
+
+[Issue #6](https://github.com/newbiesitl/paprika-inc/issues/6) follows the scoped
+MVP under definition `e1e7f1843de36b2fd60645f6c8f671cbd8e16db0`; see the
+[unchanged proposal](proposals/SCIENTIFIC-RESEARCH-SKILLS.md). It adds only selected
+project skills, generic role references, capability reporting and fictional
+examples. The development roster and live grants stay outside this candidate.
+
+After initializing both pinned submodules, `python3 scripts/research_pack.py`
+verifies composition. `python3 scripts/research_pack.py --write` deterministically
+regenerates the explicit internal payload after a reviewed source/adapter change.
+Run repository validation, the Node behavior suite, Python package tests, plugin
+validation, deterministic package preparation and git diff --check. Tests cover
+legacy definitions, strict selection, integrity/conflicts/symlinks, partial resume,
+private common-dir state, native onboarding reports and extracted-artifact
+materialization. Local source/package checks do not certify live skill discovery
+or external API access.

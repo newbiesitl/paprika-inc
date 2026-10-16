@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { inspectDefinition, repositoryRoot, semver } from './definition.mjs';
 import { IncError, requireInput as check } from './errors.mjs';
 import { validateOwnership } from './ownership.mjs';
+import { validateSkillSets } from './skill-catalog.mjs';
 
 const id = /^[a-z][a-z0-9-]{0,95}$/;
 function text(value, field) {
@@ -25,7 +26,8 @@ export function renderCompany(spec) {
   check(Array.isArray(spec.roles) && spec.roles.length > 0 && spec.roles.length <= 100, 'invalid_blueprint', 'Define 1–100 roles.');
   const ids = [];
   for (const role of spec.roles) {
-    check(role && Object.keys(role).every(key => ['id', 'version', 'title', 'purpose', 'responsibilities', 'boundaries', 'inputs', 'outputs', 'reviewer_roles', 'escalation'].includes(key)), 'invalid_blueprint', 'Unknown role blueprint field.');
+    check(role && Object.keys(role).every(key => ['id', 'version', 'title', 'purpose', 'responsibilities', 'boundaries', 'inputs', 'outputs', 'reviewer_roles', 'escalation', 'skill_sets'].includes(key)), 'invalid_blueprint', 'Unknown role blueprint field.');
+    validateSkillSets(role.skill_sets);
     check(typeof role.id === 'string' && id.test(role.id) && !ids.includes(role.id) && typeof role.version === 'string' && semver.test(role.version), 'invalid_blueprint', 'Role IDs must be unique lowercase IDs with semantic versions.');
     ids.push(role.id);
     for (const field of ['title', 'purpose']) text(role[field], `role.${field}`);
@@ -37,7 +39,7 @@ export function renderCompany(spec) {
   const ownership = validateOwnership({ schema_version: 1, entries: spec.ownership }, ids);
   const manifest = { schema_version: 1, definition_version: spec.version, status: 'bootstrap_candidate', company_id: spec.company_id,
     repository: spec.repository, topology: 'single_host', runtime: 'codex_local', constitution: 'company/CONSTITUTION.md',
-    coordinator_role: spec.coordinator_role, roles: spec.roles.map(role => ({ id: role.id, version: role.version, definition: `company/roles/${role.id}/agent.md` })),
+    coordinator_role: spec.coordinator_role, roles: spec.roles.map(role => ({ id: role.id, version: role.version, definition: `company/roles/${role.id}/agent.md`, ...(role.skill_sets === undefined ? {} : { skill_sets: role.skill_sets }) })),
     ownership: 'company/ownership.json', work_tracking: 'company/WORK.md', knowledge_policy: 'private_runtime_location', runtime_state: 'private_enrollment_required',
     messaging: { default_receiving: 'on_demand', background_monitoring: false },
     lifecycle: { max_instances_per_role: 1, require_verified_project_membership: true, automatic_takeover: false },
@@ -50,6 +52,7 @@ export function renderCompany(spec) {
     'company/ADOPTION.md': '# Definition changes\n\nReview proposed changes under the currently authorized instructions and human grant. Source publication and live adoption are separate. This MVP does not automatically adopt new policy or expand permissions.\n',
   };
   for (const role of spec.roles) files[`company/roles/${role.id}/agent.md`] = `# ${role.title}\n\nRole ID: \`${role.id}\`\n\nRole version: ${role.version}\n\n## Purpose\n\n${role.purpose}\n\n## Responsibilities\n\n${bullets(role.responsibilities)}\n\n## Ownership\n\nUse the canonical [ownership map](../../ownership.json) entries for \`${role.id}\`; do not duplicate or infer exclusive ownership elsewhere.\n\n## Boundaries\n\n${bullets(role.boundaries)}\n\n## Inputs\n\n${bullets(role.inputs)}\n\n## Outputs and acceptance\n\n${bullets(role.outputs)}\n\n## Review relationships\n\n${role.reviewer_roles.length ? role.reviewer_roles.map(peer => `- Peer reviewer: \`${peer}\``).join('\n') : 'The human owner reviews when no peer reviewer is designated.'}\n\n## Escalation\n\n${bullets(role.escalation)}\n\nActual human/host authority bounds this role. Initial bootstrap is read/report only; file creation does not authorize implementation dispatch or grant new permissions.\n`;
+  for (const role of spec.roles) if (role.skill_sets?.length) files[`company/roles/${role.id}/agent.md`] += '\n## Selected skill sets\n\nRead this role’s skill_sets in the canonical [company manifest](../../company.json). After an explicit project-local installation, read each selected SKILL.md and INC-PORTABILITY.md under .agents/skills/. Report installation integrity separately from local dependencies and unverified external access. Optional integrations do not gate Markdown synthesis or appraisal. No skill body is duplicated in this contract.\n';
   return files;
 }
 
