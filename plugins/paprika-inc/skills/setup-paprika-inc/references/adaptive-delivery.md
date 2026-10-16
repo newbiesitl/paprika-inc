@@ -65,7 +65,9 @@ Native submission confirms neither recipient retrieval nor acceptance.
 Use `message status` for routing/status without printing the private body.
 An event-owned stored message reports `stored_events_only` and exposes no native
 call. Preserve paused routes; do not create a second wake path. Recheck actual
-subscriptions before native submission; a concurrent route change requires
+subscriptions before reference notification; inline sends create no board event
+and remain native even when a recipient has an active/paused subscription.
+A concurrent reference-route change requires
 reconciliation, not a second transport. Discovery snapshots cannot prevent an
 external subscription race, and delivery is not certified exactly-once across
 independent machines.
@@ -83,8 +85,10 @@ Repeated `next` never re-exposes a pending native write. On storage failure or
 unknown outcome, `message next --retry-storage` re-exposes only the exact frozen
 idempotent post; reuse its key and payload. Never generate another operation ID
 to bypass uncertainty. On native uncertainty use `message reconcile` with the
-actual `read_thread` result. Only the exact delivered `userMessage` prompt in the
-correct native chat/host resolves it; absent or truncated history stays blocked.
+actual `read_thread` result. Only the exact delivered `userMessage.content` text
+blocks in the correct native chat/host resolve it. Complete text blocks concatenate
+without normalization or added separators; legacy flat `text` is accepted only
+without `content`. Absent or truncated history stays blocked.
 Do not infer non-submission from a missing receipt or retry on another host.
 An abandoned lock or conflicting/corrupt journal requires explicit reconciliation.
 There is no native retry from uncertainty or automatic stale-lock takeover.

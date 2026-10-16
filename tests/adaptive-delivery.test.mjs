@@ -37,7 +37,7 @@ test('short tasks stay intact inline; one pending native write suppresses retrie
   await recordOutbound({...f,actionId:first.action_id,hostResult:{isError:true}});
   assert.equal((await nextOutbound(f)).status,'submission_unresolved');
   assert.equal((await reconcileOutbound({...f,hostResult:{thread:{id:'fixture-recipient',hostId:'local',kind:'codex'},turns:[]}})).status,'submission_unresolved');
-  const result=await reconcileOutbound({...f,hostResult:{thread:{id:'fixture-recipient',hostId:'local',kind:'codex'},turns:[{items:[{type:'userMessage',text:first.host_call.arguments.prompt}]}]}});
+  const result=await reconcileOutbound({...f,hostResult:{thread:{id:'fixture-recipient',hostId:'local',kind:'codex'},turns:[{items:[{type:'userMessage',content:[{type:'text',text:first.host_call.arguments.prompt}]}]}]}});
   assert.equal(result.status,'submitted'); assert.equal((await nextOutbound(f)).status,'submitted');
 });
 test('large reports require confirmed intact storage and produce only metadata/reference native input',async t=>{
@@ -125,5 +125,73 @@ test('an event or unknown notification reported by storage blocks a second nativ
     await recordOutbound({...f,actionId:post.action_id,hostResult:{...confirmation(post.host_call.arguments),notification:{state}}});
     const next=await nextOutbound({...f,deliveryContext:ctx()});
     assert.equal(next.status,'transport_changed'); assert(!next.host_call);
+  }
+});
+
+
+test('reconciliation matches exact current native text blocks and refuses truncated, mismatched or conflicting evidence',async t=>{
+  const f=await begin(t,'Exact Unicode task: 😀 e\u0301\r\n');
+  const action=await nextOutbound({...f,deliveryContext:ctx()});
+  await recordOutbound({...f,actionId:action.action_id,hostResult:{isError:true}});
+  const prompt=action.host_call.arguments.prompt, thread={id:'fixture-recipient',kind:'codex',hostId:'local'};
+  const item={type:'userMessage',content:[{type:'text',text:prompt}]};
+  const history=(user=item,native=thread)=>({schemaVersion:1,thread:native,turns:[{items:[user]}]});
+  const invalid=[
+    history(null),
+    history({...item,content:[{type:'text',text:prompt.slice(0,-1)}]}),
+    history({...item,content:[{type:'text',text:prompt+' changed'}]}),
+    history({...item,type:'agentMessage'}),
+    history({...item,truncated:true}),
+    history({...item,content:[{type:'text',text:prompt,truncated:true}]}),
+    history({...item,text:prompt,content:[{type:'text',text:'Truncated excerpt'}]}),
+    history({...item,text:prompt,content:null}),
+    history({...item,content:[...item.content,{type:'image',text:'not text evidence'}]}),
+    history(item,{...thread,id:'another-recipient'}),
+    history(item,{...thread,hostId:'another-host'}),
+    history(item,{...thread,kind:'chatgpt'}),
+  ];
+  for(const hostResult of invalid) {
+    assert.equal((await reconcileOutbound({...f,hostResult})).status,'submission_unresolved');
+    assert.ok(!(await nextOutbound(f)).host_call);
+  }
+  const positive=history({...item,content:[{type:'text',text:prompt.slice(0,32)},{type:'text',text:prompt.slice(32)}]});
+  assert.equal((await reconcileOutbound({...f,hostResult:{content:[{type:'text',text:JSON.stringify(positive)}]}})).status,'submitted');
+  assert.equal((await nextOutbound(f)).status,'submitted');
+  const legacy=await begin(t,'Legacy delivery evidence.'), old=await nextOutbound({...legacy,deliveryContext:ctx()});
+  await recordOutbound({...legacy,actionId:old.action_id,hostResult:{isError:true}});
+  assert.equal((await reconcileOutbound({...legacy,hostResult:history({type:'userMessage',text:old.host_call.arguments.prompt})})).status,'submitted');
+});
+
+test('active and paused recipient subscriptions do not block short inline sends or create board posts',async t=>{
+  for(const paused of [false,true]) {
+    const f=await begin(t,'Short inline task.'), context=ctx();
+    context.subscriptions=[{board:'main',receiver_id:'recipient',active:true,paused,expires_at:null}];
+    const action=await nextOutbound({...f,deliveryContext:context});
+    assert.equal(action.status,'host_action'); assert.equal(action.delivery.mode,'inline');
+    assert.equal(action.host_call.tool,'mcp__codex_app__send_message_to_thread');
+    assert.equal(action.message_id,null); assert.equal(action.transport,'native');
+    assert(action.host_call.arguments.prompt.endsWith(f.deliveryInput.body));
+    const saved=JSON.parse(await readFile(join(f.source,'.git/paprika-inc/outbound/task-1.json'),'utf8'));
+    assert.equal(saved.pending.kind,'native'); assert(!saved.message_id);
+    assert.equal((await nextOutbound({...f,deliveryContext:context})).status,'submission_unresolved');
+  }
+});
+
+test('active and paused subscriptions still own long reference delivery and block a second transport after storage',async t=>{
+  for(const paused of [false,true]) {
+    const subscription={board:'main',receiver_id:'recipient',active:true,paused,expires_at:null};
+    const owned=await begin(t,'Long reference task. '.repeat(100)), context=ctx();
+    context.subscriptions=[subscription];
+    const post=await nextOutbound({...owned,deliveryContext:context});
+    assert.equal(post.delivery.mode,'reference'); assert.equal(post.transport,'events');
+    assert.equal(post.host_call.tool,context.service_tools.post_message);
+    await recordOutbound({...owned,actionId:post.action_id,hostResult:confirmation(post.host_call.arguments)});
+    const complete=await nextOutbound({...owned,deliveryContext:context});
+    assert.equal(complete.status,'stored_events_only'); assert(!complete.host_call);
+    const changed=await begin(t,'Long reference task. '.repeat(100));
+    const prepared=await nextOutbound({...changed,deliveryContext:ctx()});
+    await recordOutbound({...changed,actionId:prepared.action_id,hostResult:confirmation(prepared.host_call.arguments)});
+    const blocked=await nextOutbound({...changed,deliveryContext:context});
+    assert.equal(blocked.status,'transport_changed'); assert(!blocked.host_call);
   }
 });

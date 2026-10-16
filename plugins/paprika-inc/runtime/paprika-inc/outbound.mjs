@@ -107,7 +107,7 @@ export async function nextOutbound({repository,operationId,deliveryContext,messa
       if(state.notification_conflict) return blocked('transport_changed','Storage reported an event/unknown notification route; reconcile it before any native send.');
       if(state.policy.mode === 'reference' && (!Array.isArray(deliveryContext?.subscriptions) || deliveryContext.board !== board || deliveryContext.deployment !== state.route.deployment)) return blocked('subscription_check_required','Refresh subscriptions on the selected existing service before native notification.');
       if(state.transport === 'events') { state.phase='stored_events_only'; return {next:state,output:summary(state)}; }
-      if(deliveryContext?.subscriptions) {
+      if(state.policy.mode === 'reference' && deliveryContext?.subscriptions) {
         const currentEvents=deliveryContext.subscriptions.some(s=>s.board === board && s.receiver_id === recipient.id && s.active === true && (s.expires_at === null || Number.isFinite(s.expires_at) && s.expires_at > Date.now()));
         if(currentEvents) return blocked('transport_changed','Reconcile the new event route before native submission; do not notify twice.');
       }
@@ -150,12 +150,25 @@ export async function outboundStatus({repository,operationId}) {
   const path=await journalPath(repository,operationId), state=JSON.parse(await readFile(path,'utf8'));
   return {...summary(state),read_only:true};
 }
+// Current read_thread returns userMessage.content text blocks. Concatenate
+// only complete text blocks without normalization or inserted separators. A
+// legacy flat text field is usable only when content is absent, never as a
+// fallback for malformed, truncated or mismatched current-format evidence.
+function nativeUserText(item) {
+  if(item?.type !== 'userMessage' || item.truncated === true) return null;
+  if(item.content !== undefined) {
+    if(!Array.isArray(item.content) || !item.content.length || item.content.some(block=>block?.type !== 'text'
+      || typeof block.text !== 'string' || block.truncated === true)) return null;
+    return item.content.map(block=>block.text).join('');
+  }
+  return typeof item.text === 'string' ? item.text : null;
+}
 export async function reconcileOutbound({repository,operationId,hostResult}) {
   return update(repository,operationId,state=>{
     check(state?.pending?.kind === 'native','missing_outbound','Only a pending native submission needs history reconciliation.');
     const result=unwrap(hostResult), expected=state.pending.host_call.arguments;
     const found=result?.thread?.id === expected.threadId && result.thread.hostId === 'local' && result.thread.kind === 'codex'
-      && result.turns?.some(turn=>turn.items?.some(item=>item.type === 'userMessage' && item.text === expected.prompt));
+      && result.turns?.some(turn=>turn.items?.some(item=>nativeUserText(item) === expected.prompt));
     if(found) { state.phase='submitted'; state.pending=null; }
     else state.phase='submission_unresolved';
     return {next:state,output:summary(state)};
