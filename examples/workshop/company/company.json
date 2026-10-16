@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "definition_version": "0.1.0",
+  "status": "bootstrap_candidate",
+  "company_id": "example-workshop",
+  "repository": "fictional/workshop",
+  "topology": "single_host",
+  "runtime": "codex_local",
+  "constitution": "company/CONSTITUTION.md",
+  "coordinator_role": "organizer",
+  "roles": [
+    {
+      "id": "organizer",
+      "version": "0.1.0",
+      "definition": "company/roles/organizer/agent.md"
+    },
+    {
+      "id": "artisan",
+      "version": "0.1.0",
+      "definition": "company/roles/artisan/agent.md"
+    }
+  ],
+  "ownership": "company/ownership.json",
+  "work_tracking": "company/WORK.md",
+  "knowledge_policy": "private_runtime_location",
+  "runtime_state": "private_enrollment_required",
+  "messaging": {
+    "default_receiving": "on_demand",
+    "background_monitoring": false
+  },
+  "lifecycle": {
+    "max_instances_per_role": 1,
+    "require_verified_project_membership": true,
+    "automatic_takeover": false
+  },
+  "adoption": {
+    "automatic": false,
+    "policy": "company/ADOPTION.md"
+  }
+}

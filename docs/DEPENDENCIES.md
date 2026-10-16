@@ -25,8 +25,44 @@ No recurring Messenger monitor or automatic submodule update is enabled by this 
 
 ## Packaging and service boundary
 
-The future Inc package must include required Messenger source/assets/notices during build, so users do not resolve Git submodules or install Messenger separately. An Inc package is not yet produced here.
+The read-only Inc kit includes the exact pinned Messenger `select-service-type.mjs` component and MIT license. Preparation verifies the copied bytes against the clean gitlink checkout and records dependency provenance in the archive. Users of the prepared read-only kit do not resolve submodules or need a separate installed Messenger plugin. See [the skeleton package](PLUGIN-SKELETON.md). Full messaging/service source is not declared by this slice; add required components as those capabilities are implemented.
+
+An explicit reviewed file allowlist bounds the Inc artifact. It excludes Messenger plugin/marketplace manifests, its public skills and release packages. Inc's root/compatibility metadata share one identity and its two Inc-namespaced public skills; installing alongside Messenger must not add a second Messenger product, icon or command. Future integration reuses the same compatible Paprika Service App/OAuth identity and authoritative state. See [onboarding/coexistence and pending UI acceptance](../plugins/paprika-inc/skills/setup-paprika-inc/references/coexistence.md). Artifact checks are not proof of live picker behavior.
 
 Onboarding will reuse a compatible existing private Paprika service and its verified authentication, database, history, and receiving preferences; provision one only when needed. Reconfiguration must preserve service identity and be repeatable without duplicates. The source pin does not pin the running service: inspect compatibility and do not automatically downgrade a newer service.
 
 When both plugins are installed, they must share authoritative delivery records and avoid duplicate receivers, notification routes, registrations, and retry stores. Those behaviors remain implementation acceptance gates. Refer to the [RFC](proposals/PAPRIKA-VIRTUAL-COMPANY.md) and [self-development protocol](architecture/SELF-DEVELOPMENT.md).
+
+## Local MVP service binding
+
+The 0.2.0 [local MVP](MVP.md) retains the same exact Messenger pin and internal component/license. Its default native on-demand bootstrap does not install Messenger or start a service. An optional private package export adds only one actual existing Paprika Service App reference, with matching Inc manifest pointers and caller-observed API/capability provenance; it cannot authenticate that report or create/deploy an App. Reuse the same App/OAuth/configuration/history and authoritative delivery state; preserve paused/off controls and never auto-downgrade a newer API. Inc release, bundled source and running API versions are distinct. See [binding and installation](../plugins/paprika-inc/skills/setup-paprika-inc/references/mvp-workflow.md#installation-and-existing-service-binding).
+
+## Scientific Agent Skills selection
+
+The optional research-core dependency is
+[K-Dense-AI/scientific-agent-skills](https://github.com/K-Dense-AI/scientific-agent-skills)
+at immutable commit `a1043ef544e3a100c28e70a736b6cf32554d0677`, manifest version
+2.72.0. No corresponding release tag is assumed. The unchanged submodule is
+`vendor/scientific-agent-skills/`; [the selection](../skill-packs/research-core.json)
+contains exactly paper-lookup, literature-review, citation-management and
+scientific-critical-thinking. The upstream plugin/full catalog is not installed.
+
+The deterministic composer in `scripts/research_pack.py` reads every selected
+file, parses every Python helper for an import audit and retains local resources,
+actual per-skill license declarations and the exact root MIT notice. It copies
+resources internally into Inc, adds INC-PORTABILITY.md, and inserts one documented
+portability prelude after each original SKILL.md frontmatter. No other source
+bytes are rewritten. pack.json records source/emitted digests, transformations,
+helper imports, disabled cross-skill routes and the source revision. Packaging
+compares every emitted byte with the pinned source and rejects extra resources.
+Imported SKILL.md/helpers/references/assets retain upstream trailing whitespace
+and blank EOF lines via narrowly scoped .gitattributes whitespace attributes.
+The source/emitted digest comparison remains strict. Inc code, manifests and
+companion guidance retain ordinary whitespace checks.
+
+Update through a scoped dependency PR: review upstream changes, licenses, helpers,
+cross-skill references, dependencies and network/privacy assumptions; choose an
+immutable commit; update metadata/selection/composer/catalog intentionally; run
+all relevant checks. Never float the pin or run update --remote during builds.
+Retain old artifacts for rollback. Project installation refuses unmanaged or
+modified files and has no automatic force-update/rollback operation.

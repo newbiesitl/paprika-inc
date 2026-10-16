@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "path": "docs/",
+      "owner_role": "organizer",
+      "reviewer_roles": [
+        "artisan"
+      ]
+    },
+    {
+      "path": "src/",
+      "owner_role": "artisan",
+      "reviewer_roles": [
+        "organizer"
+      ]
+    }
+  ]
+}

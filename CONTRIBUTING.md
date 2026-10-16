@@ -6,15 +6,19 @@ Fork the repository, clone with `--recurse-submodules`, create a branch, and sub
 
 ## Local validation
 
-Use Git and Python 3.10 or newer:
+Use Git, Python 3.10 or newer, and Node.js 24 or newer:
 
 ```sh
 git submodule update --init --recursive
 python3 scripts/validate-repository.py
+node --test tests/*.test.mjs
+python3 -m unittest discover -s tests -p 'test_*.py' -v
+python3 scripts/validate-plugin.py
+python3 scripts/prepare-plugin.py
 git diff --check
 ```
 
-The validator checks the repository contracts, references, asset provenance, and exact Messenger checkout. It does not run a company, prove native host capabilities, or certify the proposed lifecycle. Runtime changes must add relevant behavior tests and update the workflow as the product develops. Messenger source changes belong upstream and follow its contribution checks.
+The foundation validator checks contracts, references, artwork and the exact Messenger checkout. Command tests exercise inspection, generic authoring, protected local Git checkout and the sequential native-host contract with fictional fixtures; package tests check standalone authoring, containment, exact dependency copies, optional existing-App export and deterministic archives. These checks do not install a plugin, create real native chats or certify live host/service coexistence. The explicitly scoped local MVP is separate from future singleton/race/transfer/self-adoption hardening. See [the plugin skeleton](docs/PLUGIN-SKELETON.md). Messenger source changes belong upstream and follow its contribution checks.
 
 ## Review and adoption
 

@@ -3,3 +3,9 @@
 *.jpg binary
 *.zip binary
 *.tar.gz binary
+# Keep imported research text byte-exact, including Markdown hard breaks and EOFs.
+# Source/emitted SHA-256 verification replaces normalization for these copies only.
+plugins/paprika-inc/runtime/skill-packs/research-core/*/SKILL.md whitespace=-blank-at-eol,-blank-at-eof
+plugins/paprika-inc/runtime/skill-packs/research-core/*/scripts/** whitespace=-blank-at-eol,-blank-at-eof
+plugins/paprika-inc/runtime/skill-packs/research-core/*/references/** whitespace=-blank-at-eol,-blank-at-eof
+plugins/paprika-inc/runtime/skill-packs/research-core/*/assets/** whitespace=-blank-at-eol,-blank-at-eof
