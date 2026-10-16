@@ -6,7 +6,7 @@ import { parseJson } from './definition.mjs';
 export function parseArguments(argv) {
   const options = {}, words = [];
   const flags = { '--repo': 'repository', '--manifest': 'manifestPath', '--service-report': 'serviceReportPath',
-    '--spec': 'specPath', '--host-capabilities': 'hostCapabilitiesPath', '--result': 'hostResultPath',
+    '--spec': 'specPath', '--host-capabilities': 'hostCapabilitiesPath', '--result': 'hostResultPath', '--message-context': 'messageContextPath',
     '--destination': 'destination', '--revision': 'revision', '--definition-digest': 'expectedDigest',
     '--roles': 'roles', '--action': 'actionId', '--role-id': 'roleId', '--thread-id': 'threadId',
     '--initial-role': 'initialRole', '--initial-thread-id': 'initialThreadId', '--project-id': 'projectId', '--skill-set': 'skillSet' };
@@ -33,7 +33,7 @@ export async function runCli(argv = process.argv.slice(2), output = process.stdo
   try {
     const { serviceReportPath, ...options } = parseArguments(argv);
     mutating = routeCommand(options.command).spec.read_only === false;
-    for (const [pathKey, valueKey] of [['specPath', 'spec'], ['hostCapabilitiesPath', 'hostCapabilities'], ['hostResultPath', 'hostResult']]) {
+    for (const [pathKey, valueKey] of [['specPath', 'spec'], ['hostCapabilitiesPath', 'hostCapabilities'], ['hostResultPath', 'hostResult'], ['messageContextPath', 'messageContext']]) {
       if (!options[pathKey]) continue;
       let handle;
       try {

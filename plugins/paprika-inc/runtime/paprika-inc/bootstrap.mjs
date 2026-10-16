@@ -5,6 +5,7 @@ import { checkoutCompany, inspectCheckout, git } from './checkout.mjs';
 import { IncError, requireInput as check } from './errors.mjs';
 import { projectSkills } from './skill-packs.mjs';
 import { sha } from './skill-catalog.mjs';
+import { resolvePresentation, presentMessage } from './message-presentation.mjs';
 
 const prefix = 'mcp__codex_app__';
 export const requiredHostTools = ['list_projects', 'create_thread', 'list_threads', 'read_thread', 'wait_threads'].map(name => prefix + name);
@@ -68,7 +69,7 @@ export function bootstrapSummary(state) {
     limits: { one_user_bootstrap_at_a_time: true, singleton_enforced: false, concurrency_safe: false, background_receiving: false, automatic_adoption: false } };
 }
 
-export async function beginBootstrap(options) {
+export async function beginBootstrap(options, env = process.env) {
   const capabilities = options.hostCapabilities;
   const available = Array.isArray(capabilities?.tools) ? capabilities.tools : [];
   const missing = requiredHostTools.filter(tool => !available.includes(tool));
@@ -117,7 +118,7 @@ export async function beginBootstrap(options) {
       }) };
   }
   await save(checkout.root, state);
-  return { ...await nextBootstrap({ repository: checkout.root }), checkout_action: checkout.checkout_action };
+  return { ...await nextBootstrap({ repository: checkout.root, messageContext: options.messageContext }, env), checkout_action: checkout.checkout_action };
 }
 
 function onboardingPrompt(state, role) {
@@ -128,7 +129,7 @@ function onboardingPrompt(state, role) {
     `Report responsibilities, ownership, boundaries, inputs/outputs, review relationships and blockers in this chat. Then return one JSON object in a fenced JSON block with: request_id=${role.request_id}, role_id=${role.id}, role_version=${role.version}, source_revision=${state.revision}, contract_sha256=<computed SHA256 of the role file>, ownership_sha256=<computed SHA256 of the ownership map>, sources_read=<relative source paths actually read>, state=ready or blocked, blockers=<array>. Expected contract hash ${role.contract_sha256}; ownership hash ${state.ownership_sha256}. A response is not adoption or new authority. The caller independently checks native project/host/cwd evidence.`;
 }
 
-function actionOutput(state, action) {
+function actionOutput(state, action, messageContext, env = process.env) {
   const role = state.roles.find(role => role.id === action.role_id);
   let tool, args;
   if (action.kind === 'projects') { tool = 'list_projects'; args = {}; }
@@ -138,13 +139,19 @@ function actionOutput(state, action) {
   if (action.kind === 'onboard') { tool = 'send_message_to_thread'; args = { threadId: role.thread_id, hostId: 'local', prompt: onboardingPrompt(state, role) }; }
   if (action.kind === 'wait') { tool = 'wait_threads'; args = { targets: [{ threadId: role.thread_id, hostId: 'local' }], timeoutMs: 10000 }; }
   if (action.kind === 'read') { tool = 'read_thread'; args = { threadId: role.thread_id, hostId: 'local', turnLimit: 1, includeOutputs: false, maxOutputCharsPerItem: 8000 }; }
+  if (['create', 'onboard'].includes(action.kind) && !action.host_call) {
+    const presentation = resolvePresentation({ context: messageContext, product: 'Paprika Inc', pluginNames: ['paprika-inc'], senderThreadId: env.CODEX_THREAD_ID });
+    args.prompt = presentMessage(args.prompt, presentation, { recipientLabel: role.id, recipientRole: role.id });
+    action.presentation = presentation;
+    action.host_call = { tool: prefix + tool, arguments: args };
+  }
   return { ok: true, command: 'bootstrap next', status: 'host_action', action_id: action.id, role_id: action.role_id ?? null,
     read_only: false, applied: true, completed: false, native_action_executed_by_helper: false,
-    host_call: { tool: prefix + tool, arguments: args }, call_once: ['create', 'onboard'].includes(action.kind),
+    host_call: action.host_call || { tool: prefix + tool, arguments: args }, presentation: action.presentation || null, call_once: ['create', 'onboard'].includes(action.kind),
     next_step: 'Invoke this supported host tool under the existing user bootstrap request, then record its actual result with this action ID. Do not fabricate tool results.' };
 }
 
-export async function nextBootstrap({ repository }) {
+export async function nextBootstrap({ repository, messageContext }, env = process.env) {
   const { root, state } = await verifiedState(repository);
   for (const role of state.roles.filter(role => role.skill_sets?.length && role.phase !== 'ready')) {
     const report = await projectSkills({ repository: root, command: 'skills status', roles: role.id, manifestPath: state.manifest_path });
@@ -167,9 +174,10 @@ export async function nextBootstrap({ repository }) {
     kind = role.phase === 'pending' ? 'create' : ['verify_membership', 'membership_blocked'].includes(role.phase) ? 'membership' : !role.onboarding_submitted ? 'onboard' : ['read_onboarding', 'onboarding_blocked'].includes(role.phase) ? 'read' : 'wait';
   }
   const action = { id: randomUUID(), kind, role_id: role?.id ?? null };
+  const output = actionOutput(state, action, messageContext, env);
   state.pending_action = action;
   await save(root, state); // Persist before exposing a create/send action, including on crash.
-  return actionOutput(state, action);
+  return output;
 }
 
 function receiptFromThread(result) {

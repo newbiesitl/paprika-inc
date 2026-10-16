@@ -1,6 +1,6 @@
 # Paprika Inc — local MVP kit
 
-Version 0.3.0. Includes [Paprika Inc](skills/paprika-inc/SKILL.md) and [setup](skills/setup-paprika-inc/SKILL.md), a contained Node.js 24+ helper, the navy Paprika icon and pinned Messenger component/license. The MVP discusses/authors generic company files, protects Git checkout destinations and drives a sequential supported-native-host project-chat bootstrap. Git is needed for checkout; no additional npm dependencies or separate Messenger product is required.
+Version 0.3.1. Includes [Paprika Inc](skills/paprika-inc/SKILL.md) and [setup](skills/setup-paprika-inc/SKILL.md), a contained Node.js 24+ helper, the navy Paprika icon and pinned Messenger component/license. The MVP discusses/authors generic company files, protects Git checkout destinations and drives a sequential supported-native-host project-chat bootstrap. Git is needed for checkout; no additional npm dependencies or separate Messenger product is required.
 
 Inc adds only its own product identity and two Inc-namespaced skills. It does not install another Messenger product, icon or command. For Inc-only or Messenger-already-installed onboarding, version distinctions, shared-service preservation and the pending fresh-chat UI acceptance check, see [coexistence](skills/setup-paprika-inc/references/coexistence.md). A required backend App may separately appear as Paprika Service; this kit declares none.
 
