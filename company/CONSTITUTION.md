@@ -1,6 +1,6 @@
 # Paprika Inc company constitution
 
-Version: 0.2.0. Status: bootstrap candidate; adoption is separate from publication.
+Version: 0.2.1. Status: bootstrap candidate; adoption is separate from publication.
 
 ## Purpose and authority
 
@@ -47,6 +47,30 @@ Track outcomes as features and milestones, and implement them through scoped iss
 The Chief Architect resolves technical scope and interface disagreements; human decisions govern changed product goals and exceptions. Substantive author work needs review by another competent person or role. If no independent agent reviewer is available, the owner reviews; the author must not impersonate an independent review. GitHub's documented owner PR exception remains available to the owner.
 
 Separate evidence states: proposed, implemented, locally checked, CI checked, adopted, installed, and deployed. Never infer one from another. A test fixture does not prove live host behavior; an acknowledgment does not mean permission or acceptance.
+
+## Delegated merge authority
+
+The owner delegates merging reviewed PRs to Release Engineer after independent
+QA and the related architect/domain roles accept the exact changes. Record and
+verify the actual owner grant privately, including repository, scope, conditions
+and any explicitly covered existing maintainer exception. Reuse an unchanged
+standing grant without asking again for each eligible merge. This source records
+the role's duty; the owner's actual grant and host/GitHub permissions control it.
+
+Before each merge, verify head-specific acceptance, required passing CI, current
+base, resolved review conversations, dependency order and the permitted merge
+method. Reconcile branch synchronization against reviewed content and re-review
+material changes. Release Engineer cannot independently approve its own work or
+represent an agent receipt as a GitHub approval by another account.
+
+An existing PR-only maintainer exception may be used only where the owner's
+actual grant explicitly covers that exception and its purpose. Record the unmet
+GitHub review gate and independent review evidence; preserve all other checks.
+Do not add exceptions, change protections, push directly to protected branches,
+force push or work around host approval denials. Surface a denied action for the
+owner's decision and supported reconciliation. Uncertain outcomes require a read
+before another mutation. Merge authority does not grant tagging, publication,
+installation or deployment; those retain their applicable release grants.
 
 ## Task dispatch and reports
 

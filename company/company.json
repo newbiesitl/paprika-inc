@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "definition_version": "0.4.0",
+  "definition_version": "0.4.1",
   "status": "bootstrap_candidate",
   "company_id": "paprika-inc-development",
   "repository": "newbiesitl/paprika-inc",
@@ -57,7 +57,7 @@
     },
     {
       "id": "release-engineer",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "definition": "company/roles/release-engineer/agent.md",
       "skill_sets": [
         "engineering-core"

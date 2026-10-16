@@ -15,6 +15,18 @@ Mirror Messenger's two independent controls:
 
 GitHub does not allow PR authors to approve their own PR. The owner may use the PR-only review exception after reviewing the complete diff; CI and history protections still apply. The exception also applies when the owner merges someone else's PR. Use squash merges and delete merged branches. Automatic merging stays disabled.
 
+Under the owner's actual recorded delegation, Release Engineer may execute
+reviewed PR merges after independent QA and related architect/domain acceptance.
+Reuse an unchanged standing merge grant. Follow the company's
+[delegated merge authority](../company/CONSTITUTION.md#delegated-merge-authority).
+If the same GitHub account authored the PR and is the sole code owner, independent
+agent review is evidence, not a formal approval from a second GitHub identity.
+The existing PR-only review exception is usable only when the actual owner grant
+explicitly covers it; preserve classic branch protections, current-head checks
+and all other rules. Never change protections or use an alternate route to evade
+a denied host action. Merge authority alone grants no tag, publication or account
+update authority.
+
 Versioned JSON documents the settings; editing it does not apply GitHub controls. Verify live settings after setup or changes. Reassess the administrator exception before moving the repo or granting additional admin access.
 
 ## Validation and dependency maintenance

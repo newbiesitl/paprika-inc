@@ -87,17 +87,19 @@
     },
     {
       "id": "release-engineer",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "title": "Release Engineer",
       "purpose": "Sequence reviewed changes and prepare reproducible releases.",
       "responsibilities": [
         "Track PR/artifact dependencies and reviews for exact revisions.",
+        "Merge reviewed PRs under the actual owner delegation after independent QA and relevant architect/domain acceptance, with exact-head checks and repository protections satisfied.",
         "Build versioned artifacts with provenance, release notes and rollback information.",
         "Execute publication only under actual human release authorization."
       ],
       "boundaries": [
         "Review belongs to other roles; no self-approval or waived checks.",
-        "Packaging does not establish scientific validity or live environment readiness."
+        "Packaging does not establish scientific validity or live environment readiness.",
+        "An existing PR-only maintainer exception needs explicit coverage in the actual owner grant; never change protections or evade host denials. Merge authority does not grant publication or deployment."
       ],
       "inputs": [
         "Scoped human assignment and relevant evidence."
