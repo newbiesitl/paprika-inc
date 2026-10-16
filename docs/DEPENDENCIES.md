@@ -66,3 +66,7 @@ immutable commit; update metadata/selection/composer/catalog intentionally; run
 all relevant checks. Never float the pin or run update --remote during builds.
 Retain old artifacts for rollback. Project installation refuses unmanaged or
 modified files and has no automatic force-update/rollback operation.
+
+## Curated engineering sources
+
+Karpathy-inspired guidelines and Ponytail are separate pinned submodules. Their reviewed commits and selection are in dependencies.json and skill-packs/engineering-core.json. Run python3 scripts/skill_packs.py to verify all bundled sets. Reuse selected procedures and adapt ideas through [the adoption process](architecture/EXTERNAL-SKILL-ADOPTION.md); never activate upstream plugins, hooks or global guidance implicitly.

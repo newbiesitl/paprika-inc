@@ -26,3 +26,7 @@ license declarations and each carries an exact LICENSE.upstream.md. Helpers,
 references and assets are retained internally, not as an upstream plugin install.
 Inc adds a portability companion and one documented SKILL.md prelude; original
 and emitted digests are recorded. See [dependency process](docs/DEPENDENCIES.md).
+
+## Optional engineering-core
+
+Selected review sections come from DietrichGebert/ponytail at commit 742e0abae1501e12d1254a81d05f16bba10d08c1, MIT, Copyright (c) 2026 DietrichGebert. The exact notice accompanies each generated skill. Original Paprika guidance adapts ideas from multica-ai/andrej-karpathy-skills at 2c606141936f1eeef17fa3043a72095b4765b9c2 and Ponytail; Karpathy source prose is not redistributed. The pack records sources, selections and transformations.

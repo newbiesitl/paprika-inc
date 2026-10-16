@@ -1,6 +1,16 @@
 {
   "schema_version": 1,
   "sets": {
+    "engineering-core": {
+      "manifest_sha256": "adb30bc37c74e7b6a8fff412ed76242f51121449074635a5c9427680ef56cc6a",
+      "skills": [
+        "paprika-code-review"
+      ],
+      "source_commits": {
+        "karpathy_guidelines": "2c606141936f1eeef17fa3043a72095b4765b9c2",
+        "ponytail": "742e0abae1501e12d1254a81d05f16bba10d08c1"
+      }
+    },
     "research-core": {
       "manifest_sha256": "988d91a74704904dd08598ab5ca39d9b06018d52dddf5fece717f0cb7df4b101",
       "package_version": "2.72.0",

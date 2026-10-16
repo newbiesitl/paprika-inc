@@ -17,5 +17,17 @@
     "commit": "a1043ef544e3a100c28e70a736b6cf32554d0677",
     "package_version": "2.72.0",
     "selection": "skill-packs/research-core.json"
+  },
+  "karpathy_guidelines": {
+    "repository": "https://github.com/multica-ai/andrej-karpathy-skills.git",
+    "path": "vendor/karpathy-guidelines",
+    "commit": "2c606141936f1eeef17fa3043a72095b4765b9c2",
+    "selection": "skill-packs/engineering-core.json"
+  },
+  "ponytail": {
+    "repository": "https://github.com/DietrichGebert/ponytail.git",
+    "path": "vendor/ponytail",
+    "commit": "742e0abae1501e12d1254a81d05f16bba10d08c1",
+    "selection": "skill-packs/engineering-core.json"
   }
 }

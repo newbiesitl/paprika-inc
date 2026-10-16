@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "execution": "native_host_parameters",
+  "automatic_application": false,
+  "roles": {
+    "chief-architect": {
+      "model": "gpt-6-astra",
+      "thinking": "high"
+    },
+    "backend-dev": {
+      "model": "gpt-6.1-sol",
+      "thinking": "high"
+    },
+    "frontend-dev": {
+      "model": "gpt-6.1-sol",
+      "thinking": "high"
+    },
+    "scientific-researcher": {
+      "model": "gpt-6.1-sol",
+      "thinking": "high"
+    },
+    "qa": {
+      "model": "gpt-6.1-sol",
+      "thinking": "xhigh"
+    },
+    "coordinator": {
+      "model": "gpt-6.1-sol",
+      "thinking": "high"
+    },
+    "release-engineer": {
+      "model": "gpt-6.1-sol",
+      "thinking": "high"
+    }
+  },
+  "notes": [
+    "Preferences are not authority; apply only with the actual human model choice.",
+    "Verify the current host supports the model/effort pair. Do not silently substitute.",
+    "The MVP helper does not read this file yet; native provisioning passes model and thinking explicitly.",
+    "No existing chat is changed by this file. All seven model pairs were human-selected; actual authorization and live bindings stay private."
+  ],
+  "legacy_role_preferences": {
+    "front-desk": {
+      "model": "gpt-6-luna",
+      "thinking": "medium"
+    }
+  }
+}

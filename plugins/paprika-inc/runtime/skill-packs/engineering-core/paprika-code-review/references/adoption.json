@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "id": "engineering-core",
+  "skills": [
+    "paprika-code-review"
+  ],
+  "sources": {
+    "karpathy_guidelines": {
+      "repository": "https://github.com/multica-ai/andrej-karpathy-skills.git",
+      "path": "vendor/karpathy-guidelines",
+      "commit": "2c606141936f1eeef17fa3043a72095b4765b9c2"
+    },
+    "ponytail": {
+      "repository": "https://github.com/DietrichGebert/ponytail.git",
+      "path": "vendor/ponytail",
+      "commit": "742e0abae1501e12d1254a81d05f16bba10d08c1"
+    }
+  },
+  "inputs": {
+    "karpathy_guidelines": {
+      "skills/karpathy-guidelines/SKILL.md": "6e22cc54cb02a5e98ae42d06d9d7292db0c1b43894831b32879beb0166b2aea7"
+    },
+    "ponytail": {
+      "LICENSE": "fb1bc6909ac3ef82d5c22106e32ef682b0cff66788fa915fb9b53b15c9d2f3ab",
+      "skills/ponytail/SKILL.md": "9badd22a32e19cb884e46dfa8d3aae82bb81dfa5484105b8b4f0262df823a509",
+      "skills/ponytail-review/SKILL.md": "33fe4ebe22a460924e5d4a261e223df22e409cc94ab76182bee9fb91a3ef022e"
+    }
+  },
+  "reuse": {
+    "source": "ponytail",
+    "path": "skills/ponytail-review/SKILL.md",
+    "sections": [
+      "## 1. Understand first",
+      "## 2. Look for"
+    ]
+  },
+  "decisions": [
+    {
+      "id": "connected-review",
+      "mode": "reuse",
+      "source": "ponytail",
+      "path": "skills/ponytail-review/SKILL.md",
+      "sections": [
+        "## 1. Understand first",
+        "## 2. Look for"
+      ],
+      "home": "references/connected-review.md",
+      "rationale": "Adds a concrete caller/data-flow and risk review procedure. Complete named sections are generated, never pasted by hand."
+    },
+    {
+      "id": "engineering-principles",
+      "mode": "adapt",
+      "source": "karpathy_guidelines",
+      "path": "skills/karpathy-guidelines/SKILL.md",
+      "sections": [
+        "## 1. Think Before Coding",
+        "## 2. Simplicity First",
+        "## 3. Surgical Changes",
+        "## 4. Goal-Driven Execution"
+      ],
+      "home": "references/engineering-guidance.md",
+      "rationale": "Original Paprika wording; proceed on reasonable reversible assumptions, ask only on material blockers. Do not redistribute upstream prose until standalone licensing is resolved."
+    },
+    {
+      "id": "reuse-before-abstraction",
+      "mode": "adapt",
+      "source": "ponytail",
+      "path": "skills/ponytail/SKILL.md",
+      "home": "references/engineering-guidance.md",
+      "rationale": "Prefer existing helpers and platform capabilities while preserving required validation, recovery, security and accessibility."
+    },
+    {
+      "id": "evidenced-findings",
+      "mode": "adapt",
+      "source": "ponytail",
+      "path": "skills/ponytail-review/SKILL.md",
+      "sections": [
+        "## 3. Check before you report",
+        "## 4. Output"
+      ],
+      "home": "SKILL.md",
+      "rationale": "Require concrete reachable failures and evidence limits. Use Paprika reporting; a ship recommendation grants no publishing authority. A shortcut cannot excuse violating required behavior."
+    },
+    {
+      "id": "existing-policy",
+      "mode": "already-covered",
+      "home": "current adopted company policy",
+      "rationale": "Human grants, independent review and concise communication already apply; do not install competing global policy."
+    }
+  ],
+  "excluded": [
+    "upstream plugin manifests",
+    "upstream AGENTS.md",
+    "session-wide personas",
+    "lifecycle hooks",
+    "automatic command routing",
+    "Ponytail lite/full/ultra modes",
+    "mandatory output slogans",
+    "blanket stop-and-ask rule",
+    "Karpathy verbatim redistribution"
+  ],
+  "licensing": {
+    "ponytail": "MIT; exact root LICENSE preserved with extracted procedure",
+    "karpathy_guidelines": "MIT declared in skill metadata; no standalone license at pin; ideas adapted in original Paprika wording only"
+  },
+  "updates": "Review selected inputs, support files and upstream license changes; revise the adaptation deliberately; run integrity and behavior checks plus representative baseline comparison before adopting a new pin. No automatic upgrades.",
+  "evidence": "Pilot candidate. Packaging and installer checks do not demonstrate improved review quality or token/time savings."
+}

@@ -4,3 +4,9 @@
 [submodule "vendor/scientific-agent-skills"]
 	path = vendor/scientific-agent-skills
 	url = https://github.com/K-Dense-AI/scientific-agent-skills.git
+[submodule "vendor/karpathy-guidelines"]
+	path = vendor/karpathy-guidelines
+	url = https://github.com/multica-ai/andrej-karpathy-skills.git
+[submodule "vendor/ponytail"]
+	path = vendor/ponytail
+	url = https://github.com/DietrichGebert/ponytail.git
