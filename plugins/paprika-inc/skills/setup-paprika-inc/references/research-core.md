@@ -16,6 +16,15 @@ preserve legacy behavior. Unknown IDs, duplicate IDs and nonarrays are rejected.
 Contracts reference the manifest and the canonical ownership map rather than
 copying skill bodies. Do not alter the development company's live roster.
 
+During researcher role discussion and initialization, follow the
+[researcher model recommendation](role-recommendations.md#researcher-model-recommendation):
+recommend `gpt-6-astra` / `xhigh` (extra-high effort) where the native host supports
+it, while preserving the selected owner's explicit choice. Before an authorized
+native action, validate the exact selected pair and supply model/thinking through
+supported host parameters; the MVP helper does not automatically consume model
+profiles. Preserve requested and host-confirmed applied settings separately.
+A changed preference alone neither reconfigures nor recreates an existing chat.
+
 After the agreed company files are written, committed and published, use the
 existing checkout workflow. Before native read/report onboarding, explicitly
 request installation into that selected Git project:

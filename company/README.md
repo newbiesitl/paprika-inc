@@ -22,6 +22,22 @@ The human selects the repository/project and assigns existing chats to roles. A 
 
 Existing chats can be adopted after identity, intended project membership, authorization, and conflicts are checked. Do not recreate them just because the manifest has a new version. A matching directory or display name alone is insufficient evidence.
 
+## Task reports
+
+Under the owner's established coordination and reporting grant, assigned roles
+report completion and known blockers to the dispatching Coordinator. Each task
+brief names the return recipient; reports preserve the work ID, result, evidence
+and remaining limits. Follow [the shared reporting rule](CONSTITUTION.md#task-dispatch-and-reports).
+Reporting does not replace independent review or acceptance, and this file alone
+grants no permission to communicate.
+
+## Receiver continuity
+
+Re-onboarded chats retain their verified receiver; recreated chats receive a new
+immutable receiver. Preserve handoffs/history and retire only the exact obsolete
+receiver under the owner's actual grant, following
+[receiver continuity and retirement](CONSTITUTION.md#receiver-continuity-and-retirement).
+
 ## Improve the company itself
 
 Use the approved version to develop a candidate successor through the normal issue/PR workflow. New files are proposed source, not live authority. [Self-development](../docs/architecture/SELF-DEVELOPMENT.md) specifies review, testing, adoption, rollback, and manual recovery.

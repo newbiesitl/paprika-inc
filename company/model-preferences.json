@@ -16,8 +16,8 @@
       "thinking": "high"
     },
     "scientific-researcher": {
-      "model": "gpt-6.1-sol",
-      "thinking": "high"
+      "model": "gpt-6-astra",
+      "thinking": "xhigh"
     },
     "qa": {
       "model": "gpt-6.1-sol",

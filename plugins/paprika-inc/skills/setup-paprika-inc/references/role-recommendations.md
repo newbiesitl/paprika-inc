@@ -36,3 +36,20 @@ host's available model/effort combinations, obtain or reuse the human's exact ch
 and pass model/thinking in native creation. Defaults remain defaults when no choice
 was made. Do not claim a template's preference is applied by the MVP helper: it
 does not yet read model profiles. Do not silently substitute unsupported models.
+
+## Researcher model recommendation
+
+For researcher roles, recommend `gpt-6-astra` with `thinking: xhigh` (extra-high
+effort) when the selected native host supports that exact pair. This is a starting
+recommendation for discussion, not a measured claim of scientific accuracy or an
+automatic override. Reuse the selected company's owner's explicit model/effort
+choice; another company's preference remains controlling even when it differs.
+If no choice was made, keep the host default until the owner selects an override.
+
+Before authorized creation or initialization, verify current native support for
+the selected exact pair and pass the supported model/thinking parameters. Surface
+unsupported settings without silently substituting. The MVP helper does not yet
+consume model profiles automatically. Preserve prior creation evidence and record
+the newly requested pair separately from the host-confirmed applied pair; absent
+confirmation remains unverified. A profile edit neither changes an existing chat
+nor authorizes recreation, installation or release.
