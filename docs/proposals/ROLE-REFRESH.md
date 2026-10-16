@@ -1,10 +1,11 @@
 # Paprika Inc role refresh proposal
 
-Status: proposed roster refresh. The human confirmed model choices for QA and the
-Coordinator and requested both roles. Release Engineer is recommended as requested;
-its proposed model is GPT-6.1 Sol / high. The new QA role is created and onboarded. Existing role replacements await the
-owner's review of this proposal. Governing policy remains
-`e1e7f1843de36b2fd60645f6c8f671cbd8e16db0`.
+Status: the human approved the seven-role roster, model settings, independent QA
+review and archive/rebuild sequence. QA is created and onboarded. The Coordinator
+must receive and accept the current architect's complete handoff before this chat
+is archived. Source publication, role adoption and account release remain separate.
+Governing policy for this assignment remains
+`e1e7f1843de36b2fd60645f6c8f671cbd8e16db0`. Actual grants and bindings stay private.
 
 ## Recommended roster
 
@@ -23,7 +24,7 @@ layers of management.
 | QA Engineer | Independent caller/data-flow review, regression/failure tests, extracted-package and real-client validation; reproducible defects and readiness reports | engineering-core | GPT-6.1 Sol / xhigh |
 | Scientific Researcher | Literature and engineering-source evaluation, skill/dependency assessments, benchmark critique and evidence records | research-core; engineering-core only for technical-source review | GPT-6.1 Sol / high |
 | Coordinator (replaces Front Desk) | Primary human contact, request triage, one owner/reviewer per task, specialist introductions and complete handoffs | Role contract; consult domain roles | GPT-6.1 Sol / high |
-| Release Engineer | Reviewed PR sequence, reproducible builds, versioning, release notes and authorized rollout/rollback | engineering-core | GPT-6.1 Sol / high (proposed) |
+| Release Engineer | Reviewed PR sequence, reproducible builds, versioning, release notes and authorized rollout/rollback | engineering-core | GPT-6.1 Sol / high |
 
 Release Engineer is warranted by the current PR volume. It owns sequencing and execution while the architect/domain owners and QA retain review. No separate Agentic Systems Developer is needed now; that implementation belongs to Backend. The human retains release scope and authority.
 
@@ -74,7 +75,7 @@ into the runtime.
 
 [model-preferences.json](../../company/model-preferences.json) records the selected
 native creation parameters. QA's authorized initialization uses them now; the Coordinator uses its separately approved Sol/high choice. Other
-roles use them when their replacement definitions and handoffs are approved.
+roles use them during the approved replacement once their handoffs and review are verified.
 These are workload-based choices, not measured claims of comparative performance.
 
 The current native host tool accepts model and thinking parameters. The generic
@@ -95,8 +96,8 @@ own model override or encode this team's model choices into the generic engine.
 The supported native operation is archival, not permanent deletion. Archival keeps
 history available for recovery. New native identities are expected on recreation.
 
-1. Owner reviews the candidate responsibilities, Data Engineer consolidation and
-   affected review relationships. No candidate governs its own adoption.
+1. The owner approved these responsibilities, Data Engineer consolidation and review
+   relationships. Preserve the actual grant privately; candidate files do not grant authority.
 2. At each assignment boundary, capture an outstanding-work inventory: work IDs,
    branches/PRs, evidence, blockers, decisions, message references and next actions.
    Backend's active icon investigation must transfer rather than disappear.
@@ -115,6 +116,6 @@ history available for recovery. New native identities are expected on recreation
    the owner-approved governance scope. This current chat remains the coordination
    point while the proposal and other transitions are under review.
 
-The user has requested eventual recreation. This proposal is the concrete review
-step required by the adopted [self-development procedure](../architecture/SELF-DEVELOPMENT.md).
-It does not claim any existing role has already been replaced.
+The owner approved recreation after reviewing this proposal. Follow the adopted
+[self-development procedure](../architecture/SELF-DEVELOPMENT.md); report the actual
+per-role transition evidence separately. Archival is recoverable, not permanent deletion.

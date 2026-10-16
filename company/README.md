@@ -7,10 +7,8 @@ This is the portable definition of Paprika Inc's own development team. It is one
 | Stable role ID | Contract | Primary outcome |
 | --- | --- | --- |
 | `chief-architect` | [Chief Architect](roles/chief-architect/agent.md) | Coherent design, scope, interfaces, and acceptance gates |
-| `front-desk` | [Front Desk](roles/front-desk/agent.md) | Accurate intake and authorized communication outside the project |
 | `backend-dev` | [Backend Dev](roles/backend-dev/agent.md) | Reliable company engine, host adapters, and service integration |
 | `frontend-dev` | [Frontend Dev](roles/frontend-dev/agent.md) | Clear setup, status, and recovery interactions |
-| `data-engineer` | [Data Engineer](roles/data-engineer/agent.md) | Durable contracts, assignments, knowledge, and migration integrity |
 | `scientific-researcher` | [Scientific Researcher](roles/scientific-researcher/agent.md) | Traceable research and evidence appraisal |
 | `qa` | [QA Engineer](roles/qa/agent.md) | Independent validation and release-readiness evidence |
 | `coordinator` | [Coordinator](roles/coordinator/agent.md) | Human intake, owner selection and complete handoffs |
@@ -30,4 +28,4 @@ Use the approved version to develop a candidate successor through the normal iss
 
 Public Git contains portable contracts and safe design knowledge. Private deployment state contains enrollment, actual grants, host/thread bindings, operation journals, and sensitive knowledge. The public `company_id` is a logical name; enrollment must also bind the actual repository identity. A fork is not the original company's runtime.
 
-The proposed steady roster replaces Front Desk with Coordinator and keeps Data Engineer on demand. Existing contracts remain indexed during transition so handoffs cannot silently drop them. See [the refresh proposal](../docs/proposals/ROLE-REFRESH.md). The canonical ownership map includes research, QA, coordination and release deliverables; it is not a record of live permissions.
+The owner-approved steady roster replaces Front Desk with Coordinator and keeps Data Engineer on demand. The former [Front Desk](roles/front-desk/agent.md) and [Data Engineer](roles/data-engineer/agent.md) contracts remain available as historical/specialist definitions, outside the persistent roster. Preserve their unresolved work during handoff. See [the refresh proposal](../docs/proposals/ROLE-REFRESH.md). The canonical ownership map includes research, QA, coordination and release deliverables; it is not a record of live permissions.

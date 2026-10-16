@@ -18,11 +18,6 @@
       ]
     },
     {
-      "id": "front-desk",
-      "version": "0.1.0",
-      "definition": "company/roles/front-desk/agent.md"
-    },
-    {
       "id": "backend-dev",
       "version": "0.2.0",
       "definition": "company/roles/backend-dev/agent.md",
@@ -37,11 +32,6 @@
       "skill_sets": [
         "engineering-core"
       ]
-    },
-    {
-      "id": "data-engineer",
-      "version": "0.1.0",
-      "definition": "company/roles/data-engineer/agent.md"
     },
     {
       "id": "scientific-researcher",
