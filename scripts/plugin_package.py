@@ -31,6 +31,8 @@ PACKAGE_FILES = frozenset({
     'runtime/paprika-inc/ownership.mjs', 'runtime/paprika-inc/authoring.mjs',
     'runtime/paprika-inc/checkout.mjs', 'runtime/paprika-inc/bootstrap.mjs', 'runtime/paprika-inc/mvp.mjs',
     'runtime/paprika-inc/skill-catalog.mjs', 'runtime/paprika-inc/skill-packs.mjs',
+    'runtime/paprika-inc/message-presentation.mjs', 'runtime/paprika-inc/outbound.mjs',
+    'skills/setup-paprika-inc/references/adaptive-delivery.md',
     'skills/paprika-inc/SKILL.md', 'skills/paprika-inc/agents/openai.yaml',
     'skills/paprika-inc/scripts/inc.mjs', 'skills/paprika-inc/references/commands.md',
     'skills/paprika-inc/references/definition-profile.md',
@@ -41,6 +43,7 @@ PACKAGE_FILES = frozenset({
     'skills/setup-paprika-inc/assets/example-blueprint.json',
     'skills/setup-paprika-inc/assets/scientific-blueprint.json',
     'skills/setup-paprika-inc/references/research-core.md',
+    'skills/setup-paprika-inc/references/native-message-presentation.md',
 })
 PUBLIC_SKILLS = ('paprika-inc', 'setup-paprika-inc')
 MANIFEST_FIELDS = {'name', 'version', 'description', 'author', 'homepage', 'license', 'keywords', 'extensions'}

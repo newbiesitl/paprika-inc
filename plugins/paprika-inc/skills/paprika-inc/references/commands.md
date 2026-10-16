@@ -28,3 +28,5 @@ selection; `--skill-set research-core` explicitly selects the one bundled set.
 Only install writes project files and private progress. See the
 [research workflow](../../setup-paprika-inc/references/research-core.md) for conflict,
 resume, portability and capability semantics. No upstream plugin is installed.
+
+`message start`, `message next`, `message record`, `message status` and `message reconcile` operate on one private authorized outbound task/report. [Automatic delivery](../../setup-paprika-inc/references/adaptive-delivery.md) documents private inputs, the exact threshold, failures and supported local hosts.

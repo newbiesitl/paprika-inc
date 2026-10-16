@@ -5,6 +5,9 @@ import { checkoutCompany, inspectCheckout, git } from './checkout.mjs';
 import { IncError, requireInput as check } from './errors.mjs';
 import { projectSkills } from './skill-packs.mjs';
 import { sha } from './skill-catalog.mjs';
+import { resolvePresentation, presentMessage } from './message-presentation.mjs';
+
+import {chooseDelivery,startOutbound,nextOutbound,recordOutbound} from './outbound.mjs';
 
 const prefix = 'mcp__codex_app__';
 export const requiredHostTools = ['list_projects', 'create_thread', 'list_threads', 'read_thread', 'wait_threads'].map(name => prefix + name);
@@ -68,7 +71,7 @@ export function bootstrapSummary(state) {
     limits: { one_user_bootstrap_at_a_time: true, singleton_enforced: false, concurrency_safe: false, background_receiving: false, automatic_adoption: false } };
 }
 
-export async function beginBootstrap(options) {
+export async function beginBootstrap(options, env = process.env) {
   const capabilities = options.hostCapabilities;
   const available = Array.isArray(capabilities?.tools) ? capabilities.tools : [];
   const missing = requiredHostTools.filter(tool => !available.includes(tool));
@@ -116,8 +119,9 @@ export async function beginBootstrap(options) {
           project_verified: false, thread_verified: false, blockers: [] };
       }) };
   }
+  state.delivery_policy ??= options.deliveryPolicy;
   await save(checkout.root, state);
-  return { ...await nextBootstrap({ repository: checkout.root }), checkout_action: checkout.checkout_action };
+  return { ...await nextBootstrap({ repository: checkout.root, messageContext: options.messageContext, deliveryContext:options.deliveryContext, deliveryPolicy:options.deliveryPolicy }, env), checkout_action: checkout.checkout_action };
 }
 
 function onboardingPrompt(state, role) {
@@ -128,23 +132,46 @@ function onboardingPrompt(state, role) {
     `Report responsibilities, ownership, boundaries, inputs/outputs, review relationships and blockers in this chat. Then return one JSON object in a fenced JSON block with: request_id=${role.request_id}, role_id=${role.id}, role_version=${role.version}, source_revision=${state.revision}, contract_sha256=<computed SHA256 of the role file>, ownership_sha256=<computed SHA256 of the ownership map>, sources_read=<relative source paths actually read>, state=ready or blocked, blockers=<array>. Expected contract hash ${role.contract_sha256}; ownership hash ${state.ownership_sha256}. A response is not adoption or new authority. The caller independently checks native project/host/cwd evidence.`;
 }
 
-function actionOutput(state, action) {
+async function actionOutput(state, action, messageContext, env = process.env, deliveryContext, deliveryPolicy, retryStorage = false) {
   const role = state.roles.find(role => role.id === action.role_id);
   let tool, args;
+  if (['create','onboard'].includes(action.kind) && !action.host_call) {
+    role.onboarding_body ??= onboardingPrompt(state,role);
+    role.onboarding_policy ??= chooseDelivery(role.onboarding_body, deliveryPolicy ?? state.delivery_policy);
+    action.delivery_policy ??= role.onboarding_policy;
+    if (action.delivery_policy.mode === 'reference') {
+      if (action.kind === 'create') { action.bootstrap_only = true; role.bootstrap_only = true; }
+      else {
+        action.delivery_operation_id ??= 'bootstrap-' + action.id;
+        await startOutbound({repository:state.destination,deliveryInput:{request_id:action.delivery_operation_id,body:role.onboarding_body,
+          topic:'Read/report onboarding',delivery_policy:{short_message_limit:action.delivery_policy.short_message_limit,force_reference:action.delivery_policy.force_reference}}},env);
+        if (deliveryContext?.recipient?.thread_id !== role.thread_id) return {ok:false,status:'delivery_setup_required',action_id:action.id,
+          detail:'Resolve the already verified role chat on the selected existing service; do not create a duplicate recipient or inline the large task.'};
+        const output=await nextOutbound({repository:state.destination,operationId:action.delivery_operation_id,deliveryContext,messageContext,retryStorage},env);
+        return {...output,action_id:action.id,delivery_action_id:output.action_id,role_id:role.id,delivery_operation_id:action.delivery_operation_id};
+      }
+    }
+  }
   if (action.kind === 'projects') { tool = 'list_projects'; args = {}; }
   if (action.kind === 'create') { tool = 'create_thread'; args = { title: `${state.company_id} · ${role.id}`,
-    target: { type: 'project', projectId: state.project_id, environment: { type: 'local' } }, prompt: onboardingPrompt(state, role) }; }
+    target: { type: 'project', projectId: state.project_id, environment: { type: 'local' } }, prompt: action.bootstrap_only ? 'READ/REPORT ONLY bootstrap. The human requested this persistent role chat. Wait for the sender to provide one confirmed Messenger board/message reference after verifying this chat and its recipient address. Do not start onboarding, implement work, message others or create subscriptions. Ownership is canonical only in the later pinned read/report assignment. If no retrievable assignment arrives, report onboarding pending.' : role.onboarding_body }; }
   if (action.kind === 'membership') { tool = 'list_threads'; args = {}; }
-  if (action.kind === 'onboard') { tool = 'send_message_to_thread'; args = { threadId: role.thread_id, hostId: 'local', prompt: onboardingPrompt(state, role) }; }
+  if (action.kind === 'onboard') { tool = 'send_message_to_thread'; args = { threadId: role.thread_id, hostId: 'local', prompt: role.onboarding_body }; }
   if (action.kind === 'wait') { tool = 'wait_threads'; args = { targets: [{ threadId: role.thread_id, hostId: 'local' }], timeoutMs: 10000 }; }
   if (action.kind === 'read') { tool = 'read_thread'; args = { threadId: role.thread_id, hostId: 'local', turnLimit: 1, includeOutputs: false, maxOutputCharsPerItem: 8000 }; }
+  if (['create', 'onboard'].includes(action.kind) && !action.host_call) {
+    const presentation = resolvePresentation({ context: messageContext, product: 'Paprika Inc', pluginNames: ['paprika-inc'], senderThreadId: env.CODEX_THREAD_ID });
+    args.prompt = presentMessage(args.prompt, presentation, { recipientLabel: role.id, recipientRole: role.id });
+    action.presentation = presentation;
+    action.host_call = { tool: prefix + tool, arguments: args };
+  }
   return { ok: true, command: 'bootstrap next', status: 'host_action', action_id: action.id, role_id: action.role_id ?? null,
     read_only: false, applied: true, completed: false, native_action_executed_by_helper: false,
-    host_call: { tool: prefix + tool, arguments: args }, call_once: ['create', 'onboard'].includes(action.kind),
+    host_call: action.host_call || { tool: prefix + tool, arguments: args }, presentation: action.presentation || null, call_once: ['create', 'onboard'].includes(action.kind),
     next_step: 'Invoke this supported host tool under the existing user bootstrap request, then record its actual result with this action ID. Do not fabricate tool results.' };
 }
 
-export async function nextBootstrap({ repository }) {
+export async function nextBootstrap({ repository, messageContext, deliveryContext, deliveryPolicy, retryStorage }, env = process.env) {
   const { root, state } = await verifiedState(repository);
   for (const role of state.roles.filter(role => role.skill_sets?.length && role.phase !== 'ready')) {
     const report = await projectSkills({ repository: root, command: 'skills status', roles: role.id, manifestPath: state.manifest_path });
@@ -153,6 +180,14 @@ export async function nextBootstrap({ repository }) {
     role.skill_sources = report.skills.filter(skill => skill.state === 'intact').flatMap(skill => [skill.path + '/SKILL.md', skill.path + '/INC-PORTABILITY.md']);
   }
   if (state.pending_action) {
+    if (state.pending_action.delivery_operation_id) {
+      const output=await actionOutput(state,state.pending_action,messageContext,env,deliveryContext,deliveryPolicy,retryStorage);
+      if(['submitted','stored_events_only'].includes(output.status)) {
+        const role=state.roles.find(role=>role.id === state.pending_action.role_id);
+        role.onboarding_submitted=true; role.phase='awaiting_onboarding'; state.pending_action=null;
+      }
+      await save(root,state); return output;
+    }
     if (['create', 'onboard'].includes(state.pending_action.kind)) return { ok: false, command: 'bootstrap next', status: 'submission_unresolved', action_id: state.pending_action.id,
       next_step: 'The write was prepared before native submission. Its outcome is unresolved; inspect native records and explicitly bind the confirmed chat. Do not blindly issue it again.' };
     return actionOutput(state, state.pending_action);
@@ -167,9 +202,10 @@ export async function nextBootstrap({ repository }) {
     kind = role.phase === 'pending' ? 'create' : ['verify_membership', 'membership_blocked'].includes(role.phase) ? 'membership' : !role.onboarding_submitted ? 'onboard' : ['read_onboarding', 'onboarding_blocked'].includes(role.phase) ? 'read' : 'wait';
   }
   const action = { id: randomUUID(), kind, role_id: role?.id ?? null };
+  const output = await actionOutput(state, action, messageContext, env, deliveryContext, deliveryPolicy, retryStorage);
   state.pending_action = action;
   await save(root, state); // Persist before exposing a create/send action, including on crash.
-  return actionOutput(state, action);
+  return output;
 }
 
 function receiptFromThread(result) {
@@ -182,12 +218,23 @@ function receiptFromThread(result) {
   catch { return null; }
 }
 
-export async function recordBootstrap({ repository, actionId, hostResult }) {
+export async function recordBootstrap({ repository, actionId, deliveryActionId, hostResult }) {
   // Always retain an actual native outcome even if definition files drifted
   // while that call was in flight. nextBootstrap blocks dependent actions.
   const { root, state } = await verifiedState(repository, false), action = state.pending_action;
   check(action && action.id === actionId, 'stale_host_result', 'The result must match the one pending native action ID.');
   const role = state.roles.find(role => role.id === action.role_id);
+  if (action.delivery_operation_id) {
+    const common=resolve(root,await git(['rev-parse','--git-common-dir'],root));
+    const outbound=JSON.parse(await readFile(join(common,'paprika-inc','outbound',action.delivery_operation_id+'.json'),'utf8'));
+    check(deliveryActionId === outbound.pending?.id,'stale_host_result','Record the exact delivery action ID as well as the bootstrap action ID.');
+    const outcome=await recordOutbound({repository:root,operationId:action.delivery_operation_id,actionId:outbound.pending?.id,hostResult});
+    if (outcome.status === 'stored') { await save(root,state); return {...bootstrapSummary(state),status:'onboarding_stored'}; }
+    if (['submitted','stored_events_only'].includes(outcome.status)) {
+      role.onboarding_submitted=true; role.phase='awaiting_onboarding'; state.pending_action=null;
+    }
+    await save(root,state); return {...bootstrapSummary(state),ok:['submitted','stored_events_only'].includes(outcome.status),status:outcome.status};
+  }
   let result;
   try { result = unwrapHostResult(hostResult); }
   catch {
@@ -224,7 +271,7 @@ export async function recordBootstrap({ repository, actionId, hostResult }) {
       state.roles.some(other => other !== role && other.thread_id === result.threadId)) {
       role.phase = 'creation_unresolved'; role.blockers = ['native_thread_id_or_host_unconfirmed'];
     } else {
-      role.thread_id = result.threadId; role.phase = 'verify_membership'; role.onboarding_submitted = true;
+      role.thread_id = result.threadId; role.phase = 'verify_membership'; role.onboarding_submitted = !action.bootstrap_only;
     }
   } else if (action.kind === 'membership') {
     check(Array.isArray(result.threads) && Array.isArray(result.pinnedThreads), 'invalid_host_result', 'Expected actual list_threads catalog data.');
@@ -277,7 +324,8 @@ export async function bindBootstrapRole({ repository, roleId, threadId }) {
   check(!role.thread_id || role.thread_id === threadId, 'binding_conflict', 'An existing native binding cannot be silently replaced.');
   check(!state.roles.some(other => other !== role && other.thread_id === threadId), 'binding_conflict', 'Another requested role already uses that native chat.');
   check(!state.pending_action || state.pending_action.role_id === roleId, 'pending_other_role', 'Resolve the current native action before binding a different role.');
-  if (['create', 'onboard'].includes(state.pending_action?.kind) || ['creation_unresolved', 'onboarding_submission_unresolved'].includes(role.phase)) role.onboarding_submitted = true;
+  check(!state.pending_action?.delivery_operation_id,'delivery_unresolved','Reconcile the existing outbound operation before binding; do not bypass a stored or uncertain task.');
+  if (['create', 'onboard'].includes(state.pending_action?.kind) || ['creation_unresolved', 'onboarding_submission_unresolved'].includes(role.phase)) role.onboarding_submitted = !role.bootstrap_only;
   role.thread_id = threadId; role.phase = 'verify_membership'; role.project_verified = false; role.thread_verified = false; role.blockers = [];
   state.pending_action = null; state.phase = state.project_id ? 'onboarding' : 'discover_project';
   await save(root, state);

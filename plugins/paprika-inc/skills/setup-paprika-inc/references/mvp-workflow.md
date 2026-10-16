@@ -86,7 +86,7 @@ python3 scripts/prepare-plugin.py --service-binding <private-native-report.json>
 
 Only that private export adds `.app.json`, containing exactly one existing required App, with matching Inc manifest pointers and binding provenance. The builder cannot authenticate caller metadata and never creates an App/service, registers OAuth or installs a Messenger product/skills. Save/install/connect only when requested through supported host tooling, then verify authenticated configuration/board access separately. A required **Paprika Service** App may appear separately; no unsupported visibility workaround is used.
 
-Inc is 0.3.0; bundled Messenger source remains plugin 1.6.0 / source service 0.8.0 at its exact pin. The running API is independently observed. A newer API requires capability review, never automatic downgrade/replacement. This MVP creates no receiver registration, subscription, schedule or background runner.
+Inc is 0.3.1; bundled Messenger source remains plugin 1.6.0 / source service 0.8.0 at its exact pin. The running API is independently observed. A newer API requires capability review, never automatic downgrade/replacement. This MVP creates no receiver registration, subscription, schedule or background runner.
 
 ## Optional research selection
 
@@ -100,3 +100,7 @@ digest. No optional service calls or research dispatch happen during bootstrap.
 ## Evidence limits
 
 Fixtures exercise command/package/Git/native contracts without account installation or real chat creation. Actual installation, fresh-chat picker coexistence, exact saved-project association, persistent app-visible/reopened chats and real read/report responses remain separate live acceptance. Do not label the whole user workflow verified from fixture passes. Advanced singleton/race/claim, failover, transfer and self-adoption designs remain future hardening rather than MVP prerequisites.
+
+For product branding and sender attribution, collect fresh [native presentation observations](native-message-presentation.md) before each new create/onboard and pass --message-context on start/next. This option never rewrites a pending submission or changes its request/receipt identity. The portable ZIP is suitable for supported private account packaging without a hard-coded local marketplace.
+
+Automatic task/report and large onboarding delivery now uses the 1500-code-point policy. See [the delivery workflow](adaptive-delivery.md). Storage, native submission and recipient retrieval are separate evidence states.

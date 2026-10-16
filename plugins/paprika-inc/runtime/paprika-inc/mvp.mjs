@@ -3,8 +3,12 @@ import { checkoutCompany } from './checkout.mjs';
 import { beginBootstrap, nextBootstrap, recordBootstrap, bindBootstrapRole, bootstrapStatus } from './bootstrap.mjs';
 import { projectSkills } from './skill-packs.mjs';
 
+import {startOutbound,nextOutbound,recordOutbound,outboundStatus,reconcileOutbound} from './outbound.mjs';
+
 export async function executeMvp(options) {
   const command = options.command;
+  if(command.startsWith('message ')) return ({'message start':startOutbound,'message next':nextOutbound,
+    'message record':recordOutbound,'message status':outboundStatus,'message reconcile':reconcileOutbound})[command](options);
   if (command.startsWith('skills ')) return projectSkills(options);
   if (command === 'author plan' || command === 'author write') return authorCompany({ ...options, write: command === 'author write' });
   if (command === 'checkout') {
