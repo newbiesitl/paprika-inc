@@ -34,12 +34,14 @@ PACKAGE_FILES = frozenset({
     'runtime/paprika-inc/message-presentation.mjs', 'runtime/paprika-inc/outbound.mjs',
     'skills/setup-paprika-inc/references/adaptive-delivery.md',
     'skills/paprika-inc/SKILL.md', 'skills/paprika-inc/agents/openai.yaml',
+    'skills/paprika-inc/assets/paprika-inc-icon.png',
     'skills/paprika-inc/scripts/inc.mjs', 'skills/paprika-inc/references/commands.md',
     'skills/paprika-inc/references/definition-profile.md',
     'skills/setup-paprika-inc/SKILL.md', 'skills/setup-paprika-inc/agents/openai.yaml',
     'skills/setup-paprika-inc/references/boundaries.md',
     'skills/setup-paprika-inc/references/coexistence.md',
     'skills/setup-paprika-inc/references/mvp-workflow.md',
+    'skills/setup-paprika-inc/assets/paprika-inc-icon.png',
     'skills/setup-paprika-inc/assets/example-blueprint.json',
     'skills/setup-paprika-inc/assets/scientific-blueprint.json',
     'skills/setup-paprika-inc/references/research-core.md',
@@ -67,6 +69,28 @@ def read_json(path):
 def profile_fields(value, allowed, location):
     require(isinstance(value, dict), f'{location} must be an object')
     require(set(value) <= allowed, f'Unsupported {location} fields: {sorted(set(value) - allowed)}')
+
+
+def skill_interface(path):
+    # This kit uses a deliberately narrow YAML profile: one interface mapping
+    # with JSON-quoted string scalars. Parse that subset, rejecting unsupported
+    # syntax and duplicate keys rather than silently skipping icon declarations.
+    lines = path.read_text(encoding='utf-8').splitlines()
+    require(lines and lines[0] == 'interface:', 'Invalid skill interface mapping')
+    fields = {}
+    for line in lines[1:]:
+        if not line.strip():
+            continue
+        match = re.fullmatch(r'  ([a-z_]+): (".*")', line)
+        require(match is not None, 'Skill interface requires JSON-quoted string fields')
+        key, raw = match.groups()
+        value = json.loads(raw)
+        require(key not in fields and isinstance(value, str) and value.strip(),
+                'Duplicate or invalid skill interface field')
+        fields[key] = value
+    require(set(fields) == {'display_name', 'short_description', 'icon_small', 'icon_large', 'default_prompt'},
+            'Missing or unsupported skill interface fields')
+    return fields
 
 
 def contained(root, relative):
@@ -184,9 +208,14 @@ def verify_package(root, provenance_required=False):
     for name in discovered_skills:
         skill = contained(root, f'skills/{name}/SKILL.md').read_text()
         require(skill.startswith(f'---\nname: {name}\ndescription: ') and '\n---\n' in skill, 'Invalid skill frontmatter')
-        agent = contained(root, f'skills/{name}/agents/openai.yaml').read_text()
-        for reference in re.findall(r'icon_(?:small|large): "([^"]+)"', agent):
-            contained(root / 'skills' / name, reference) if '..' not in reference else contained(root, f'skills/{name}/{reference}')
+        interface = skill_interface(contained(root, f'skills/{name}/agents/openai.yaml'))
+        for field in ['icon_small', 'icon_large']:
+            reference = interface[field]
+            require(reference.startswith('./') and '\\' not in reference and
+                    all(part and part not in {'.', '..'} for part in reference[2:].split('/')),
+                    f'Unsafe skill icon reference: {name}:{field}')
+            skill_icon = contained(root / 'skills' / name, reference).read_bytes()
+            require(skill_icon == icon, f'Skill icon must preserve the approved navy icon: {name}:{field}')
     for required in ['README.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md', 'runtime/paprika-inc/commands.json',
                      'runtime/paprika-inc/engine.mjs', 'runtime/paprika-inc/definition.mjs', 'runtime/paprika-inc/cli.mjs',
                      'runtime/paprika-inc/messenger-adapter.mjs', 'skills/paprika-inc/scripts/inc.mjs', *COMPONENTS]:
