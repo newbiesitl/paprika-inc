@@ -156,32 +156,48 @@ test('ordinary native onboarding carries selected role paths and validates repor
   manifest.roles[0].skill_sets=['research-core']; await writeFile(path,JSON.stringify(manifest,null,2)+'\n');
   await git(f.source,'add','.');await git(f.source,'commit','-m','Select research procedures');
   const digest=(await inspectDefinition(f.source)).definition_input_sha256;
-  const record=async (action,result) => recordBootstrap({repository:f.destination,actionId:action.action_id,hostResult:result});
-  const first=await beginBootstrap({repository:f.source,destination:f.destination,expectedDigest:digest,roles:'organizer',hostCapabilities:capabilities()});
+  const senderEnv={CODEX_THREAD_ID:'fixture-research-sender'};
+  const next=options=>nextBootstrap(options,senderEnv);
+  const record=async (action,result) => recordBootstrap({repository:f.destination,actionId:action.action_id,deliveryActionId:action.delivery_action_id,hostResult:result});
+  const first=await beginBootstrap({repository:f.source,destination:f.destination,expectedDigest:digest,roles:'organizer',hostCapabilities:capabilities()},senderEnv);
   await install(f.destination); await record(first,projectReport(f.destination));
-  const create=await nextBootstrap({repository:f.destination});
+  const create=await next({repository:f.destination});
   assert.equal(create.host_call.tool,'mcp__codex_app__create_thread');
-  assert.match(create.host_call.arguments.prompt,/\.agents\/skills\/paper-lookup\/SKILL.md/);
-  assert.match(create.host_call.arguments.prompt,/optional_feature_disabled/);
-  assert.match(create.host_call.arguments.prompt,/Do not run API calls/);
+  assert.match(create.host_call.arguments.prompt,/Wait for the sender/);
+  const frozen=(await journal(f.destination)).roles[0].onboarding_body;
+  assert.match(frozen,/\.agents\/skills\/paper-lookup\/SKILL.md/);
+  assert.match(frozen,/optional_feature_disabled/);
+  assert.match(frozen,/Do not run API calls/);
   await record(create,{threadId:'fictional-scientist',hostId:'local'});
-  const membership=await nextBootstrap({repository:f.destination});await record(membership,membershipReport(f.destination,'fictional-scientist'));
-  const wait=await nextBootstrap({repository:f.destination});await record(wait,{status:'completed'});
-  const read=await nextBootstrap({repository:f.destination}), response=await readReport(f.destination,'organizer');
+  const membership=await next({repository:f.destination});await record(membership,membershipReport(f.destination,'fictional-scientist'));
+  const deliveryContext={deployment:'https://example.invalid',board:'main',service_available:true,recipient_can_retrieve:true,
+    service_tools:{post_message:'mcp__fixture__paprika_service_post_message',get_message:'mcp__fixture__paprika_service_get_message'},
+    available_tools:['mcp__fixture__paprika_service_post_message','mcp__fixture__paprika_service_get_message'],subscriptions:[],
+    sender:{id:'sender',label:'Sender',board:'main',thread_id:senderEnv.CODEX_THREAD_ID},
+    recipient:{id:'scientist',label:'Scientist',board:'main',thread_id:'fictional-scientist'},
+    native:{source:'read_thread',thread:{id:'fictional-scientist',kind:'codex',hostId:'local'}}};
+  const store=await next({repository:f.destination,deliveryContext});
+  assert.equal(store.host_call.arguments.body,frozen);
+  await record(store,{message:{...store.host_call.arguments,id:'science-task',created_at:'2026-01-01T00:00:00Z'}});
+  const notify=await next({repository:f.destination,deliveryContext});
+  assert.ok(!notify.host_call.arguments.prompt.includes(frozen));
+  await record(notify,{threadId:'fictional-scientist'});
+  const wait=await next({repository:f.destination});await record(wait,{status:'completed'});
+  const read=await next({repository:f.destination}), response=await readReport(f.destination,'organizer');
   // The old receipt alone cannot attest that selected skill sources/report were read.
   const blocked=await record(read,response); assert.equal(blocked.status,'onboarding_blocked');
   const state=await journal(f.destination),role=state.roles[0];
   const item=response.turns[0].items[0], receipt=JSON.parse(item.text.match(/```json\n([\s\S]*?)\n```/)[1]);
   receipt.sources_read.push(...role.skill_sources); receipt.skill_report_sha256=role.skill_report_sha256;
   item.text='```json\n'+JSON.stringify(receipt)+'\n```';
-  const retry=await nextBootstrap({repository:f.destination});
+  const retry=await next({repository:f.destination});
   const installedPath=join(f.destination,'.agents/skills/paper-lookup/SKILL.md'), original=await readFile(installedPath);
   await writeFile(installedPath,'Changed after the prepared native read.');
   const changed=await record(retry,response);assert.equal(changed.status,'onboarding_blocked');
   assert.deepEqual(changed.roles[0].blockers,['skill_report_changed_since_request']);
   await writeFile(installedPath,original);
-  const reconciled=await nextBootstrap({repository:f.destination});await record(reconciled,response);
-  const result=await nextBootstrap({repository:f.destination});assert.equal(result.status,'ready');
+  const reconciled=await next({repository:f.destination});await record(reconciled,response);
+  const result=await next({repository:f.destination});assert.equal(result.status,'ready');
   assert.equal(result.readiness_scope,'requested_roster_read_report_onboarding_only');
   assert.deepEqual(result.roles[0].skill_sets,['research-core']);
   assert.ok(result.roles[0].skill_report.skills.every(skill => skill.state === 'intact'));

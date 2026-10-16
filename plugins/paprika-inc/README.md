@@ -17,3 +17,5 @@ Git project's .agents/skills/. Integrity, local dependencies and unverified acce
 are separate. Optional paid/PDF/figure/Scholar features are disabled by default.
 Only the two Inc entry skills are public plugin exports; no upstream plugin is
 registered.
+
+Automatic task/report and large onboarding delivery now uses the 1500-code-point policy. See [the delivery workflow](skills/setup-paprika-inc/references/adaptive-delivery.md). Storage, native submission and recipient retrieval are separate evidence states.

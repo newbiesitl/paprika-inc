@@ -6,12 +6,13 @@ import { parseJson } from './definition.mjs';
 export function parseArguments(argv) {
   const options = {}, words = [];
   const flags = { '--repo': 'repository', '--manifest': 'manifestPath', '--service-report': 'serviceReportPath',
-    '--spec': 'specPath', '--host-capabilities': 'hostCapabilitiesPath', '--result': 'hostResultPath', '--message-context': 'messageContextPath',
+    '--delivery-input':'deliveryInputPath', '--delivery-context':'deliveryContextPath', '--delivery-policy':'deliveryPolicyPath', '--operation':'operationId', '--delivery-action':'deliveryActionId', '--spec': 'specPath', '--host-capabilities': 'hostCapabilitiesPath', '--result': 'hostResultPath', '--message-context': 'messageContextPath',
     '--destination': 'destination', '--revision': 'revision', '--definition-digest': 'expectedDigest',
     '--roles': 'roles', '--action': 'actionId', '--role-id': 'roleId', '--thread-id': 'threadId',
     '--initial-role': 'initialRole', '--initial-thread-id': 'initialThreadId', '--project-id': 'projectId', '--skill-set': 'skillSet' };
   for (let index = 0; index < argv.length; index++) {
     const token = argv[index];
+    if (token === '--retry-storage') { options.retryStorage=true; continue; }
     if (Object.hasOwn(flags, token)) {
       const key = flags[token];
       check(!Object.hasOwn(options, key), 'duplicate_option', `${token} must be supplied once.`);
@@ -33,7 +34,7 @@ export async function runCli(argv = process.argv.slice(2), output = process.stdo
   try {
     const { serviceReportPath, ...options } = parseArguments(argv);
     mutating = routeCommand(options.command).spec.read_only === false;
-    for (const [pathKey, valueKey] of [['specPath', 'spec'], ['hostCapabilitiesPath', 'hostCapabilities'], ['hostResultPath', 'hostResult'], ['messageContextPath', 'messageContext']]) {
+    for (const [pathKey, valueKey] of [['specPath', 'spec'], ['hostCapabilitiesPath', 'hostCapabilities'], ['hostResultPath', 'hostResult'], ['messageContextPath', 'messageContext'], ['deliveryInputPath','deliveryInput'], ['deliveryContextPath','deliveryContext'], ['deliveryPolicyPath','deliveryPolicy']]) {
       if (!options[pathKey]) continue;
       let handle;
       try {
