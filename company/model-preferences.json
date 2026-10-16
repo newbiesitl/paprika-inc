@@ -23,15 +23,26 @@
       "model": "gpt-6.1-sol",
       "thinking": "xhigh"
     },
-    "front-desk": {
-      "model": "gpt-6-luna",
-      "thinking": "medium"
+    "coordinator": {
+      "model": "gpt-6.1-sol",
+      "thinking": "high"
+    },
+    "release-engineer": {
+      "model": "gpt-6.1-sol",
+      "thinking": "high",
+      "selection_status": "proposed"
     }
   },
   "notes": [
     "Preferences are not authority; apply only with the actual human model choice.",
     "Verify the current host supports the model/effort pair. Do not silently substitute.",
     "The MVP helper does not read this file yet; native provisioning passes model and thinking explicitly.",
-    "No existing chat is changed by this file. Data Engineer activation/model is part of the roster proposal."
-  ]
+    "No existing chat is changed by this file. Release Engineer model and Data Engineer activation remain in the roster proposal."
+  ],
+  "legacy_role_preferences": {
+    "front-desk": {
+      "model": "gpt-6-luna",
+      "thinking": "medium"
+    }
+  }
 }

@@ -1,13 +1,14 @@
 # Paprika Inc role refresh proposal
 
-Status: proposed roster refresh; model choices confirmed by the human. The new QA
-role is separately authorized for creation. Existing role replacements await the
+Status: proposed roster refresh. The human confirmed model choices for QA and the
+Coordinator and requested both roles. Release Engineer is recommended as requested;
+its proposed model is GPT-6.1 Sol / high. The new QA role is created and onboarded. Existing role replacements await the
 owner's review of this proposal. Governing policy remains
 `e1e7f1843de36b2fd60645f6c8f671cbd8e16db0`.
 
 ## Recommended roster
 
-Use six persistent roles for this stage. Keep Data Engineer as an on-demand
+Use seven persistent roles for this stage. Keep Data Engineer as an on-demand
 specialty rather than a seventh standing chat. Frontend and Data Engineer's recent
 histories contain onboarding but no implementation assignments; Backend carries
 the current packaging/runtime work and icon investigation. Research has delivered
@@ -21,11 +22,10 @@ layers of management.
 | Frontend Dev | Onboarding/status/recovery UX, branding/icon presentation, user-facing command language and accessible UI; interaction and visual evidence | engineering-core | GPT-6.1 Sol / high |
 | QA Engineer | Independent caller/data-flow review, regression/failure tests, extracted-package and real-client validation; reproducible defects and readiness reports | engineering-core | GPT-6.1 Sol / xhigh |
 | Scientific Researcher | Literature and engineering-source evaluation, skill/dependency assessments, benchmark critique and evidence records | research-core; engineering-core only for technical-source review | GPT-6.1 Sol / high |
-| Front Desk | Attributed intake, backlog/status summaries, milestone tracking and authorized routing; complete handoffs with outstanding items | Role contract; no engineering or research pack by default | GPT-6 Luna / medium |
+| Coordinator (replaces Front Desk) | Primary human contact, request triage, one owner/reviewer per task, specialist introductions and complete handoffs | Role contract; consult domain roles | GPT-6.1 Sol / high |
+| Release Engineer | Reviewed PR sequence, reproducible builds, versioning, release notes and authorized rollout/rollback | engineering-core | GPT-6.1 Sol / high (proposed) |
 
-No separate Release Manager or Agentic Systems Developer is needed now: those
-implementation responsibilities belong to Backend, acceptance to the architect,
-and independent verification to QA. The human retains release and scope authority.
+Release Engineer is warranted by the current PR volume. It owns sequencing and execution while the architect/domain owners and QA retain review. No separate Agentic Systems Developer is needed now; that implementation belongs to Backend. The human retains release scope and authority.
 
 Data/schema work initially stays with Backend with explicit architect/QA review.
 Activate a dedicated Data Engineer when durable schema migration, concurrency,
@@ -39,17 +39,41 @@ Retain its contract and history; do not silently discard it or mark its work don
 - QA verifies the exact artifact/client combination, including negative evidence.
 - Research identifies and assesses sources; it does not accept its own integration.
 - The architect chooses the design and adoption recommendation.
-- Front Desk records status from evidence; it cannot turn a message into authority.
+- Coordinator owns intake, routing and completion tracking; it cannot turn a message into authority.
+- Release Engineer owns the reviewed merge/build/release sequence; it cannot approve its own work.
 
 All engineering roles reference one shared pack. Do not paste skill bodies into
 contracts. The QA pilot precedes broad use; the selection remains optional.
 Feature records should identify owner, reviewer, milestone, acceptance criteria,
 dependency pins and evidence state (proposed/implemented/tested/installed/released).
 
+## Human-to-company workflow
+
+Send requests to Coordinator. It classifies discussion/research/implementation/
+review/release, consults the architect or required specialists under the human's
+coordination grant, and selects one accountable owner and reviewer. It returns
+the actual specialist chat link so detailed discussions happen directly with that
+role. Architecture brainstorming remains available directly with Chief Architect.
+
+Each handoff preserves the human's goal, scope, decisions, evidence, acceptance
+criteria and open questions. Specialists report progress into the same work record;
+Coordinator keeps the human informed. It does not automatically turn a discussion
+into permission to publish. Long handoffs use stored Paprika message references.
+
+Release Engineer then sequences reviewed PRs, verifies head-specific approvals
+and checks, builds artifacts and executes only the authorized release. QA checks
+the actual artifact/client environment. Research companies use the same separation:
+scientific reviewers approve conclusions; Release Engineer packages reproducible
+code/data/notebooks/reports and handles authorized distribution.
+
+These roles are also recommended by the generic initialization guidance and
+fictional IT/research blueprints in the plugin; no actual company roster is hard-coded
+into the runtime.
+
 ## Models at creation and initialization
 
 [model-preferences.json](../../company/model-preferences.json) records the selected
-native creation parameters. QA's authorized initialization uses them now. Other
+native creation parameters. QA's authorized initialization uses them now; the Coordinator uses its separately approved Sol/high choice. Other
 roles use them when their replacement definitions and handoffs are approved.
 These are workload-based choices, not measured claims of comparative performance.
 

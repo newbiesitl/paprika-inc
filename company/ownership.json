@@ -14,6 +14,53 @@
       "reviewer_roles": [
         "chief-architect"
       ]
+    },
+    {
+      "path": "docs/work/",
+      "owner_role": "coordinator",
+      "reviewer_roles": [
+        "chief-architect"
+      ]
+    },
+    {
+      "path": "docs/releases/",
+      "owner_role": "release-engineer",
+      "reviewer_roles": [
+        "chief-architect",
+        "qa"
+      ]
+    },
+    {
+      "path": "plugins/paprika-inc/runtime/",
+      "owner_role": "backend-dev",
+      "reviewer_roles": [
+        "chief-architect",
+        "qa"
+      ]
+    },
+    {
+      "path": "scripts/",
+      "owner_role": "backend-dev",
+      "reviewer_roles": [
+        "chief-architect",
+        "qa"
+      ]
+    },
+    {
+      "path": "plugins/paprika-inc/skills/",
+      "owner_role": "frontend-dev",
+      "reviewer_roles": [
+        "backend-dev",
+        "qa"
+      ]
+    },
+    {
+      "path": "docs/architecture/",
+      "owner_role": "chief-architect",
+      "reviewer_roles": [
+        "backend-dev",
+        "qa"
+      ]
     }
   ]
 }

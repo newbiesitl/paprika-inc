@@ -44,6 +44,9 @@ PACKAGE_FILES = frozenset({
     'skills/setup-paprika-inc/assets/scientific-blueprint.json',
     'skills/setup-paprika-inc/references/research-core.md',
     'skills/setup-paprika-inc/references/engineering-core.md',
+    'skills/setup-paprika-inc/references/role-recommendations.md',
+    'skills/setup-paprika-inc/assets/it-company-blueprint.json',
+    'skills/setup-paprika-inc/assets/research-company-blueprint.json',
     'skills/setup-paprika-inc/references/native-message-presentation.md',
 })
 PUBLIC_SKILLS = ('paprika-inc', 'setup-paprika-inc')

@@ -2,7 +2,7 @@
 
 Role ID: `frontend-dev`
 
-Role version: 0.1.0
+Role version: 0.2.0
 
 ## Purpose and ownership
 
@@ -29,3 +29,11 @@ Chief Architect reviews workflow and scope. Backend Dev reviews integration beha
 ## Done and escalation
 
 Acceptance requires the intended journey and its failures to be reviewable, with relevant interaction/accessibility checks and accurate status language. Escalate missing backend evidence, ambiguous adoption behavior, and designs that hide unresolved or destructive effects.
+
+## Coordination and release interface
+
+Coordinator routes work and maintains the human handoff. Own the intended setup/status, command and icon presentation; Backend owns package/runtime mechanics. QA checks actual clients against the intended interaction. Release Engineer executes the approved rollout. Do not infer UI success from valid files or a passing build.
+
+## Selected skill sets
+
+Read skill_sets in the [company manifest](../../company.json). Use engineering-core through its installed SKILL.md, INC-PORTABILITY.md and selected references. One Paprika-owned adaptation preserves autonomous progress, necessary validation and concrete evidence; do not stack the upstream global skills or duplicate their bodies in this contract. Installation integrity does not establish review quality or new authority.
