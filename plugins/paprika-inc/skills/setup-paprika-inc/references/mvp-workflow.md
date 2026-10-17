@@ -30,6 +30,16 @@ node <helper> checkout --repo <Git-URL> --destination <explicit-local-folder> --
 
 `author plan` is a preview; `author write` is used only after a write request, without asking again for the same action. Existing AGENTS.md/unrelated files are preserved. Different existing company targets produce a conflict and diff, not an overwrite; edit deliberately under the request. Do not automatically commit/push without the applicable human direction. Report drafts clearly. A discussed digest mismatch, dirty/unpublished definition input, missing contract, incompatible origin/revision or unrelated/nonempty destination blocks instead of silently cloning stale definitions. Existing checkouts retain unrelated working files. There is no force reset or recursive destination deletion. Standard Git authentication is preserved; never embed tokens in URLs/public files.
 
+## Work tracking after onboarding
+
+For requested task tracking or checkpoint adoption, use the separate
+[work-checkpoint procedure](work-checkpoints.md) and templates. Existing company
+work/knowledge records take precedence over creating another tracker. Initial
+bootstrap remains read/report only; reference the selected company's adopted
+records when relevant, and preserve initial receipts separately from any later
+exact-version workflow adoption. This guidance adds no bootstrap command or
+automatic record generation.
+
 ## Dedicated company board
 
 For an explicitly requested live company initialization/creation, the first staff establishes a dedicated Paprika Messenger board before board-dependent onboarding or message delivery. This is an agent-operated setup step through supported Messenger tools, not a network call made by the local CLI. A discussion, `author plan`, `author write`, source build or ordinary install alone creates no remote board.

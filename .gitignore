@@ -10,3 +10,10 @@ artifacts/
 __pycache__/
 *.pyc
 *.log
+# Runtime/model checkpoints stay private; allow only direct task Markdown summaries.
+checkpoints/
+!docs/work/tasks/*/checkpoints/
+docs/work/tasks/*/checkpoints/*
+!docs/work/tasks/*/checkpoints/*.md
+# A Markdown-looking directory must not expose nested contents.
+docs/work/tasks/*/checkpoints/*/

@@ -1,6 +1,6 @@
 ---
 name: paprika-inc
-description: Discuss and author a generic repository-defined company, inspect roles and ownership, clone a selected Git revision safely, and bootstrap persistent local Codex project chats through supported native host tools.
+description: Discuss and author a generic repository-defined company, inspect roles and ownership, track authorized work with flexible checkpoints, clone a selected Git revision safely, and bootstrap persistent local Codex project chats through supported native host tools.
 ---
 
 Use the existing chat the user chose as the initial staff/coordinator for discussion; do not create a discussion chat by default. Use this skill for company discussion, requested file writing, inspection, Git checkout, bootstrap/resume and status. Keep the product independent of the development team's roster. Follow [the MVP workflow](../setup-paprika-inc/references/mvp-workflow.md) for concrete commands and native action/result processing, and [setup](../setup-paprika-inc/SKILL.md) for installation or an existing-service binding.
@@ -45,6 +45,14 @@ remain separate from independent review and acceptance.
 For authorized outbound agent tasks/reports and create/onboard handoffs, follow [automatic delivery](../setup-paprika-inc/references/adaptive-delivery.md): count the original body as Unicode code points, inline at most the configured limit (default 1500), otherwise store intact first and send metadata/reference only. Use `message start/next/record/status/reconcile` with private inputs and observed tools/routes. Any supplied collaboration_id or reply_to_id requires confirmed storage/reference even for a short body; preserve the server-counted chain, parent and Handoff N/M. Preserve frozen policy/arguments and uncertainty. Receiving a reference requires fetching the exact board/message and verifying this chat is the canonical recipient; unavailable retrieval is blocked. Never inline a large body as fallback or create a service/subscription for this feature.
 
 For an agreed engineering/QA role, follow the optional [engineering-core workflow](../setup-paprika-inc/references/engineering-core.md). It selects one Paprika review skill with pinned provenance and adapted operating guidance, without upstream plugins or session hooks. Installation is project-local and explicit; onboarding is read/report only, not review-quality certification.
+
+For requested task tracking, progress checking or resumable handoffs, use
+[flexible work checkpoints](../setup-paprika-inc/references/work-checkpoints.md).
+Reuse the company's current records; keep brief updates to objective,
+progress/findings, blockers/decisions and next action. Select evidence that fits
+the role, preserve history and update resume pointers together. Detailed
+checkpoints belong at meaningful milestones, review, blockers or handoffs.
+This procedure adds no timer, implementation dispatch or messaging authority.
 
 During company discussion and role creation, use [role recommendations](../setup-paprika-inc/references/role-recommendations.md). Recommend a Coordinator and a separate Release Engineer for IT and research companies when workflow volume warrants them; keep technical/scientific review with other roles. Discuss model/effort preferences and use exact human-approved native parameters. Templates neither create chats nor authorize publication.
 

@@ -9,6 +9,14 @@ Follow [the concrete MVP workflow](references/mvp-workflow.md), including its bl
 
 For optional scientific roles, follow [research-core setup](references/research-core.md): select the reviewed set in the role manifest, explicitly plan/install into the chosen project's .agents/skills/, and report each skill's integrity and capabilities separately. Do not install the upstream Scientific Agent Skills plugin or its full catalog. Selected project skills may appear in that project's selector; role references do not restrict discovery. Missing optional tools/services must not block basic Markdown synthesis or critical appraisal.
 
+For requested work tracking and resumable handoffs, follow
+[flexible work checkpoints](references/work-checkpoints.md). Reuse the company's
+work/knowledge index, configured paths and role contracts; create records only
+within the requested scope. During read/report onboarding, read existing adopted
+work records when relevant without creating tasks or treating proposed workflow
+text as adopted. Later versioned notices need the actual communication grant;
+record read/adoption receipts separately from initial onboarding.
+
 The local native on-demand workflow needs no separate Messenger product/service. When service connection is requested or Messenger already exists, discover the exact selected existing owner-private Paprika Service/App through supported authenticated native metadata and configuration/board reads. Preserve App/OAuth identity, database/history, service type/configuration, authoritative delivery/receiver state and paused/off preferences. Missing discovery/authentication is not proof a new service is needed. Never invent App IDs/endpoints, create a replacement service, install a second Messenger product or copy another owner's binding.
 
 For an explicitly requested live company initialization/creation, establish its dedicated Messenger board using [company board setup](references/mvp-workflow.md#dedicated-company-board). Reuse the verified board or create it if absent; never use `main` without an explicit human instruction. This Inc company rule takes precedence over Messenger's generic default. Keep the binding private and pass it explicitly to each board operation. A planning/file-authoring request alone has no remote effects.

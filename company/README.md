@@ -30,6 +30,14 @@ private grant, after independent QA and related-role acceptance. Follow
 GitHub identity, host approvals and every remaining protection distinct from
 role responsibilities. An unchanged standing grant needs no repeated approval.
 
+## Work and knowledge
+
+The [work and knowledge index](../docs/work/README.md) links the candidate
+checkpoint procedure, reusable templates and adoption assessment. Reuse current
+assignments and the canonical ownership map. Source changes do not adopt a new
+workflow into live roles; independent review and exact-version adoption remain
+separate under the existing self-development procedure.
+
 ## Task reports
 
 Under the owner's established coordination and reporting grant, assigned roles
