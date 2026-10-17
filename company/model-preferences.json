@@ -24,8 +24,8 @@
       "thinking": "xhigh"
     },
     "coordinator": {
-      "model": "gpt-6.1-sol",
-      "thinking": "high"
+      "model": "gpt-6-astra",
+      "thinking": "xhigh"
     },
     "release-engineer": {
       "model": "gpt-6.1-sol",

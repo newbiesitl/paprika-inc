@@ -62,6 +62,16 @@ supported reconciliation; resolve uncertain outcomes before another mutation.
 Merge delegation alone authorizes no tagging, publication, installation, service
 deployment or changes to an existing App/board. Keep those grants separate.
 
+## Coordinator model recommendation
+
+For coordinator roles, recommend `gpt-6-astra` with `thinking: xhigh` when the
+selected native host supports that exact pair. Discuss it as a preference, not a
+measured performance claim or authority change. Reuse the owner's explicit
+model/effort choice; otherwise retain the host default. Verify native support
+before authorized creation, never silently substitute, and record requested and
+host-confirmed settings separately. The MVP helper does not consume model
+profiles automatically; editing a preference does not change an existing chat.
+
 ## Researcher model recommendation
 
 For researcher roles, recommend `gpt-6-astra` with `thinking: xhigh` (extra-high
