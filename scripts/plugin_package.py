@@ -50,6 +50,13 @@ PACKAGE_FILES = frozenset({
     'skills/setup-paprika-inc/assets/it-company-blueprint.json',
     'skills/setup-paprika-inc/assets/research-company-blueprint.json',
     'skills/setup-paprika-inc/references/native-message-presentation.md',
+    'skills/setup-paprika-inc/references/work-checkpoints.md',
+    'skills/setup-paprika-inc/assets/work-checkpoints/README.md',
+    'skills/setup-paprika-inc/assets/work-checkpoints/task.md',
+    'skills/setup-paprika-inc/assets/work-checkpoints/findings.md',
+    'skills/setup-paprika-inc/assets/work-checkpoints/checkpoint.md',
+    'skills/setup-paprika-inc/assets/work-checkpoints/checkpoint-index.md',
+    'skills/setup-paprika-inc/assets/work-checkpoints/role.md',
 })
 PUBLIC_SKILLS = ('paprika-inc', 'setup-paprika-inc')
 MANIFEST_FIELDS = {'name', 'version', 'description', 'author', 'homepage', 'license', 'keywords', 'extensions'}
