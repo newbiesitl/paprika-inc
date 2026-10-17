@@ -30,8 +30,13 @@ export function resolvePresentation({ context, product, pluginNames, senderThrea
     if (invoked?.source === 'current_plugin_invocation' && invoked.host_id === context.host_id && pluginNames.includes(invoked.name) &&
       reference(invoked.reference) && invoked.reference.startsWith('plugin://' + invoked.name + '@')) installed.push(invoked.reference);
     const candidates = [...new Set(installed)];
-    if (context.supports_plugin_mentions === true && candidates.length === 1) { pluginReference = candidates[0]; reason = 'observed_plugin_reference'; }
-    else reason = context.supports_plugin_mentions !== true ? 'plugin_mentions_unverified' : candidates.length > 1 ? 'ambiguous_plugin_reference' : 'installed_reference_unavailable';
+    // A discovered reference can be shown before its native appearance is
+    // verified. Keep an explicit unsupported-host observation as a text fallback.
+    const support = context.supports_plugin_mentions;
+    if ((support === true || support === undefined) && candidates.length === 1) {
+      pluginReference = candidates[0];
+      reason = support === true ? 'observed_plugin_reference' : 'observed_plugin_reference_rendering_unverified';
+    } else reason = support !== true && support !== undefined ? 'plugin_mentions_unverified' : candidates.length > 1 ? 'ambiguous_plugin_reference' : 'installed_reference_unavailable';
   } else if (context) reason = 'metadata_stale_or_invalid';
   return { product, plugin_reference: pluginReference, sender_title: title, sender_role: role, reason,
     brand_line: pluginReference ? `[@${displayText(product)}](${pluginReference})` : displayText(product),
@@ -49,7 +54,7 @@ export function presentationHeader(presentation, { senderId, registeredLabel, re
   }
   let to = recipientLabel === undefined ? '' : `\nTo: ${quotedDisplay(recipientLabel)}`;
   if (recipientRole !== undefined) { if (!roleId(recipientRole)) throw new Error('Invalid recipient role.'); to += ` · Role: ${recipientRole}`; }
-  return presentation.brand_line + '\n' + from + to + '\n\n';
+  return presentation.brand_line + '\n\n' + from + to + '\n\n';
 }
 
 export function presentMessage(body, presentation, fields) {

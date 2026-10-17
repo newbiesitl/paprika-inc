@@ -23,7 +23,7 @@ layers of management.
 | Frontend Dev | Onboarding/status/recovery UX, branding/icon presentation, user-facing command language and accessible UI; interaction and visual evidence | engineering-core | GPT-6.1 Sol / high |
 | QA Engineer | Independent caller/data-flow review, regression/failure tests, extracted-package and real-client validation; reproducible defects and readiness reports | engineering-core | GPT-6.1 Sol / xhigh |
 | Scientific Researcher | Literature and engineering-source evaluation, skill/dependency assessments, benchmark critique and evidence records | research-core; engineering-core only for technical-source review | GPT-6 Astra / xhigh |
-| Coordinator (replaces Front Desk) | Primary human contact, request triage, one owner/reviewer per task, specialist introductions and complete handoffs | Role contract; consult domain roles | GPT-6.1 Sol / high |
+| Coordinator (replaces Front Desk) | Primary human contact, request triage, one owner/reviewer per task, specialist introductions and complete handoffs | Role contract; consult domain roles | GPT-6 Astra / xhigh |
 | Release Engineer | Reviewed PR sequence, reproducible builds, versioning, release notes and authorized rollout/rollback | engineering-core | GPT-6.1 Sol / high |
 
 Release Engineer is warranted by the current PR volume. It owns sequencing and execution while the architect/domain owners and QA retain review. No separate Agentic Systems Developer is needed now; that implementation belongs to Backend. The human retains release scope and authority.
@@ -74,7 +74,8 @@ into the runtime.
 ## Models at creation and initialization
 
 [model-preferences.json](../../company/model-preferences.json) records the selected
-native creation parameters. QA's authorized initialization uses them now; the Coordinator uses its separately approved Sol/high choice. Other
+native creation parameters. QA's authorized initialization uses them now; the
+Coordinator's current preference is Astra/xhigh (MODEL-002 below). Other
 roles use them during the approved replacement once their handoffs and review are verified.
 These are workload-based choices, not measured claims of comparative performance.
 
@@ -86,6 +87,12 @@ The updated profile records the current request, not a host-confirmed change to
 an existing chat. Applying the pair requires the applicable authorization and
 supported native parameters, with requested versus applied settings recorded
 separately. File edits neither recreate chats nor prove live model application.
+
+MODEL-002 updates only the Coordinator preference to `gpt-6-astra` / `xhigh`,
+as requested by Charles on October 17, 2026. The prior choice was `gpt-6.1-sol` /
+`high`; retain its original private creation evidence. The owner reports changing
+the live setting separately. This source records the requested preference, not
+an independently host-confirmed setting or a grant to alter existing chats.
 
 The current native host tool accepts model and thinking parameters. The generic
 MVP helper does not yet consume this file; it must not pretend it applied a profile.
