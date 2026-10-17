@@ -1,8 +1,9 @@
 # Native message presentation
 
-New Inc create/onboard prompts start with the observed plugin mention when the
-destination host supports it, then the actual sender title, an explicitly bound
-logical role if known, recipient context, and the unchanged onboarding body.
+New Inc create/onboard prompts and task/report notices start with one observed
+plugin mention as the sole first paragraph, a blank line, then the actual sender
+title, an explicitly bound logical role if known, recipient context, and the
+unchanged onboarding body.
 The host owns its “Sent by ChatGPT from another task” heading. Branding is not
 sender authentication, a reply grant or an installation request.
 
@@ -18,9 +19,19 @@ Use the supported `codex plugin list --json` installed catalog, or a verified
 plugin reference in the current invocation. Pass only enabled installed Inc
 entries. A catalog's name@source value determines the reference; never substitute
 a particular developer marketplace or infer a remote reference from a local one.
-The current host must also establish that native prompts support plugin mentions.
-Otherwise the product name remains readable text. Missing, ambiguous, stale or
-unsafe references fall back without installing anything or blocking onboarding.
+When exactly one current installed reference is available, use it for the native
+header even if appearance is still unverified. Omit `supports_plugin_mentions`
+when support is unknown; the helper records rendering as unverified. Set it to
+`true` only from actual support evidence, or `false` for an explicitly unsupported
+host to retain the plain-text fallback. A copied unsent mention identifies a
+reference but does not verify an API-delivered header's appearance. Missing,
+ambiguous, stale or unsafe references still fall back without installing anything
+or blocking delivery. Never invent a catalog row, invocation or support flag.
+
+Keep the native plugin mention in its own paragraph above sender and delivery
+details; do not place it inside the original authored body or replace it with
+Markdown PNG markup. Verify the exact candidate's icon in both collapsed and expanded sent-message views
+before claiming restoration or passing a visual release gate.
 
 Supply these observations privately through `--message-context <file.json>` on
 `bootstrap start` and each `bootstrap next` that prepares a new create/onboard.

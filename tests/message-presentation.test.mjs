@@ -16,7 +16,7 @@ test('observed catalog reference and exact native sender title work across marke
   for (const source of ['fictional-local', 'fictional-account']) {
     const ctx=context();ctx.plugin_catalog.installed[0].pluginId='paprika-inc@'+source;
     const result=presentMessage('Original task\nbytes.\n',presentation(ctx),{recipientLabel:'Builder',recipientRole:'builder'});
-    assert.ok(result.startsWith(`[@Paprika Inc](plugin://paprika-inc@${source})\nFrom: "Scope Planner" · Role: planner\nTo: "Builder" · Role: builder\n\n`));
+    assert.ok(result.startsWith(`[@Paprika Inc](plugin://paprika-inc@${source})\n\nFrom: "Scope Planner" · Role: planner\nTo: "Builder" · Role: builder\n\n`));
     assert.ok(result.endsWith('Original task\nbytes.\n'));
     assert.equal(presentMessage(result,presentation(ctx),{recipientLabel:'Builder',recipientRole:'builder'}),result);
   }
@@ -26,6 +26,20 @@ test('title changes come from fresh native metadata, never destination role or r
   assert.equal(presentation(ctx).sender_title,'Renamed Planner');
   ctx.sender_metadata.thread.id='destination-chat';ctx.role_binding.thread_id='destination-chat';
   const result=presentation(ctx);assert.equal(result.sender_title,null);assert.equal(result.sender_role,null);
+});
+test('a discovered installed reference restores the first-line header without claiming verified rendering', () => {
+  const ctx=context();delete ctx.supports_plugin_mentions;
+  const result=presentation(ctx);
+  assert.equal(result.reason,'observed_plugin_reference_rendering_unverified');
+  assert.equal(result.plugin_reference,'plugin://paprika-inc@fictional-catalog');
+  const body='Authored text\r\n😀 e\u0301\n';
+  const message=presentMessage(body,result,{recipientLabel:'Builder'});
+  assert.ok(message.startsWith('[@Paprika Inc](plugin://paprika-inc@fictional-catalog)\n\nFrom: "Scope Planner" · Role: planner\nTo: "Builder"\n\n'));
+  assert.ok(message.endsWith(body));
+  ctx.supports_plugin_mentions=false;
+  assert.equal(presentation(ctx).brand_line,'Paprika Inc');
+  delete ctx.supports_plugin_mentions;delete ctx.plugin_catalog;
+  assert.equal(presentation(ctx).brand_line,'Paprika Inc');
 });
 test('unknown, stale, disabled, ambiguous or unsafe plugin references use plain text', () => {
   const cases=[undefined,{}, {...context(),observed_at:'2000-01-01T00:00:00Z'}, {...context(),supports_plugin_mentions:false}];
