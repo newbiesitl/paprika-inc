@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "paprika-inc",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Discuss and author repository-defined companies, clone safely, and bootstrap persistent local Codex project chats.",
   "author": {
     "name": "Paprika Inc contributors"
