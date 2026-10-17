@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFile,stat} from 'node:fs/promises';
+import {readFile,writeFile,stat} from 'node:fs/promises';
 import {join} from 'node:path';
 import {fixture,journal,projectReport,membershipReport,capabilities} from './mvp-fixture.mjs';
 import {startOutbound as startImpl,nextOutbound as nextImpl,recordOutbound,outboundStatus,reconcileOutbound,chooseDelivery,verifyReference} from '../plugins/paprika-inc/runtime/paprika-inc/outbound.mjs';
@@ -28,7 +28,8 @@ test('Inc policy uses inclusive original Unicode code points and rejects force-i
 });
 test('short tasks stay intact inline; one pending native write suppresses retries and survives uncertain results',async t=>{
   const f=await begin(t,'Exact small task.\n');
-  const first=await nextOutbound({...f,deliveryContext:ctx(),messageContext:presentation()});
+  const observed=presentation();delete observed.supports_plugin_mentions;
+  const first=await nextOutbound({...f,deliveryContext:ctx(),messageContext:observed});
   assert.equal(first.host_call.tool,'mcp__codex_app__send_message_to_thread');
   assert(first.host_call.arguments.prompt.endsWith(f.deliveryInput.body));
   assert(first.host_call.arguments.prompt.startsWith('[@Paprika Inc]'));
@@ -42,17 +43,19 @@ test('short tasks stay intact inline; one pending native write suppresses retrie
 });
 test('large reports require confirmed intact storage and produce only metadata/reference native input',async t=>{
   const body=' \nPRIVATE full task payload. '.repeat(90)+'\n ', f=await begin(t,body), context=ctx();
+  const observed=presentation();delete observed.supports_plugin_mentions;
   assert.equal((await nextOutbound(f)).status,'delivery_setup_required');
   assert.equal((await nextOutbound({...f,deliveryContext:{...context,recipient_can_retrieve:false}})).status,'delivery_setup_required');
-  const post=await nextOutbound({...f,deliveryContext:context,messageContext:presentation()});
+  const post=await nextOutbound({...f,deliveryContext:context,messageContext:observed});
   assert.equal(post.host_call.arguments.body,body);
   assert.equal((await nextOutbound(f)).status,'storage_unconfirmed');
   await recordOutbound({...f,actionId:post.action_id,hostResult:{isError:true}});
   const retry=await nextOutbound({...f,retryStorage:true}); assert.deepEqual(retry.host_call,post.host_call);
   const stored=confirmation(post.host_call.arguments);
   await recordOutbound({...f,actionId:post.action_id,hostResult:stored});
-  const native=await nextOutbound({...f,deliveryContext:context,messageContext:presentation()});
+  const native=await nextOutbound({...f,deliveryContext:context,messageContext:observed});
   const prompt=native.host_call.arguments.prompt;
+  assert(prompt.startsWith('[@Paprika Inc](plugin://paprika-inc@fictional-catalog)\n\nFrom:'));
   for(const text of [body,'PRIVATE full task payload.']) assert(!prompt.includes(text));
   for(const text of ['Observed Builder','Role: builder','Sender ID: sender','Receiver ID: recipient','message-1','main','get_message']) assert(prompt.includes(text));
   assert.equal(verifyReference({board:'main',messageId:'message-1',receiverId:'recipient',result:stored}).body,body);
@@ -63,6 +66,22 @@ test('large reports require confirmed intact storage and produce only metadata/r
   await assert.rejects(startOutbound({repository:f.source,deliveryInput:{...f.deliveryInput,delivery_policy:{short_message_limit:10000}}}),e=>e.code==='outbound_conflict');
   await recordOutbound({...f,actionId:native.action_id,hostResult:{threadId:'fixture-recipient'}});
   assert.equal((await outboundStatus(f)).status,'submitted');
+});
+test('a pending plain header stays frozen when a new observation would restore the native mention',async t=>{
+  const f=await begin(t,'Exact pending task.\r\n');
+  const observed=presentation();observed.supports_plugin_mentions=false;
+  const action=await nextOutbound({...f,deliveryContext:ctx(),messageContext:observed});
+  assert(action.host_call.arguments.prompt.startsWith('Paprika Inc\n\nFrom:'));
+  // Model a pre-restoration journal with the older single-newline header.
+  const path=join(f.source,'.git/paprika-inc/outbound/task-1.json');
+  const legacy=JSON.parse(await readFile(path,'utf8'));
+  legacy.pending.host_call.arguments.prompt=action.host_call.arguments.prompt.replace('Paprika Inc\n\nFrom:','Paprika Inc\nFrom:');
+  await writeFile(path,JSON.stringify(legacy));
+  delete observed.supports_plugin_mentions;
+  const next=await nextOutbound({...f,deliveryContext:ctx(),messageContext:observed});
+  assert.equal(next.status,'submission_unresolved');assert(!next.host_call);
+  const saved=JSON.parse(await readFile(path,'utf8'));
+  assert.deepEqual(saved.pending.host_call,legacy.pending.host_call);
 });
 test('storage mismatch, huge service payloads, unsupported destinations and event changes never fall back inline',async t=>{
   const f=await begin(t,'sensitive '.repeat(200)),context=ctx();
