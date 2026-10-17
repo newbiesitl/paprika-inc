@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFile,stat} from 'node:fs/promises';
+import {readFile,writeFile,stat} from 'node:fs/promises';
 import {join} from 'node:path';
 import {fixture,journal,projectReport,membershipReport,capabilities} from './mvp-fixture.mjs';
 import {startOutbound as startImpl,nextOutbound as nextImpl,recordOutbound,outboundStatus,reconcileOutbound,chooseDelivery,verifyReference} from '../plugins/paprika-inc/runtime/paprika-inc/outbound.mjs';
@@ -31,7 +31,8 @@ test('short tasks stay intact inline; one pending native write suppresses retrie
   const first=await nextOutbound({...f,deliveryContext:ctx(),messageContext:presentation()});
   assert.equal(first.host_call.tool,'mcp__codex_app__send_message_to_thread');
   assert(first.host_call.arguments.prompt.endsWith(f.deliveryInput.body));
-  assert(first.host_call.arguments.prompt.startsWith('[@Paprika Inc]'));
+  assert(first.host_call.arguments.prompt.startsWith('![Paprika Inc](<'));
+  assert(first.host_call.arguments.prompt.includes('\n[@Paprika Inc]'));
   const attempts=await Promise.all(Array.from({length:3},()=>nextOutbound(f).catch(e=>({status:e.code}))));
   assert(attempts.every(a=>!a.host_call));
   await recordOutbound({...f,actionId:first.action_id,hostResult:{isError:true}});
@@ -53,6 +54,7 @@ test('large reports require confirmed intact storage and produce only metadata/r
   await recordOutbound({...f,actionId:post.action_id,hostResult:stored});
   const native=await nextOutbound({...f,deliveryContext:context,messageContext:presentation()});
   const prompt=native.host_call.arguments.prompt;
+  assert(prompt.startsWith('![Paprika Inc](<'));
   for(const text of [body,'PRIVATE full task payload.']) assert(!prompt.includes(text));
   for(const text of ['Observed Builder','Role: builder','Sender ID: sender','Receiver ID: recipient','message-1','main','get_message']) assert(prompt.includes(text));
   assert.equal(verifyReference({board:'main',messageId:'message-1',receiverId:'recipient',result:stored}).body,body);
@@ -63,6 +65,20 @@ test('large reports require confirmed intact storage and produce only metadata/r
   await assert.rejects(startOutbound({repository:f.source,deliveryInput:{...f.deliveryInput,delivery_policy:{short_message_limit:10000}}}),e=>e.code==='outbound_conflict');
   await recordOutbound({...f,actionId:native.action_id,hostResult:{threadId:'fixture-recipient'}});
   assert.equal((await outboundStatus(f)).status,'submitted');
+});
+test('an older frozen native prompt is not rewritten to add artwork',async t=>{
+  const f=await begin(t,'Preserve this original body.\n');
+  await nextOutbound({...f,deliveryContext:ctx(),messageContext:presentation()});
+  const path=join(f.source,'.git/paprika-inc/outbound/task-1.json');
+  const saved=JSON.parse(await readFile(path,'utf8'));
+  saved.pending.host_call.arguments.prompt=saved.pending.host_call.arguments.prompt.split('\n').slice(1).join('\n');
+  const legacy=structuredClone(saved.pending.host_call);
+  assert(legacy.arguments.prompt.startsWith('[@Paprika Inc]'));
+  await writeFile(path,JSON.stringify(saved));
+  const fresh=presentation();fresh.sender_metadata.thread.title='New title after freeze';
+  const next=await nextOutbound({...f,deliveryContext:ctx(),messageContext:fresh});
+  assert.equal(next.status,'submission_unresolved');assert(!next.host_call);
+  assert.deepEqual(JSON.parse(await readFile(path,'utf8')).pending.host_call,legacy);
 });
 test('storage mismatch, huge service payloads, unsupported destinations and event changes never fall back inline',async t=>{
   const f=await begin(t,'sensitive '.repeat(200)),context=ctx();

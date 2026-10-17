@@ -1,5 +1,9 @@
 // Presentation only. The caller supplies actual native metadata; these consistency
 // checks do not authenticate snapshots, create communication grants or send messages.
+import { fileURLToPath } from 'node:url';
+
+const artworkPath = fileURLToPath(new URL('../../assets/paprika-inc-icon.png', import.meta.url));
+const artworkLine = `![Paprika Inc](<${artworkPath.replace(/[<>\r\n]/g, char => encodeURIComponent(char))}>)`;
 const id = value => typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9_.:-]{0,159}$/.test(value);
 const roleId = value => typeof value === 'string' && /^[a-z][a-z0-9-]{0,95}$/.test(value);
 const reference = value => typeof value === 'string' && /^plugin:\/\/[a-z][a-z0-9-]{0,63}@[A-Za-z0-9][A-Za-z0-9._-]{0,95}$/.test(value);
@@ -49,13 +53,14 @@ export function presentationHeader(presentation, { senderId, registeredLabel, re
   }
   let to = recipientLabel === undefined ? '' : `\nTo: ${quotedDisplay(recipientLabel)}`;
   if (recipientRole !== undefined) { if (!roleId(recipientRole)) throw new Error('Invalid recipient role.'); to += ` · Role: ${recipientRole}`; }
-  return presentation.brand_line + '\n' + from + to + '\n\n';
+  return artworkLine + '\n' + presentation.brand_line + '\n' + from + to + '\n\n';
 }
 
 export function presentMessage(body, presentation, fields) {
   if (typeof body !== 'string') throw new Error('Message body must be text.');
   // Never scan or rewrite the body: an author may have intentionally quoted a
-  // mention. Exactly one presentation mention is emitted by this single wrapper.
+  // mention. This single wrapper emits one artwork line and at most one
+  // presentation mention; the host owns actual rendering and image sizing.
   const header = presentationHeader(presentation, fields);
   return body.startsWith(header) ? body : header + body;
 }

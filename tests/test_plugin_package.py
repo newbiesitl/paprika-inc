@@ -308,6 +308,18 @@ class PluginPackageTests(unittest.TestCase):
         self.assertEqual(json.loads(result.stdout)['command'], 'help')
         result = subprocess.run(['node', str(helper), 'validate', '--repo', str(ROOT)], cwd=self.base, capture_output=True, text=True, check=True)
         self.assertTrue(json.loads(result.stdout)['definition_valid'])
+        # The native wrapper must resolve artwork from this extracted kit, not
+        # from the builder's checkout or a developer-specific installation path.
+        module = (plugin / 'runtime/paprika-inc/message-presentation.mjs').as_uri()
+        script = ('const {presentationHeader}=await import(' + json.dumps(module) + ');'
+                  'console.log(JSON.stringify(presentationHeader({brand_line:"Paprika Inc",sender_title:"Fixture"})));')
+        result = subprocess.run(['node', '--input-type=module', '-e', script], cwd=self.base,
+                                capture_output=True, text=True, check=True)
+        line = json.loads(result.stdout).splitlines()[0]
+        self.assertTrue(line.startswith('![Paprika Inc](<') and line.endswith('>)'))
+        artwork = Path(line[len('![Paprika Inc](<'):-2])
+        self.assertEqual(artwork.resolve(), (plugin / 'assets/paprika-inc-icon.png').resolve())
+        self.assertEqual(artwork.read_bytes(), approved)
         self.assertFalse(first['installed'])
         self.assertFalse(first['deployed'])
 

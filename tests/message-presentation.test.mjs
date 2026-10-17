@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { resolvePresentation, presentMessage } from '../plugins/paprika-inc/runtime/paprika-inc/message-presentation.mjs';
 import { beginBootstrap, nextBootstrap, recordBootstrap } from '../plugins/paprika-inc/runtime/paprika-inc/bootstrap.mjs';
 import { fixture, capabilities, projectReport, membershipReport, readReport, journal } from './mvp-fixture.mjs';
@@ -11,12 +12,25 @@ const context = () => ({schema_version:1, observed_at:new Date().toISOString(), 
   sender_metadata:{source:'list_threads',thread:{id:env.CODEX_THREAD_ID,title:'Scope Planner',kind:'codex',hostId:'local'}},
   role_binding:{source:'human_assignment',thread_id:env.CODEX_THREAD_ID,host_id:'local',role_id:'planner'}});
 const presentation = ctx => resolvePresentation({context:ctx,product:'Paprika Inc',pluginNames:['paprika-inc'],senderThreadId:env.CODEX_THREAD_ID});
+const artworkPath = fileURLToPath(new URL('../plugins/paprika-inc/assets/paprika-inc-icon.png', import.meta.url));
+const artworkLine = `![Paprika Inc](<${artworkPath}>)\n`;
+
+test('packaged artwork is included without a catalog or mention capability and leaves the body intact', async () => {
+  const body=' Original body\r\n😀 e\u0301\n[@Quoted](plugin://quoted@fixture)\n';
+  const fields={senderId:'fixture-sender',registeredLabel:'Registered Builder',recipientLabel:'Recipient'};
+  const message=presentMessage(body,presentation(undefined),fields);
+  assert.ok(message.startsWith(artworkLine+'Paprika Inc\n'));
+  assert.ok(message.includes('Sender ID: fixture-sender'));
+  assert.ok(message.endsWith(body));
+  assert.equal(presentMessage(message,presentation(undefined),fields),message);
+  assert.deepEqual(await readFile(artworkPath),await readFile(new URL('../assets/paprika-inc-logo-navy-v1.png',import.meta.url)));
+});
 
 test('observed catalog reference and exact native sender title work across marketplace names', () => {
   for (const source of ['fictional-local', 'fictional-account']) {
     const ctx=context();ctx.plugin_catalog.installed[0].pluginId='paprika-inc@'+source;
     const result=presentMessage('Original task\nbytes.\n',presentation(ctx),{recipientLabel:'Builder',recipientRole:'builder'});
-    assert.ok(result.startsWith(`[@Paprika Inc](plugin://paprika-inc@${source})\nFrom: "Scope Planner" · Role: planner\nTo: "Builder" · Role: builder\n\n`));
+    assert.ok(result.startsWith(`${artworkLine}[@Paprika Inc](plugin://paprika-inc@${source})\nFrom: "Scope Planner" · Role: planner\nTo: "Builder" · Role: builder\n\n`));
     assert.ok(result.endsWith('Original task\nbytes.\n'));
     assert.equal(presentMessage(result,presentation(ctx),{recipientLabel:'Builder',recipientRole:'builder'}),result);
   }
@@ -59,7 +73,7 @@ test('native bootstrap freezes branded arguments before exposing a write and pre
   await record(first,projectReport(f.destination));
   const create=await nextBootstrap({repository:f.destination,messageContext:ctx},env);
   const prompt=create.host_call.arguments.prompt;
-  assert.ok(prompt.startsWith('[@Paprika Inc]'));assert.ok(prompt.includes('From: "Scope Planner" · Role: planner'));
+  assert.ok(prompt.startsWith(artworkLine+'[@Paprika Inc]'));assert.ok(prompt.includes('From: "Scope Planner" · Role: planner'));
   assert.ok(prompt.includes('To: "organizer" · Role: organizer'));
   assert.ok(prompt.includes('READ/REPORT ONLY'));assert.ok(prompt.includes('request_id='));
   const pending=(await journal(f.destination)).pending_action;
@@ -84,7 +98,7 @@ test('existing initial role onboarding uses the same sender wrapper without crea
   const onboard=await nextBootstrap({repository:f.destination,messageContext:ctx},env);
   assert.equal(onboard.host_call.tool,'mcp__codex_app__send_message_to_thread');
   assert.equal(onboard.host_call.arguments.threadId,'existing-fixture-chat');
-  assert.ok(onboard.host_call.arguments.prompt.startsWith('[@Paprika Inc]'));
+  assert.ok(onboard.host_call.arguments.prompt.startsWith(artworkLine+'[@Paprika Inc]'));
   assert.ok(onboard.host_call.arguments.prompt.includes('From: "Scope Planner" · Role: planner'));
   assert.deepEqual((await journal(f.destination)).pending_action.host_call,onboard.host_call);
 });

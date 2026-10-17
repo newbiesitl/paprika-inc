@@ -1,10 +1,22 @@
 # Native message presentation
 
-New Inc create/onboard prompts start with the observed plugin mention when the
-destination host supports it, then the actual sender title, an explicitly bound
-logical role if known, recipient context, and the unchanged onboarding body.
+New local native prompts start with a Markdown image of the packaged Paprika
+artwork, resolved to an absolute path beside the executing kit. The original PNG
+is reused; no catalog entry or plugin mention is needed for that image line.
+The product name or observed plugin mention follows, then the actual sender title,
+an explicitly bound logical role if known, recipient context, and the unchanged body.
 The host owns its “Sent by ChatGPT from another task” heading. Branding is not
 sender authentication, a reply grant or an installation request.
+
+Use standard Markdown image syntax with alt text `Paprika Inc` and the resolved
+absolute PNG path in angle brackets as its source.
+It adds no image attachment API or HTML sizing attributes. The native renderer
+controls image size and collapsed-card visibility; check actual expanded and
+collapsed messages before claiming appearance support. A literal or unsupported
+image line is a host-capability limitation, not evidence that the icon rendered.
+Stored messages retain the original authored body exactly; only the generated
+native wrapper carries artwork, including a stored-message reference notice.
+Existing frozen or submitted arguments are never rewritten to add the image.
 
 Before preparing each new native write, obtain the current sender ID from
 CODEX_THREAD_ID and read that exact chat in actual list_threads/read_thread
