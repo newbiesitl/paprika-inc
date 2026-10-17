@@ -31,9 +31,30 @@ M1–M5 are proposed future work, not activated assignments or completed functio
 
 ## Ownership and reporting
 
-Chief Architect decomposes approved outcomes and resolves interfaces. Backend Dev owns runtime delivery, Frontend Dev owns interactions, Data Engineer owns state semantics, and Front Desk handles attributed intake and authorized external status. Cross-role review follows their [contracts](../company/README.md).
+Chief Architect decomposes approved outcomes and resolves interfaces. Backend Dev owns runtime delivery, Frontend Dev owns interactions, Data Engineer owns state semantics, and Coordinator handles attributed intake and authorized status reporting. Cross-role review follows their [contracts](../company/README.md).
 
 A progress report links the relevant issue/PR/commit, explains what is verified, lists remaining blockers and decisions, and identifies the next action. Keep private instance bindings and sensitive knowledge in the configured private state location, not in public issue descriptions.
+
+## Implementation-to-review handoff
+
+For an authorized implementation assignment, the implementation owner carries the
+change through proportionate local verification, a scoped commit and PR submission.
+The handoff to Coordinator includes the work ID, PR URL, exact head, validation
+evidence, reviewer and remaining acceptance gates. A local commit, ZIP or report
+alone is not a submitted implementation handoff when PR access is available.
+
+Open a draft PR as soon as the concrete candidate is ready for independent review;
+do not wait for QA or a visual release gate to pass before hosting the change.
+Coordinator arranges the independent review and records acceptance. The author
+addresses findings and identifies updated heads; changed review inputs need the
+appropriate new review. Release Engineer receives the reviewed PR and sequences
+only the merges, builds and releases covered by the actual human grant. Release
+holds and publication/installation restrictions remain in force after PR creation.
+
+If PR creation fails or permission is unavailable, report the exact failure and
+candidate commit/patch to Coordinator. Coordinator explicitly assigns an alternate
+submitter; ownership does not silently transfer to Coordinator or Release Engineer.
+These delivery duties do not grant new communication, merge or release authority.
 
 ## Research-core follow-up
 

@@ -4,6 +4,16 @@ Bug reports, design feedback, documentation, and focused code changes are welcom
 
 Fork the repository, clone with `--recurse-submodules`, create a branch, and submit a PR targeting `main`. Collaborator access is not required. Explain the concrete problem, resulting behavior, related issue, and validation. Discuss significant lifecycle, permission, storage, packaging, or role-authority changes before implementation.
 
+The implementation owner creates the branch, commits the change, opens the PR,
+and reports its URL and exact head to Coordinator. Open a draft when the candidate
+is ready for review but independent QA, visual acceptance or another gate remains
+pending. A release hold does not defer PR creation. Coordinator routes review and
+tracks acceptance; Release Engineer sequences and executes authorized merges and
+releases. Neither role is the default substitute for the author's PR submission.
+If credentials or host permissions block submission, report that exact blocker
+and preserve the commit/patch for an explicitly assigned alternate submitter.
+See [the implementation handoff](docs/DEVELOPMENT.md#implementation-to-review-handoff).
+
 ## Local validation
 
 Use Git, Python 3.10 or newer, and Node.js 24 or newer:
