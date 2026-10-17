@@ -37,6 +37,18 @@ and pass model/thinking in native creation. Defaults remain defaults when no cho
 was made. Do not claim a template's preference is applied by the MVP helper: it
 does not yet read model profiles. Do not silently substitute unsupported models.
 
+## Implementation PR ownership
+
+For an authorized implementation assignment using a PR workflow, the implementation
+owner verifies the change, commits it, opens the PR and reports its URL and exact
+head to Coordinator. Use a draft while independent review or visual acceptance is
+pending; a release hold does not postpone PR creation. Coordinator routes review
+and tracks acceptance. Release Engineer sequences reviewed PRs and executes only
+authorized merges/releases. Do not defer author PR submission to either role by
+default. If host permissions or credentials block it, report the exact blocker and
+preserve the commit/patch for an explicitly assigned alternate submitter. This
+workflow grants no new communication, repository-write or release permissions.
+
 ## Delegate reviewed merges
 
 During role discussion, recommend delegating reviewed PR merges to Release
