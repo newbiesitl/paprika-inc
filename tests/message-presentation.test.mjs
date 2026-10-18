@@ -16,8 +16,8 @@ test('observed catalog reference and exact native sender title work across marke
   for (const source of ['fictional-local', 'fictional-account']) {
     const ctx=context();ctx.plugin_catalog.installed[0].pluginId='paprika-inc@'+source;
     const result=presentMessage('Original task\nbytes.\n',presentation(ctx),{recipientLabel:'Builder',recipientRole:'builder'});
-    assert.ok(result.startsWith(`[@Paprika Inc](plugin://paprika-inc@${source})\n\nFrom: "Scope Planner" · Role: planner\nTo: "Builder" · Role: builder\n\n`));
-    assert.ok(result.endsWith('Original task\nbytes.\n'));
+    assert.ok(result.startsWith(`[@Paprika Inc](plugin://paprika-inc@${source}) · Scope Planner\nOriginal task\nbytes.\n`));
+    assert.ok(result.endsWith('From: "Scope Planner" · Role: planner\nTo: "Builder" · Role: builder'));
     assert.equal(presentMessage(result,presentation(ctx),{recipientLabel:'Builder',recipientRole:'builder'}),result);
   }
 });
@@ -34,8 +34,8 @@ test('a discovered installed reference restores the first-line header without cl
   assert.equal(result.plugin_reference,'plugin://paprika-inc@fictional-catalog');
   const body='Authored text\r\n😀 e\u0301\n';
   const message=presentMessage(body,result,{recipientLabel:'Builder'});
-  assert.ok(message.startsWith('[@Paprika Inc](plugin://paprika-inc@fictional-catalog)\n\nFrom: "Scope Planner" · Role: planner\nTo: "Builder"\n\n'));
-  assert.ok(message.endsWith(body));
+  assert.ok(message.startsWith('[@Paprika Inc](plugin://paprika-inc@fictional-catalog) · Scope Planner\n' + body));
+  assert.ok(message.endsWith('From: "Scope Planner" · Role: planner\nTo: "Builder"'));
   ctx.supports_plugin_mentions=false;
   assert.equal(presentation(ctx).brand_line,'Paprika Inc');
   delete ctx.supports_plugin_mentions;delete ctx.plugin_catalog;
@@ -59,7 +59,53 @@ test('display labels cannot inject mentions, control lines, Markdown or bidi hea
   assert.ok(result.includes('\\[@Injected\\]\\(plugin://evil@catalog\\)'));
   assert.ok(!result.includes('\n# forged'));assert.ok(!result.includes('\u202e'));
   assert.equal((result.match(/\[@Paprika Inc\]/g)||[]).length,1);
-  assert.ok(result.endsWith('The original body.\n'));
+  assert.ok(result.includes('\nThe original body.\n\n\nFrom:'));
+});
+test('compact preview keeps body Unicode intact and long sender metadata below it', () => {
+  const ctx=context();
+  const title='Research '+('👩‍🔬'.repeat(35))+' Full native title';
+  ctx.sender_metadata.thread.title=title;
+  const body='Visible task summary.\r\n😀 e\u0301\n';
+  const fields={senderId:'sender',registeredLabel:'Registered sender',recipientLabel:'Builder',handoffDepth:2,handoffLimit:5};
+  const message=presentMessage(body,presentation(ctx),fields,'Delivery reference: fixture-message.');
+  const firstLine=message.split('\n')[0];
+  assert.ok(firstLine.startsWith('[@Paprika Inc]'));
+  assert.ok(firstLine.endsWith('… · Handoff 2/5'));
+  assert.ok(!firstLine.includes('\ufffd'));
+  assert.equal(message.slice(firstLine.length+1,firstLine.length+1+body.length),body);
+  assert.ok(message.indexOf('From: "'+title+'"')>message.indexOf(body));
+  for(const text of ['Sender ID: sender','Registered label: "Registered sender"','To: "Builder"','Handoff 2/5','Delivery reference: fixture-message.']) assert.ok(message.includes(text));
+  assert.equal(presentMessage(message,presentation(ctx),fields,'Delivery reference: fixture-message.'),message);
+});
+test('sender previews past 512 UTF-16 units retain complete graphemes and the truncation marker', () => {
+  const family='👨🏿‍👩🏾‍👧🏽‍👦🏼';
+  const cases=[
+    {title:family.repeat(35),preview:family.repeat(31)+'…'},
+    {title:family.repeat(27),preview:family.repeat(27)},
+    {title:'e'+'\u0301'.repeat(600),preview:'e'+'\u0301'.repeat(600)},
+  ];
+  const body='Original body: 😀 e\u0301\r\n';
+  const fields={senderId:'sender',recipientLabel:'Builder',handoffDepth:2,handoffLimit:5};
+  for(const {title,preview} of cases) {
+    assert.ok(preview.length>512,'fixture must cross the former secondary cutoff');
+    const ctx=context();ctx.sender_metadata.thread.title=title;
+    const message=presentMessage(body,presentation(ctx),fields,'Message ID: fixture-message.');
+    const firstLine=message.split('\n')[0];
+    assert.equal(firstLine,'[@Paprika Inc](plugin://paprika-inc@fictional-catalog) · '+preview+' · Handoff 2/5');
+    assert.ok(message.isWellFormed(),'no unpaired surrogate in the header or footer');
+    assert.equal(message.slice(firstLine.length+1,firstLine.length+1+body.length),body);
+    assert.ok(message.includes('From: "'+title+'" · Role: planner · Sender ID: sender'));
+    assert.ok(message.endsWith('To: "Builder"\n\nMessage ID: fixture-message.'));
+    assert.equal(presentMessage(message,presentation(ctx),fields,'Message ID: fixture-message.'),message);
+  }
+});
+test('full sender details preserve and escape text beyond the former 512-unit cutoff', () => {
+  const ctx=context(), prefix='a'.repeat(511), family='👨🏿‍👩🏾‍👧🏽‍👦🏼';
+  ctx.sender_metadata.thread.title=prefix+family+'\n[tail]\u202e';
+  const message=presentMessage('Body.',presentation(ctx));
+  assert.ok(message.includes('From: "'+prefix+family+'\\\\u000a\\[tail\\]\\\\u202e" · Role: planner'));
+  assert.ok(message.isWellFormed());
+  assert.ok(!message.includes('\n[tail]'));assert.ok(!message.includes('\u202e'));
 });
 test('missing native metadata says unavailable and never promotes a title into a role', () => {
   const ctx=context();delete ctx.sender_metadata;delete ctx.role_binding;

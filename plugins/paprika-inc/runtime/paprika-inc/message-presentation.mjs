@@ -5,7 +5,9 @@ const roleId = value => typeof value === 'string' && /^[a-z][a-z0-9-]{0,95}$/.te
 const reference = value => typeof value === 'string' && /^plugin:\/\/[a-z][a-z0-9-]{0,63}@[A-Za-z0-9][A-Za-z0-9._-]{0,95}$/.test(value);
 
 export function displayText(value) {
-  const singleLine = String(value).slice(0, 512).replace(/[\x00-\x1f\x7f-\x9f\u2028\u2029\u202a-\u202e\u2066-\u2069]/g,
+  // Only the preview truncates, at a grapheme boundary. Escaping must preserve
+  // that boundary and its ellipsis, and keep full titles in the details.
+  const singleLine = String(value).replace(/[\x00-\x1f\x7f-\x9f\u2028\u2029\u202a-\u202e\u2066-\u2069]/g,
     char => '\\u' + char.charCodeAt(0).toString(16).padStart(4, '0'));
   return singleLine.replace(/[\\`*_{}\[\]()<>#!|~]/g, '\\$&');
 }
@@ -43,7 +45,7 @@ export function resolvePresentation({ context, product, pluginNames, senderThrea
     evidence: 'caller_supplied_native_observations_not_authentication' };
 }
 
-export function presentationHeader(presentation, { senderId, registeredLabel, recipientLabel, recipientRole, handoffDepth, handoffLimit } = {}) {
+function presentationDetails(presentation, { senderId, registeredLabel, recipientLabel, recipientRole, handoffDepth, handoffLimit } = {}) {
   let from = `From: ${quotedDisplay(presentation.sender_title ?? 'Native title unavailable')}`;
   if (presentation.sender_role) from += ` · Role: ${presentation.sender_role}`;
   if (senderId !== undefined) { if (!id(senderId)) throw new Error('Invalid presentation sender ID.'); from += ` · Sender ID: ${senderId}`; }
@@ -54,13 +56,28 @@ export function presentationHeader(presentation, { senderId, registeredLabel, re
   }
   let to = recipientLabel === undefined ? '' : `\nTo: ${quotedDisplay(recipientLabel)}`;
   if (recipientRole !== undefined) { if (!roleId(recipientRole)) throw new Error('Invalid recipient role.'); to += ` · Role: ${recipientRole}`; }
-  return presentation.brand_line + '\n\n' + from + to + '\n\n';
+  return from + to;
 }
 
-export function presentMessage(body, presentation, fields) {
+export function presentationHeader(presentation, fields = {}) {
+  presentationDetails(presentation, fields);
+  // The native card previews two lines. Keep the observed icon and a bounded
+  // sender on one line so the original body begins on the next visible line.
+  const title = presentation.sender_title ?? 'Native title unavailable';
+  const characters = [...new Intl.Segmenter(undefined, { granularity: 'grapheme' }).segment(title)].map(part => part.segment);
+  const preview = characters.length > 32 ? characters.slice(0, 31).join('') + '…' : title;
+  const handoff = fields.handoffDepth === undefined && fields.handoffLimit === undefined ? ''
+    : ` · Handoff ${fields.handoffDepth}/${fields.handoffLimit}`;
+  return presentation.brand_line + ' · ' + displayText(preview) + handoff + '\n';
+}
+
+export function presentMessage(body, presentation, fields, deliveryDetails = '') {
   if (typeof body !== 'string') throw new Error('Message body must be text.');
+  if (typeof deliveryDetails !== 'string') throw new Error('Delivery details must be text.');
+  const details = presentationDetails(presentation, fields);
   // Never scan or rewrite the body: an author may have intentionally quoted a
   // mention. Exactly one presentation mention is emitted by this single wrapper.
   const header = presentationHeader(presentation, fields);
-  return body.startsWith(header) ? body : header + body;
+  const footer = '\n\n' + details + (deliveryDetails ? '\n\n' + deliveryDetails : '');
+  return body.startsWith(header) && body.endsWith(footer) ? body : header + body + footer;
 }
