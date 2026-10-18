@@ -5,7 +5,8 @@ line containing the observed plugin mention and actual sender title. The
 unchanged authored body starts immediately on the next line. Full sender title,
 explicit role binding, recipient context and routing details follow the body.
 Long sender titles are shortened only in the preview, at a grapheme boundary;
-the full title remains in the details. This keeps the sender and beginning of
+escaping does not clip the preview again or remove its ellipsis. The full title
+remains escaped and unshortened in the details. This keeps the sender and beginning of
 the body within the native card's two-line collapsed preview.
 The host owns its “Sent by ChatGPT from another task” heading. Branding is not
 sender authentication, a reply grant or an installation request.
