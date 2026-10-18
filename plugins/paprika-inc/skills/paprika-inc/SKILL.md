@@ -57,7 +57,10 @@ This procedure adds no timer, implementation dispatch or messaging authority.
 During company discussion and role creation, use [role recommendations](../setup-paprika-inc/references/role-recommendations.md). Recommend a Coordinator and a separate Release Engineer for IT and research companies when workflow volume warrants them; keep technical/scientific review with other roles. Discuss model/effort preferences and use exact human-approved native parameters. Templates neither create chats nor authorize publication.
 
 For an owner-authorized release workflow, follow [delegated reviewed merges](../setup-paprika-inc/references/role-recommendations.md#delegate-reviewed-merges).
-Release Engineer may execute merges after independent QA and related-role review
+Use [proportionate company QA](../setup-paprika-inc/references/role-recommendations.md#proportionate-company-qa)
+for meaningful validation checkpoints; do not dispatch QA for every task or PR.
+Release Engineer may execute merges after independent related-role review and QA
+where the selected company policy or assigned acceptance gates require it,
 within the selected owner's actual scoped grant. Reuse unchanged authorization;
 verify current-head reviews, CI and protections. An existing PR-only maintainer
 exception requires explicit coverage in that grant. Never self-approve, change

@@ -31,7 +31,10 @@ test('short tasks stay intact inline; one pending native write suppresses retrie
   const observed=presentation();delete observed.supports_plugin_mentions;
   const first=await nextOutbound({...f,deliveryContext:ctx(),messageContext:observed});
   assert.equal(first.host_call.tool,'mcp__codex_app__send_message_to_thread');
-  assert(first.host_call.arguments.prompt.endsWith(f.deliveryInput.body));
+  const prompt=first.host_call.arguments.prompt;
+  assert.equal(prompt.split('\n')[1],'Exact small task.');
+  assert(prompt.includes(f.deliveryInput.body));
+  assert(prompt.indexOf('Paprika Inc delivery: task-1')>prompt.indexOf(f.deliveryInput.body));
   assert(first.host_call.arguments.prompt.startsWith('[@Paprika Inc]'));
   const attempts=await Promise.all(Array.from({length:3},()=>nextOutbound(f).catch(e=>({status:e.code}))));
   assert(attempts.every(a=>!a.host_call));
@@ -55,7 +58,7 @@ test('large reports require confirmed intact storage and produce only metadata/r
   await recordOutbound({...f,actionId:post.action_id,hostResult:stored});
   const native=await nextOutbound({...f,deliveryContext:context,messageContext:observed});
   const prompt=native.host_call.arguments.prompt;
-  assert(prompt.startsWith('[@Paprika Inc](plugin://paprika-inc@fictional-catalog)\n\nFrom:'));
+  assert(prompt.startsWith('[@Paprika Inc](plugin://paprika-inc@fictional-catalog) · Observed Builder\nA new message is available on board main.'));
   for(const text of [body,'PRIVATE full task payload.']) assert(!prompt.includes(text));
   for(const text of ['Observed Builder','Role: builder','Sender ID: sender','Receiver ID: recipient','message-1','main','get_message']) assert(prompt.includes(text));
   assert.equal(verifyReference({board:'main',messageId:'message-1',receiverId:'recipient',result:stored}).body,body);
@@ -71,11 +74,11 @@ test('a pending plain header stays frozen when a new observation would restore t
   const f=await begin(t,'Exact pending task.\r\n');
   const observed=presentation();observed.supports_plugin_mentions=false;
   const action=await nextOutbound({...f,deliveryContext:ctx(),messageContext:observed});
-  assert(action.host_call.arguments.prompt.startsWith('Paprika Inc\n\nFrom:'));
+  assert(action.host_call.arguments.prompt.startsWith('Paprika Inc · Observed Builder\nExact pending task.\r\n'));
   // Model a pre-restoration journal with the older single-newline header.
   const path=join(f.source,'.git/paprika-inc/outbound/task-1.json');
   const legacy=JSON.parse(await readFile(path,'utf8'));
-  legacy.pending.host_call.arguments.prompt=action.host_call.arguments.prompt.replace('Paprika Inc\n\nFrom:','Paprika Inc\nFrom:');
+  legacy.pending.host_call.arguments.prompt='Paprika Inc\nFrom: "Observed Builder" · Role: builder\nTo: "Registered Recipient"\n\nPaprika Inc delivery: task-1.\n\n'+f.deliveryInput.body;
   await writeFile(path,JSON.stringify(legacy));
   delete observed.supports_plugin_mentions;
   const next=await nextOutbound({...f,deliveryContext:ctx(),messageContext:observed});
@@ -189,7 +192,7 @@ test('active and paused recipient subscriptions do not block short inline sends 
     assert.equal(action.status,'host_action'); assert.equal(action.delivery.mode,'inline');
     assert.equal(action.host_call.tool,'mcp__codex_app__send_message_to_thread');
     assert.equal(action.message_id,null); assert.equal(action.transport,'native');
-    assert(action.host_call.arguments.prompt.endsWith(f.deliveryInput.body));
+    assert(action.host_call.arguments.prompt.includes('\n'+f.deliveryInput.body+'\n\n'));
     const saved=JSON.parse(await readFile(join(f.source,'.git/paprika-inc/outbound/task-1.json'),'utf8'));
     assert.equal(saved.pending.kind,'native'); assert(!saved.message_id);
     assert.equal((await nextOutbound({...f,deliveryContext:context})).status,'submission_unresolved');

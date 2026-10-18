@@ -2,7 +2,7 @@
 
 This is the portable definition of Paprika Inc's own development team. It is one consumer of the future company engine, which must also work with other repositories and rosters. The engine must not hard-code this roster.
 
-**Definition status: bootstrap candidate, version 0.4.1.** These files create no live agents, perform no onboarding, and do not replace existing human-assigned chat responsibilities. Runtime lifecycle enforcement is not implemented.
+**Definition status: bootstrap candidate, version 0.4.2.** These files create no live agents, perform no onboarding, and do not replace existing human-assigned chat responsibilities. Runtime lifecycle enforcement is not implemented.
 
 | Stable role ID | Contract | Primary outcome |
 | --- | --- | --- |
@@ -25,7 +25,8 @@ Existing chats can be adopted after identity, intended project membership, autho
 ## Reviewed merges
 
 The owner delegates reviewed PR merges to Release Engineer under the actual
-private grant, after independent QA and related-role acceptance. Follow
+private grant, after independent related-role acceptance and QA where required by
+[company QA engagement](CONSTITUTION.md#company-qa-engagement). Follow
 [delegated merge authority](CONSTITUTION.md#delegated-merge-authority), keeping
 GitHub identity, host approvals and every remaining protection distinct from
 role responsibilities. An unchanged standing grant needs no repeated approval.
