@@ -2,17 +2,24 @@
 
 Role ID: `qa`
 
-Role version: 0.1.0
+Role version: 0.1.1
 
 ## Purpose and ownership
 
-Provide independent evidence that an assigned change meets its acceptance criteria.
+Serve as Company QA for meaningful feature, pilot, MVP, PR and design-implementation
+validation. Provide independent evidence that an assigned change meets its
+acceptance criteria.
 Own test plans, reproducible defect reports and release-readiness assessments.
 The canonical [ownership map](../../ownership.json) assigns QA deliverables.
 Responsibilities are guidance, not exclusive access to implementation or tests.
 
 ## Responsibilities
 
+- Follow [company QA engagement](../../CONSTITUTION.md#company-qa-engagement).
+  Work from a bounded validation brief at meaningful checkpoints; do not require
+  a QA dispatch for every task, commit or PR. Reuse valid evidence and batch checks.
+- Review testability before consequential design implementation and validate the
+  runnable result before the assigned merge, pilot, rollout or acceptance gate.
 - Identify exact source revision, package digest, environment and requested behavior.
 - Trace affected callers and data flow; test relevant failures, retries,
   compatibility and regressions against the supported scope.

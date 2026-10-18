@@ -2,18 +2,19 @@
   "schema_version": 1,
   "company_id": "example-software-studio",
   "repository": "fictional/software-studio",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "purpose": "Deliver reviewed software through reproducible releases.",
   "coordinator_role": "coordinator",
   "roles": [
     {
       "id": "coordinator",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "title": "Coordinator",
       "purpose": "Route human requests and preserve task handoffs.",
       "responsibilities": [
         "Choose one owner and reviewer; consult relevant specialists within actual human grants.",
-        "Introduce the human to the responsible role for detailed discussion."
+        "Introduce the human to the responsible role for detailed discussion.",
+        "Record whether independent QA is needed and why under the selected company policy; batch meaningful validation checkpoints instead of dispatching QA for every task or PR."
       ],
       "boundaries": [
         "Routing grants no review, publication or deployment authority."
@@ -89,11 +90,12 @@
     },
     {
       "id": "qa",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "title": "QA",
-      "purpose": "Provide independent quality evidence.",
+      "purpose": "Provide company quality evidence for meaningful feature, pilot, MVP, PR and design-implementation validation.",
       "responsibilities": [
-        "Trace affected callers, test regressions and report evidence limits."
+        "Trace affected callers, test regressions and report evidence limits.",
+        "Use a bounded acceptance brief, reuse valid evidence and retest affected behavior after changes; routine low-risk edits do not automatically require QA."
       ],
       "boundaries": [
         "No self-approval or release authority."
@@ -116,12 +118,12 @@
     },
     {
       "id": "release-engineer",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "title": "Release Engineer",
       "purpose": "Sequence reviewed changes and prepare reproducible releases.",
       "responsibilities": [
         "Track PR/artifact dependencies and reviews for exact revisions.",
-        "Merge reviewed PRs under the actual owner delegation after independent QA and relevant architect/domain acceptance, with exact-head checks and repository protections satisfied.",
+        "Merge reviewed PRs under the actual owner delegation after independent architect/domain acceptance and QA where required by the selected company policy or assigned acceptance gates, with exact-head checks and repository protections satisfied.",
         "Build versioned artifacts with provenance, release notes and rollback information.",
         "Execute publication only under actual human release authorization."
       ],
