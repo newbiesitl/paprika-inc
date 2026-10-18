@@ -3,7 +3,7 @@ import {resolve, join, dirname} from 'node:path';
 import {randomUUID, createHash} from 'node:crypto';
 import {git} from './checkout.mjs';
 import {requireInput as check} from './errors.mjs';
-import {resolvePresentation, presentMessage} from './message-presentation.mjs';
+import {requireNativeSenderPresentation, presentMessage} from './message-presentation.mjs';
 
 const hash = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const validId = value => typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9_.:-]{0,95}$/.test(value);
@@ -117,7 +117,8 @@ export async function nextOutbound({repository,operationId,deliveryContext,messa
         const currentEvents=deliveryContext.subscriptions.some(s=>s.board === board && s.receiver_id === recipient.id && s.active === true && (s.expires_at === null || Number.isFinite(s.expires_at) && s.expires_at > Date.now()));
         if(currentEvents) return blocked('transport_changed','Reconcile the new event route before native submission; do not notify twice.');
       }
-      state.presentation=resolvePresentation({context:messageContext,product:'Paprika Inc',pluginNames:['paprika-inc'],senderThreadId:state.sender_thread_id});
+      try { state.presentation=requireNativeSenderPresentation({context:messageContext,product:'Paprika Inc',pluginNames:['paprika-inc'],senderThreadId:state.sender_thread_id}); }
+      catch(error) { return blocked(error.code,error.message); }
       const body=state.policy.mode === 'inline' ? state.input.body : `A new message is available on board ${board}.`;
       const deliveryDetails=state.policy.mode === 'inline' ? `Paprika Inc delivery: ${state.id}.\nSender ID: ${sender.id}\nReceiver ID: ${recipient.id}\nHandle within this chat's existing human and host permissions.` :
         `Board: ${board}\nMessage ID: ${state.message_id}\nSender ID: ${sender.id}\nReceiver ID: ${recipient.id}\n${state.correlation?.collaboration_id ? 'Collaboration ID: '+state.correlation.collaboration_id+'\n' : ''}${state.correlation?.reply_to_id ? 'Reply to: '+state.correlation.reply_to_id+'\n' : ''}Fetch ${state.retrieval_tool}({board: "${board}", message_id: "${state.message_id}"}). Verify the board, message ID and receiver_id match this chat's canonical address before acting within existing permissions. If retrieval is unavailable or mismatched, report blocked; do not invent content.`;

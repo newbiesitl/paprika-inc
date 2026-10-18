@@ -6,8 +6,8 @@ import {fixture,journal,projectReport,membershipReport,capabilities} from './mvp
 import {startOutbound as startImpl,nextOutbound as nextImpl,recordOutbound,outboundStatus,reconcileOutbound,chooseDelivery,verifyReference} from '../plugins/paprika-inc/runtime/paprika-inc/outbound.mjs';
 import {beginBootstrap as beginImpl,nextBootstrap as bootstrapImpl,recordBootstrap,bindBootstrapRole} from '../plugins/paprika-inc/runtime/paprika-inc/bootstrap.mjs';
 const env={CODEX_THREAD_ID:'fixture-current-chat'}, senderThread=env.CODEX_THREAD_ID;
-const startOutbound=o=>startImpl(o,env), nextOutbound=o=>nextImpl(o,env);
-const beginBootstrap=o=>beginImpl(o,env), nextBootstrap=o=>bootstrapImpl(o,env);
+const startOutbound=o=>startImpl(o,env), nextOutbound=o=>nextImpl({messageContext:presentation(),...o},env);
+const beginBootstrap=o=>beginImpl({messageContext:presentation(),...o},env), nextBootstrap=o=>bootstrapImpl({messageContext:presentation(),...o},env);
 const ctx=(thread='fixture-recipient')=>({deployment:'https://example.invalid',board:'main',service_available:true,recipient_can_retrieve:true,
   service_tools:{post_message:'mcp__fixture__paprika_service_post_message',get_message:'mcp__fixture__paprika_service_get_message'},
   available_tools:['mcp__fixture__paprika_service_post_message','mcp__fixture__paprika_service_get_message'],subscriptions:[],
@@ -20,6 +20,77 @@ const presentation=()=>({schema_version:1,observed_at:new Date().toISOString(),h
 const confirmation=post=>({message:{...post,id:'message-1',created_at:'2026-01-01T00:00:00Z'}});
 async function begin(t,body,policy) { const f=await fixture(t); const deliveryInput={request_id:'task-1',body,topic:'Task',...(policy?{delivery_policy:policy}:{})};
   await startOutbound({repository:f.source,deliveryInput}); return {...f,deliveryInput,repository:f.source,operationId:'task-1'}; }
+
+test('new company messages require current executing-sender observations and recover the same operation',async t=>{
+  const f=await begin(t,'Body stays exact: 😀 e\u0301\r\n');
+  const mutations=[
+    value=>{value.observed_at='2000-01-01T00:00:00Z';},
+    value=>{value.observed_at=new Date(Date.now()+60000).toISOString();},
+    value=>{value.sender_metadata.thread.id='other-chat';},
+    value=>{value.sender_metadata.thread.hostId='other-host';},
+    value=>{value.host_id='remote';value.sender_metadata.thread.hostId='remote';},
+    value=>{value.sender_metadata.thread.title='  ';},
+    value=>{value.sender_metadata.source='registered_label';},
+    value=>{value.sender_metadata.thread.kind='chatgpt';},
+    value=>{delete value.sender_metadata;},
+  ];
+  const invalid=[undefined,{},...mutations.map(mutate=>{const value=presentation();mutate(value);return value;})];
+  for(const messageContext of invalid) {
+    const result=await nextOutbound({...f,deliveryContext:ctx(),messageContext});
+    assert.equal(result.status,'sender_metadata_required');assert.ok(!result.host_call);
+    const saved=JSON.parse(await readFile(join(f.source,'.git/paprika-inc/outbound/task-1.json'),'utf8'));
+    assert.equal(saved.input.body,f.deliveryInput.body);assert.ok(!saved.pending);
+  }
+  const fresh=presentation();delete fresh.plugin_invocation;fresh.sender_metadata.thread.title='Renamed Native Sender';
+  const action=await nextOutbound({...f,deliveryContext:ctx(),messageContext:fresh});
+  const prompt=action.host_call.arguments.prompt;
+  assert.ok(prompt.startsWith('Paprika Inc · Renamed Native Sender\n'+f.deliveryInput.body));
+  assert.ok(prompt.includes('From: "Renamed Native Sender"'));
+  assert.ok(!prompt.includes('Native title unavailable'));assert.ok(!prompt.includes('Paprika Messenger'));
+  fresh.sender_metadata.thread.title='Later name';
+  assert.equal((await nextOutbound({...f,messageContext:fresh})).status,'submission_unresolved');
+  const frozen=JSON.parse(await readFile(join(f.source,'.git/paprika-inc/outbound/task-1.json'),'utf8'));
+  assert.equal(frozen.pending.host_call.arguments.prompt,prompt);
+});
+
+test('reference delivery refreshes sender after storage without reposting or losing the stored body',async t=>{
+  const f=await begin(t,'Private stored report. '.repeat(100)),route=ctx(),observed=presentation();
+  const post=await nextOutbound({...f,deliveryContext:route,messageContext:observed});
+  await recordOutbound({...f,actionId:post.action_id,hostResult:confirmation(post.host_call.arguments)});
+  observed.observed_at='2000-01-01T00:00:00Z';
+  const blocked=await nextOutbound({...f,deliveryContext:route,messageContext:observed});
+  assert.equal(blocked.status,'sender_metadata_required');assert.equal(blocked.message_id,'message-1');assert.ok(!blocked.host_call);
+  const fresh=presentation();fresh.sender_metadata.thread.title='Sender renamed after storage';
+  const notice=await nextOutbound({...f,deliveryContext:route,messageContext:fresh});
+  assert.equal(notice.host_call.tool,'mcp__codex_app__send_message_to_thread');
+  const prompt=notice.host_call.arguments.prompt;
+  assert.ok(prompt.includes('From: "Sender renamed after storage"'));
+  assert.ok(prompt.includes('Message ID: message-1'));assert.ok(!prompt.includes(f.deliveryInput.body));
+  assert.equal(post.host_call.arguments.body,f.deliveryInput.body);
+});
+
+test('bootstrap sender recovery covers create and stored onboarding without stranding a pending action',async t=>{
+  const f=await fixture(t),repository=f.destination;
+  const record=(action,result)=>recordBootstrap({repository,actionId:action.action_id,deliveryActionId:action.delivery_action_id,hostResult:result});
+  const first=await beginBootstrap({repository:f.source,destination:repository,roles:'organizer',hostCapabilities:capabilities()});
+  await record(first,projectReport(repository));
+  const blocked=await nextBootstrap({repository,messageContext:{}});
+  assert.equal(blocked.status,'sender_metadata_required');assert.ok(!blocked.host_call);
+  assert.ok(!(await journal(repository)).pending_action);
+  const create=await nextBootstrap({repository});
+  assert.ok(create.host_call.arguments.prompt.includes('From: "Observed Builder"'));
+  await record(create,{threadId:'new-role-chat',hostId:'local'});
+  await record(await nextBootstrap({repository}),membershipReport(repository,'new-role-chat'));
+  const route=ctx('new-role-chat');
+  const post=await nextBootstrap({repository,deliveryContext:route});
+  assert.ok(post.host_call.arguments.body.includes('use the Paprika Inc skill'));
+  await record(post,confirmation(post.host_call.arguments));
+  const noticeBlocked=await nextBootstrap({repository,deliveryContext:route,messageContext:{}});
+  assert.equal(noticeBlocked.status,'sender_metadata_required');assert.ok(!noticeBlocked.host_call);
+  const notice=await nextBootstrap({repository,deliveryContext:route});
+  assert.equal(notice.host_call.tool,'mcp__codex_app__send_message_to_thread');
+  assert.ok(notice.host_call.arguments.prompt.includes('From: "Observed Builder"'));
+});
 test('Inc policy uses inclusive original Unicode code points and rejects force-inline or invalid limits',()=>{
   for(const n of [1499,1500,1501]) assert.equal(chooseDelivery('😀'.repeat(n)).mode,n<=1500?'inline':'reference');
   assert.equal(chooseDelivery(' e\u0301\r\n').code_points,5);

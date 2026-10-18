@@ -7,6 +7,9 @@ import { authorCompany } from '../plugins/paprika-inc/runtime/paprika-inc/author
 import { requiredHostTools } from '../plugins/paprika-inc/runtime/paprika-inc/bootstrap.mjs';
 const run = promisify(execFile);
 
+export const senderContext = (threadId = 'fixture-bootstrap-sender') => ({schema_version:1, observed_at:new Date().toISOString(), host_id:'local',
+  sender_metadata:{source:'read_thread',thread:{id:threadId,title:'Fictional Sender',kind:'codex',hostId:'local'}}});
+
 export const blueprint = () => ({ schema_version: 1, company_id: 'example-workshop', repository: 'fictional/workshop', version: '0.1.0',
   purpose: 'Build a small fictional workshop product.', coordinator_role: 'organizer',
   roles: [

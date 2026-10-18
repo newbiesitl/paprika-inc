@@ -1,5 +1,8 @@
 // Presentation only. The caller supplies actual native metadata; these consistency
 // checks do not authenticate snapshots, create communication grants or send messages.
+import { requireInput as check } from './errors.mjs';
+
+export const companyCommunicationGuidance = 'For later human-authorized company communication, use the Paprika Inc skill and its message start/next/record workflow on the verified company board. Paprika Service supplies storage and routing; do not select the standalone Paprika Messenger send/notify helper for company handoffs. Before each new native message, read this sender\'s current native title from list_threads/read_thread using CODEX_THREAD_ID and supply fresh --message-context observations. Missing sender metadata requires a fresh read before sending; missing plugin metadata may use plain Paprika Inc. Preserve pending deliveries and existing human grants. These instructions authorize no message during read/report onboarding.';
 const id = value => typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9_.:-]{0,159}$/.test(value);
 const roleId = value => typeof value === 'string' && /^[a-z][a-z0-9-]{0,95}$/.test(value);
 const reference = value => typeof value === 'string' && /^plugin:\/\/[a-z][a-z0-9-]{0,63}@[A-Za-z0-9][A-Za-z0-9._-]{0,95}$/.test(value);
@@ -43,6 +46,13 @@ export function resolvePresentation({ context, product, pluginNames, senderThrea
   return { product, plugin_reference: pluginReference, sender_title: title, sender_role: role, reason,
     brand_line: pluginReference ? `[@${displayText(product)}](${pluginReference})` : displayText(product),
     evidence: 'caller_supplied_native_observations_not_authentication' };
+}
+
+export function requireNativeSenderPresentation(options) {
+  const presentation = resolvePresentation(options);
+  check(presentation.sender_title !== null && options.context?.host_id === 'local' && options.context?.sender_metadata?.thread?.kind === 'codex',
+    'sender_metadata_required', 'Read the executing CODEX_THREAD_ID with list_threads/read_thread and supply fresh matching native sender title metadata through --message-context. Preserve this operation and retry preparation; do not substitute a registered label or resend a pending message.');
+  return presentation;
 }
 
 function presentationDetails(presentation, { senderId, registeredLabel, recipientLabel, recipientRole, handoffDepth, handoffLimit } = {}) {

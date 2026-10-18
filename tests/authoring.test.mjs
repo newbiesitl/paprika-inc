@@ -35,6 +35,10 @@ test('explicit writing creates complete contracts and one ownership map, preserv
   assert.equal(definition.manifest.ownership, 'company/ownership.json');
   assert.equal(definition.ownership.entries.length, 2);
   for (const role of definition.roles) for (const heading of ['Purpose', 'Responsibilities', 'Ownership', 'Boundaries', 'Inputs', 'Outputs and acceptance', 'Review relationships', 'Escalation']) assert.ok(role.text.includes('## ' + heading));
+  for (const role of definition.roles) {
+    assert.match(role.text, /use the Paprika Inc skill and its message start\/next\/record workflow/);
+    assert.match(role.text, /These instructions authorize no message during read\/report onboarding/);
+  }
   assert.equal(result.definition_input_sha256, definition.definition_input_sha256);
   assert.match(result.publication, /draft_commit_and_publish/);
   assert.equal(await readFile(join(root, 'AGENTS.md'), 'utf8'), before);

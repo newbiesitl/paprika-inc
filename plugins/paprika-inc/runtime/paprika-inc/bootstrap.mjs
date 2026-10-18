@@ -5,7 +5,7 @@ import { checkoutCompany, inspectCheckout, git } from './checkout.mjs';
 import { IncError, requireInput as check } from './errors.mjs';
 import { projectSkills } from './skill-packs.mjs';
 import { sha } from './skill-catalog.mjs';
-import { resolvePresentation, presentMessage } from './message-presentation.mjs';
+import { requireNativeSenderPresentation, presentMessage, companyCommunicationGuidance } from './message-presentation.mjs';
 
 import {chooseDelivery,startOutbound,nextOutbound,recordOutbound} from './outbound.mjs';
 
@@ -129,6 +129,7 @@ function onboardingPrompt(state, role) {
     `Selected checkout: ${state.destination}\nPinned revision: ${state.revision}\nRole: ${role.id} / ${role.version}\n` +
     `Read ${state.manifest_path}, ${state.ownership_path}, and ${role.definition}, plus applicable shared instructions. Ownership is canonical only in ${state.ownership_path}. Do not write files, create chats, deploy, subscribe, message others or perform arbitrary implementation work.\n\n` +
     (role.skill_report ? `Selected skill sets: ${JSON.stringify(role.skill_sets)}. Read these installed skill/portability paths too: ${JSON.stringify(role.skill_sources)}. Local installation/capability observations: ${JSON.stringify(role.skill_report)}. Report missing installation, missing dependencies, unsupported cross-skill routes and unverified external access separately. Optional research PDF/paid/figures/Scholar routes remain disabled. Engineering guidance needs no external service. Do not run API calls, helpers or review assignments during onboarding. Installation does not certify native discovery, research readiness or review quality. Include skill_report_sha256=${role.skill_report_sha256} in the receipt to identify the report you reviewed.\n\n` : '') +
+    companyCommunicationGuidance + '\n\n' +
     `Report responsibilities, ownership, boundaries, inputs/outputs, review relationships and blockers in this chat. Then return one JSON object in a fenced JSON block with: request_id=${role.request_id}, role_id=${role.id}, role_version=${role.version}, source_revision=${state.revision}, contract_sha256=<computed SHA256 of the role file>, ownership_sha256=<computed SHA256 of the ownership map>, sources_read=<relative source paths actually read>, state=ready or blocked, blockers=<array>. Expected contract hash ${role.contract_sha256}; ownership hash ${state.ownership_sha256}. A response is not adoption or new authority. The caller independently checks native project/host/cwd evidence.`;
 }
 
@@ -160,7 +161,9 @@ async function actionOutput(state, action, messageContext, env = process.env, de
   if (action.kind === 'wait') { tool = 'wait_threads'; args = { targets: [{ threadId: role.thread_id, hostId: 'local' }], timeoutMs: 10000 }; }
   if (action.kind === 'read') { tool = 'read_thread'; args = { threadId: role.thread_id, hostId: 'local', turnLimit: 1, includeOutputs: false, maxOutputCharsPerItem: 8000 }; }
   if (['create', 'onboard'].includes(action.kind) && !action.host_call) {
-    const presentation = resolvePresentation({ context: messageContext, product: 'Paprika Inc', pluginNames: ['paprika-inc'], senderThreadId: env.CODEX_THREAD_ID });
+    let presentation;
+    try { presentation = requireNativeSenderPresentation({ context: messageContext, product: 'Paprika Inc', pluginNames: ['paprika-inc'], senderThreadId: env.CODEX_THREAD_ID }); }
+    catch(error) { return {ok:false,status:error.code,detail:error.message}; }
     args.prompt = presentMessage(args.prompt, presentation, { recipientLabel: role.id, recipientRole: role.id });
     action.presentation = presentation;
     action.host_call = { tool: prefix + tool, arguments: args };
@@ -203,7 +206,9 @@ export async function nextBootstrap({ repository, messageContext, deliveryContex
   }
   const action = { id: randomUUID(), kind, role_id: role?.id ?? null };
   const output = await actionOutput(state, action, messageContext, env, deliveryContext, deliveryPolicy, retryStorage);
-  state.pending_action = action;
+  // Missing sender observations have not prepared a native write. Keep the
+  // operation resumable instead of turning that read requirement into uncertainty.
+  if (output.status === 'host_action' || action.delivery_operation_id) state.pending_action = action;
   await save(root, state); // Persist before exposing a create/send action, including on crash.
   return output;
 }
