@@ -19,7 +19,8 @@ or specialists under actual human communication grants, picks an owner/reviewer,
 and points the human to the responsible chat for detailed discussion. Architecture
 brainstorming can stay with the architect. Routing does not approve design or release.
 
-Review is owned by the architect/domain reviewer and QA (or scientific reviewer).
+Independent review is owned by an appropriate architect/domain or scientific
+reviewer. Assign QA when the selected company policy and validation need warrant it.
 Release Engineer executes the reviewed, authorized sequence; it cannot approve its
 own implementation, waive a failed gate or infer publication permission from a
 role name. Research artifact packaging does not validate scientific conclusions.
@@ -49,10 +50,50 @@ default. If host permissions or credentials block it, report the exact blocker a
 preserve the commit/patch for an explicitly assigned alternate submitter. This
 workflow grants no new communication, repository-write or release permissions.
 
+## Proportionate company QA
+
+Adapt this guidance to the selected owner's policy. QA serves the whole company
+at meaningful validation checkpoints. There is no fixed invocation schedule and
+no automatic QA assignment for every task, commit or PR. Independent review and QA testing are separate responsibilities.
+
+Engage QA for feature acceptance, pilot and MVP testing, integration/regression
+testing, and PRs whose changed behavior or risk warrants independent examination.
+Include material design implementations and user-facing workflows: review
+testability and acceptance criteria before consequential implementation decisions,
+then test a runnable candidate before its merge, rollout or other committed action.
+Security, permissions, data integrity/migrations, recovery and cross-component
+changes normally warrant QA. A local checkpoint commit or draft PR does not itself
+require a QA pass.
+
+Routine wording, formatting, README layout, planning/status updates and small
+mechanical edits normally need owner verification and any appropriate peer review,
+without a separate QA dispatch. Classify by effect, not extension: documentation
+or configuration that changes permissions, executable behavior or a critical setup
+flow may still warrant QA. A listed reviewer role is a selection guide, not a
+requirement to wake every listed role for every edit.
+
+Have the coordinator record a short QA decision and reason in the existing task
+or PR, consulting the relevant technical/domain reviewer when uncertain. Every QA brief
+states the behavior/risk to examine, acceptance criteria, candidate, environment,
+existing evidence and a bounded test scope. No separate process document is needed
+for each routine task. Implementation owners remain responsible for proportionate
+checks; omitting a QA dispatch does not omit testing or required independent review.
+
+Batch related checks into one planned pass per meaningful checkpoint. Reuse valid
+evidence for unchanged behavior and environments. After a fix, retest the affected
+behavior and relevant regressions; expand only for changed scope, new failures or
+unresolved risk. Do not repeat successful suites, request duplicate reports or
+poll QA merely for status. Report pass/fail, uncovered scope and blockers concisely.
+Named acceptance gates and unresolved failures remain open until their required
+evidence is met or the human explicitly changes them; this policy is not a blanket
+waiver of a current hold or permission to merge/release.
+
 ## Delegate reviewed merges
 
 During role discussion, recommend delegating reviewed PR merges to Release
-Engineer after independent QA and relevant architect/domain acceptance. Obtain
+Engineer after independent architect/domain acceptance and QA where the selected
+company's policy or assigned acceptance gates require it. Use
+[proportionate company QA](#proportionate-company-qa) to discuss the policy. Obtain
 or reuse the selected owner's actual scoped merge grant and record it privately
 with repository, scope, conditions and any explicitly covered existing PR-only
 maintainer exception. Another company's owner can choose a different policy;
