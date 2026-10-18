@@ -5,7 +5,9 @@ const roleId = value => typeof value === 'string' && /^[a-z][a-z0-9-]{0,95}$/.te
 const reference = value => typeof value === 'string' && /^plugin:\/\/[a-z][a-z0-9-]{0,63}@[A-Za-z0-9][A-Za-z0-9._-]{0,95}$/.test(value);
 
 export function displayText(value) {
-  const singleLine = String(value).slice(0, 512).replace(/[\x00-\x1f\x7f-\x9f\u2028\u2029\u202a-\u202e\u2066-\u2069]/g,
+  // Only the preview truncates, at a grapheme boundary. Escaping must preserve
+  // that boundary and its ellipsis, and keep full titles in the details.
+  const singleLine = String(value).replace(/[\x00-\x1f\x7f-\x9f\u2028\u2029\u202a-\u202e\u2066-\u2069]/g,
     char => '\\u' + char.charCodeAt(0).toString(16).padStart(4, '0'));
   return singleLine.replace(/[\\`*_{}\[\]()<>#!|~]/g, '\\$&');
 }

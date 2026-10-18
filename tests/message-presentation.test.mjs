@@ -77,6 +77,36 @@ test('compact preview keeps body Unicode intact and long sender metadata below i
   for(const text of ['Sender ID: sender','Registered label: "Registered sender"','To: "Builder"','Handoff 2/5','Delivery reference: fixture-message.']) assert.ok(message.includes(text));
   assert.equal(presentMessage(message,presentation(ctx),fields,'Delivery reference: fixture-message.'),message);
 });
+test('sender previews past 512 UTF-16 units retain complete graphemes and the truncation marker', () => {
+  const family='👨🏿‍👩🏾‍👧🏽‍👦🏼';
+  const cases=[
+    {title:family.repeat(35),preview:family.repeat(31)+'…'},
+    {title:family.repeat(27),preview:family.repeat(27)},
+    {title:'e'+'\u0301'.repeat(600),preview:'e'+'\u0301'.repeat(600)},
+  ];
+  const body='Original body: 😀 e\u0301\r\n';
+  const fields={senderId:'sender',recipientLabel:'Builder',handoffDepth:2,handoffLimit:5};
+  for(const {title,preview} of cases) {
+    assert.ok(preview.length>512,'fixture must cross the former secondary cutoff');
+    const ctx=context();ctx.sender_metadata.thread.title=title;
+    const message=presentMessage(body,presentation(ctx),fields,'Message ID: fixture-message.');
+    const firstLine=message.split('\n')[0];
+    assert.equal(firstLine,'[@Paprika Inc](plugin://paprika-inc@fictional-catalog) · '+preview+' · Handoff 2/5');
+    assert.ok(message.isWellFormed(),'no unpaired surrogate in the header or footer');
+    assert.equal(message.slice(firstLine.length+1,firstLine.length+1+body.length),body);
+    assert.ok(message.includes('From: "'+title+'" · Role: planner · Sender ID: sender'));
+    assert.ok(message.endsWith('To: "Builder"\n\nMessage ID: fixture-message.'));
+    assert.equal(presentMessage(message,presentation(ctx),fields,'Message ID: fixture-message.'),message);
+  }
+});
+test('full sender details preserve and escape text beyond the former 512-unit cutoff', () => {
+  const ctx=context(), prefix='a'.repeat(511), family='👨🏿‍👩🏾‍👧🏽‍👦🏼';
+  ctx.sender_metadata.thread.title=prefix+family+'\n[tail]\u202e';
+  const message=presentMessage('Body.',presentation(ctx));
+  assert.ok(message.includes('From: "'+prefix+family+'\\\\u000a\\[tail\\]\\\\u202e" · Role: planner'));
+  assert.ok(message.isWellFormed());
+  assert.ok(!message.includes('\n[tail]'));assert.ok(!message.includes('\u202e'));
+});
 test('missing native metadata says unavailable and never promotes a title into a role', () => {
   const ctx=context();delete ctx.sender_metadata;delete ctx.role_binding;
   const message=presentMessage('Body.',presentation(ctx));
