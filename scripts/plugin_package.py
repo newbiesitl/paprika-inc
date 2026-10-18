@@ -120,7 +120,9 @@ def payload_files(root, provenance_required=False, bound=False):
     expected = expected_package_files(root) | ({'package-provenance.json'} if provenance_required else set())
     if bound:
         expected |= {'.app.json'}
-    for path in sorted(root.rglob('*')):
+    # Match the archive/provenance order on Windows and POSIX. Path ordering is
+    # case-insensitive on Windows; package names are canonical POSIX strings.
+    for path in sorted(root.rglob('*'), key=lambda path: path.relative_to(root).as_posix()):
         require(not path.is_symlink(), f'Package symlink: {path.name}')
         if not path.is_file():
             continue
