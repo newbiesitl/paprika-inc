@@ -1,6 +1,6 @@
 # Paprika Inc company constitution
 
-Version: 0.2.1. Status: bootstrap candidate; adoption is separate from publication.
+Version: 0.2.2. Status: bootstrap candidate; adoption is separate from publication.
 
 ## Purpose and authority
 
@@ -48,11 +48,51 @@ The Chief Architect resolves technical scope and interface disagreements; human 
 
 Separate evidence states: proposed, implemented, locally checked, CI checked, adopted, installed, and deployed. Never infer one from another. A test fixture does not prove live host behavior; an acknowledgment does not mean permission or acceptance.
 
+## Company QA engagement
+
+QA serves the whole company at meaningful validation checkpoints. There is no
+fixed invocation schedule and no automatic QA assignment for every task, commit
+or PR. Independent review and QA testing are separate responsibilities.
+
+Engage QA for feature acceptance, pilot and MVP testing, integration/regression
+testing, and PRs whose changed behavior or risk warrants independent examination.
+Include material design implementations and user-facing workflows: review
+testability and acceptance criteria before consequential implementation decisions,
+then test a runnable candidate before its merge, rollout or other committed action.
+Security, permissions, data integrity/migrations, recovery and cross-component
+changes normally warrant QA. A local checkpoint commit or draft PR does not itself
+require a QA pass.
+
+Routine wording, formatting, README layout, planning/status updates and small
+mechanical edits normally need owner verification and any appropriate peer review,
+without a separate QA dispatch. Classify by effect, not extension: documentation
+or configuration that changes permissions, executable behavior or a critical setup
+flow may still warrant QA. A listed reviewer role is a selection guide, not a
+requirement to wake every listed role for every edit.
+
+Coordinator records a short QA decision and reason in the existing task or PR,
+consulting the relevant technical/domain reviewer when uncertain. Every QA brief
+states the behavior/risk to examine, acceptance criteria, candidate, environment,
+existing evidence and a bounded test scope. No separate process document is needed
+for each routine task. Implementation owners remain responsible for proportionate
+checks; omitting a QA dispatch does not omit testing or required independent review.
+
+Batch related checks into one planned pass per meaningful checkpoint. Reuse valid
+evidence for unchanged behavior and environments. After a fix, retest the affected
+behavior and relevant regressions; expand only for changed scope, new failures or
+unresolved risk. Do not repeat successful suites, request duplicate reports or
+poll QA merely for status. Report pass/fail, uncovered scope and blockers concisely.
+Named acceptance gates and unresolved failures remain open until their required
+evidence is met or the human explicitly changes them; this policy is not a blanket
+waiver of a current hold or permission to merge/release.
+
 ## Delegated merge authority
 
 The owner delegates merging reviewed PRs to Release Engineer after independent
-QA and the related architect/domain roles accept the exact changes. Record and
-verify the actual owner grant privately, including repository, scope, conditions
+review by the relevant architect/domain role and QA acceptance when required by
+[company QA engagement](#company-qa-engagement) or the assigned acceptance gates.
+Record and verify the actual owner grant privately, including repository, scope,
+conditions
 and any explicitly covered existing maintainer exception. Reuse an unchanged
 standing grant without asking again for each eligible merge. This source records
 the role's duty; the owner's actual grant and host/GitHub permissions control it.

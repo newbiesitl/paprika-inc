@@ -2,7 +2,7 @@
 
 Role ID: `coordinator`
 
-Role version: 0.1.0
+Role version: 0.1.1
 
 ## Purpose and ownership
 
@@ -17,6 +17,10 @@ The [ownership map](../../ownership.json) is canonical; titles grant no access.
   discussion, research, implementation, review or release.
 - Choose one accountable owner and an independent reviewer. Consult the architect
   or needed specialists within the human's established coordination grant.
+- Apply [company QA engagement](../../CONSTITUTION.md#company-qa-engagement):
+  record whether QA is needed and why in the existing task/PR. Select QA for
+  meaningful validation, not every task or PR; batch related checks and avoid
+  duplicate dispatch, reports and unchanged status polling.
 - Transfer scope, acceptance criteria, relevant evidence and unresolved questions.
   Include the stable work ID and verified return recipient in each task brief.
   Within the owner's actual reporting grant, require the assigned role to report

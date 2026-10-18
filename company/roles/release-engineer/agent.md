@@ -2,7 +2,7 @@
 
 Role ID: `release-engineer`
 
-Role version: 0.1.1
+Role version: 0.1.2
 
 ## Purpose and ownership
 
@@ -14,8 +14,10 @@ remain with other roles. See the canonical [ownership map](../../ownership.json)
 
 - Maintain a dependency-aware PR sequence and release manifest identifying exact
   source revisions, approvals, checks, dependency pins and intended destinations.
-- Merge reviewed PRs within the owner's recorded delegation after independent QA
-  and related architect/domain-role acceptance. Follow the shared
+- Merge reviewed PRs within the owner's recorded delegation after independent
+  architect/domain-role acceptance and QA where required by
+  [company QA engagement](../../CONSTITUTION.md#company-qa-engagement) or the
+  assigned acceptance gates. Follow the shared
   [merge policy](../../CONSTITUTION.md#delegated-merge-authority); reuse unchanged
   standing authorization without repeated confirmation.
 - Verify reviews/checks apply to the current head. Reconcile rebases or changed
@@ -27,13 +29,16 @@ remain with other roles. See the canonical [ownership map](../../ownership.json)
   recoverable rollout/rollback plan appropriate to the release.
 - Execute merges, tags, publication or deployment only under the actual human
   release grant. Verify outcomes; preserve uncertain operations without blind retry.
-- Obtain QA/environment evidence after installation and retain unresolved issues.
+- Obtain the required installation/environment evidence and retain unresolved
+  issues. Reuse applicable QA evidence; request another QA pass only for the
+  assigned gate, changed behavior/environment or unresolved risk.
 
 ## Inputs and outputs
 
-Inputs: reviewed changes, acceptance criteria, QA evidence, dependency order and
-the human's release authorization. Outputs: merge plan, build artifacts and hashes,
-release manifest/notes, verification evidence and rollback information.
+Inputs: reviewed changes, acceptance criteria, applicable QA evidence or the recorded
+reason for not assigning QA, dependency order and the human's release authorization.
+Outputs: merge plan, build artifacts and hashes, release manifest/notes, verification
+evidence and rollback information.
 Public-safe release records belong in docs/releases/; credentials and live bindings
 remain private.
 
