@@ -75,10 +75,10 @@ function freezeRoute(state, context, messageContext) {
   state.transport=state.policy.mode === 'reference' && events ? 'events' : 'native';
   state.route={board,deployment,sender:structuredClone(sender),recipient:structuredClone(recipient)};
 }
-function wrapped(state,body) {
+function wrapped(state,body,deliveryDetails) {
   const {sender,recipient}=state.route;
   return presentMessage(body,state.presentation,{senderId:sender.id,registeredLabel:sender.label,recipientLabel:recipient.label,
-    handoffDepth:state.handoff?.depth,handoffLimit:state.handoff?.limit});
+    handoffDepth:state.handoff?.depth,handoffLimit:state.handoff?.limit},deliveryDetails);
 }
 export async function nextOutbound({repository,operationId,deliveryContext,messageContext,retryStorage=false},env=process.env) {
   return update(repository,operationId,state=>{
@@ -118,10 +118,11 @@ export async function nextOutbound({repository,operationId,deliveryContext,messa
         if(currentEvents) return blocked('transport_changed','Reconcile the new event route before native submission; do not notify twice.');
       }
       state.presentation=resolvePresentation({context:messageContext,product:'Paprika Inc',pluginNames:['paprika-inc'],senderThreadId:state.sender_thread_id});
-      const body=state.policy.mode === 'inline' ? `Paprika Inc delivery: ${state.id}.\nSender ID: ${sender.id}\nReceiver ID: ${recipient.id}\nHandle within this chat's existing human and host permissions.\n\n${state.input.body}` :
+      const body=state.policy.mode === 'inline' ? state.input.body : `A new message is available on board ${board}.`;
+      const deliveryDetails=state.policy.mode === 'inline' ? `Paprika Inc delivery: ${state.id}.\nSender ID: ${sender.id}\nReceiver ID: ${recipient.id}\nHandle within this chat's existing human and host permissions.` :
         `Board: ${board}\nMessage ID: ${state.message_id}\nSender ID: ${sender.id}\nReceiver ID: ${recipient.id}\n${state.correlation?.collaboration_id ? 'Collaboration ID: '+state.correlation.collaboration_id+'\n' : ''}${state.correlation?.reply_to_id ? 'Reply to: '+state.correlation.reply_to_id+'\n' : ''}Fetch ${state.retrieval_tool}({board: "${board}", message_id: "${state.message_id}"}). Verify the board, message ID and receiver_id match this chat's canonical address before acting within existing permissions. If retrieval is unavailable or mismatched, report blocked; do not invent content.`;
       state.reference=state.policy.mode === 'inline' ? 'Paprika Inc delivery: '+state.id : 'Message ID: '+state.message_id;
-      state.pending={id:randomUUID(),kind:'native',host_call:{tool:'mcp__codex_app__send_message_to_thread',arguments:{threadId:recipient.thread_id,hostId:'local',prompt:wrapped(state,body)}}};
+      state.pending={id:randomUUID(),kind:'native',host_call:{tool:'mcp__codex_app__send_message_to_thread',arguments:{threadId:recipient.thread_id,hostId:'local',prompt:wrapped(state,body,deliveryDetails)}}};
     }
     state.phase=state.pending.kind === 'store' ? 'storage_submitting' : 'submitting';
     return {next:state,output:{...summary(state),ok:true,status:'host_action',action_id:state.pending.id,host_call:state.pending.host_call,call_once:true}};

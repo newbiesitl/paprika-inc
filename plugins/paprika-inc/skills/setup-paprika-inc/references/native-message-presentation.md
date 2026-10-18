@@ -1,9 +1,12 @@
 # Native message presentation
 
-New Inc create/onboard prompts and task/report notices start with one observed
-plugin mention as the sole first paragraph, a blank line, then the actual sender
-title, an explicitly bound logical role if known, recipient context, and the
-unchanged onboarding body.
+New Inc create/onboard prompts and task/report notices start with one compact
+line containing the observed plugin mention and actual sender title. The
+unchanged authored body starts immediately on the next line. Full sender title,
+explicit role binding, recipient context and routing details follow the body.
+Long sender titles are shortened only in the preview, at a grapheme boundary;
+the full title remains in the details. This keeps the sender and beginning of
+the body within the native card's two-line collapsed preview.
 The host owns its “Sent by ChatGPT from another task” heading. Branding is not
 sender authentication, a reply grant or an installation request.
 
@@ -28,10 +31,13 @@ reference but does not verify an API-delivered header's appearance. Missing,
 ambiguous, stale or unsafe references still fall back without installing anything
 or blocking delivery. Never invent a catalog row, invocation or support flag.
 
-Keep the native plugin mention in its own paragraph above sender and delivery
-details; do not place it inside the original authored body or replace it with
-Markdown PNG markup. Verify the exact candidate's icon in both collapsed and expanded sent-message views
-before claiming restoration or passing a visual release gate.
+Keep the native plugin mention in the compact sender line; do not insert a blank
+paragraph before the authored body or replace the mention with Markdown PNG
+markup. Verify the exact candidate's icon, sender and body preview in the sent
+message. Record expanded readability separately; a host control failure is not
+fixed by formatting. Reference-only notifications preview a neutral availability
+line and keep the exact retrieval details below; they never expose the stored
+body or an excerpt to fit the preview.
 
 Supply these observations privately through `--message-context <file.json>` on
 `bootstrap start` and each `bootstrap next` that prepares a new create/onboard.

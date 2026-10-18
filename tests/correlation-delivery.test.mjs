@@ -49,7 +49,7 @@ test('short linked replies require intact storage and preserve the real stored p
   assert(!stored.notice.host_call.arguments.prompt.includes('Done.'));
   const ordinary=await begin(f,{request_id:'ordinary',body:'Done.'});
   assert.equal(ordinary.started.delivery.mode,'inline');assert.equal(ordinary.action.host_call.tool,'mcp__codex_app__send_message_to_thread');
-  assert(ordinary.action.host_call.arguments.prompt.endsWith('Done.'));
+  assert.equal(ordinary.action.host_call.arguments.prompt.split('\n')[1],'Done.');
 });
 test('short collaboration handoffs and replies use server-counted storage, preserve IDs and display only confirmed limits',async t=>{
   const f=await setup(t),run=await chain(f);
