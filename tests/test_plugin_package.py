@@ -5,6 +5,7 @@ import shutil
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,6 +30,15 @@ class PluginPackageTests(unittest.TestCase):
         self.assertEqual(result['name'], 'paprika-inc')
         self.assertEqual(result['icon'], {'width': 1254, 'height': 1254})
         self.assertTrue(any(file['path'] == 'runtime/messenger/select-service-type.mjs' for file in result['files']))
+
+    def test_payload_inventory_order_is_independent_of_native_path_comparison(self):
+        source = ROOT / package.PLUGIN
+        # Exercise Windows-like Path comparison even on Linux CI. Provenance
+        # and ZIP inventories must retain the same case-sensitive POSIX order.
+        with patch.object(type(source), '__lt__', lambda left, right: left.as_posix().casefold() < right.as_posix().casefold()):
+            names = [entry['path'] for entry in package.payload_files(source)]
+        self.assertEqual(names, sorted(names))
+        self.assertLess(names.index('README.md'), names.index('assets/paprika-inc-icon.png'))
 
     def test_discovery_inventory_has_one_inc_identity_and_only_inc_skills(self):
         result = package.verify_package(ROOT / package.PLUGIN)

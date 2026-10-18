@@ -9,7 +9,7 @@ import { researchPack, sha, skillNames } from '../plugins/paprika-inc/runtime/pa
 import { renderCompany } from '../plugins/paprika-inc/runtime/paprika-inc/authoring.mjs';
 import { inspectDefinition } from '../plugins/paprika-inc/runtime/paprika-inc/definition.mjs';
 import { beginBootstrap, nextBootstrap, recordBootstrap } from '../plugins/paprika-inc/runtime/paprika-inc/bootstrap.mjs';
-import { fixture, blueprint, git, capabilities, projectReport, membershipReport, readReport, journal } from './mvp-fixture.mjs';
+import { fixture, blueprint, git, capabilities, projectReport, membershipReport, readReport, journal, senderContext } from './mvp-fixture.mjs';
 const run = promisify(execFile), code = value => error => error.code === value;
 const probe = { python3: {version: [], requests: false, scholarly: false}, executables: {}, credential_presence: {}, network: 'not_tested' };
 const options = root => ({ repository: root, skillSet: 'research-core', probe });
@@ -157,7 +157,7 @@ test('ordinary native onboarding carries selected role paths and validates repor
   await git(f.source,'add','.');await git(f.source,'commit','-m','Select research procedures');
   const digest=(await inspectDefinition(f.source)).definition_input_sha256;
   const senderEnv={CODEX_THREAD_ID:'fixture-research-sender'};
-  const next=options=>nextBootstrap(options,senderEnv);
+  const next=options=>nextBootstrap({messageContext:senderContext(senderEnv.CODEX_THREAD_ID),...options},senderEnv);
   const record=async (action,result) => recordBootstrap({repository:f.destination,actionId:action.action_id,deliveryActionId:action.delivery_action_id,hostResult:result});
   const first=await beginBootstrap({repository:f.source,destination:f.destination,expectedDigest:digest,roles:'organizer',hostCapabilities:capabilities()},senderEnv);
   await install(f.destination); await record(first,projectReport(f.destination));

@@ -4,11 +4,11 @@ import { writeFile, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
-import { fixture, capabilities, projectReport, blueprint } from './mvp-fixture.mjs';
+import { fixture, capabilities, projectReport, blueprint, senderContext } from './mvp-fixture.mjs';
 
 const helper = fileURLToPath(new URL('../plugins/paprika-inc/skills/paprika-inc/scripts/inc.mjs', import.meta.url));
 function call(...args) {
-  const result = spawnSync(process.execPath, [helper, ...args], { encoding: 'utf8' });
+  const result = spawnSync(process.execPath, [helper, ...args], { encoding: 'utf8', env:{...process.env,CODEX_THREAD_ID:'fixture-cli-sender'} });
   assert.equal(result.stderr, '');
   return { ...result, json: JSON.parse(result.stdout) };
 }
@@ -24,7 +24,12 @@ test('installed-style CLI accepts private blueprint/capability/results and prepa
   await writeFile(results, JSON.stringify({ content: [{ type: 'text', text: JSON.stringify(projectReport(f.destination)) }], isError: false }));
   const recorded = call('bootstrap', 'record', '--repo', f.destination, '--action', start.json.action_id, '--result', results);
   assert.equal(recorded.status, 0);
-  const next = call('bootstrap', 'next', '--repo', f.destination);
+  const missingSender = call('bootstrap', 'next', '--repo', f.destination);
+  assert.equal(missingSender.json.status,'sender_metadata_required');
+  assert.ok(!missingSender.json.host_call);
+  const observations = join(f.base,'sender observations.json');
+  await writeFile(observations,JSON.stringify(senderContext('fixture-cli-sender')));
+  const next = call('bootstrap', 'next', '--repo', f.destination, '--message-context', observations);
   assert.equal(next.json.host_call.tool, 'mcp__codex_app__create_thread');
   const blockedReplay = call('bootstrap', 'next', '--repo', f.destination);
   assert.equal(blockedReplay.json.status, 'submission_unresolved'); assert.ok(!blockedReplay.json.host_call);

@@ -115,13 +115,14 @@ test('missing native metadata says unavailable and never promotes a title into a
 test('native bootstrap freezes branded arguments before exposing a write and preserves receipts/resume', async t => {
   const f=await fixture(t), ctx=context();
   const record=(action,result)=>recordBootstrap({repository:f.destination,actionId:action.action_id,hostResult:result});
-  const first=await beginBootstrap({repository:f.source,destination:f.destination,hostCapabilities:capabilities(),roles:'organizer',messageContext:ctx},env);
+  const first=await beginBootstrap({repository:f.source,destination:f.destination,hostCapabilities:capabilities(),roles:'organizer',messageContext:ctx,deliveryPolicy:{short_message_limit:15000}},env);
   await record(first,projectReport(f.destination));
   const create=await nextBootstrap({repository:f.destination,messageContext:ctx},env);
   const prompt=create.host_call.arguments.prompt;
   assert.ok(prompt.startsWith('[@Paprika Inc]'));assert.ok(prompt.includes('From: "Scope Planner" · Role: planner'));
   assert.ok(prompt.includes('To: "organizer" · Role: organizer'));
   assert.ok(prompt.includes('READ/REPORT ONLY'));assert.ok(prompt.includes('request_id='));
+  assert.ok(prompt.includes('use the Paprika Inc skill and its message start/next/record workflow'));
   const pending=(await journal(f.destination)).pending_action;
   assert.deepEqual(pending.host_call,create.host_call);
   ctx.sender_metadata.thread.title='Changed after submission preparation';
@@ -138,7 +139,7 @@ test('native bootstrap freezes branded arguments before exposing a write and pre
 test('existing initial role onboarding uses the same sender wrapper without creating a replacement chat', async t => {
   const f=await fixture(t),ctx=context();
   const record=(action,result)=>recordBootstrap({repository:f.destination,actionId:action.action_id,hostResult:result});
-  const first=await beginBootstrap({repository:f.source,destination:f.destination,hostCapabilities:capabilities(),roles:'organizer',initialRole:'organizer',initialThreadId:'existing-fixture-chat'},env);
+  const first=await beginBootstrap({repository:f.source,destination:f.destination,hostCapabilities:capabilities(),roles:'organizer',initialRole:'organizer',initialThreadId:'existing-fixture-chat',deliveryPolicy:{short_message_limit:15000}},env);
   await record(first,projectReport(f.destination));
   await record(await nextBootstrap({repository:f.destination}),membershipReport(f.destination,'existing-fixture-chat'));
   const onboard=await nextBootstrap({repository:f.destination,messageContext:ctx},env);

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile,writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
-import {fixture} from './mvp-fixture.mjs';
+import {fixture,senderContext} from './mvp-fixture.mjs';
 import {SqliteD1} from '../vendor/paprika-messenger/tests/d1-adapter.mjs';
 import {BoardService} from '../vendor/paprika-messenger/src/service.mjs';
 import {startOutbound,nextOutbound,recordOutbound} from '../plugins/paprika-inc/runtime/paprika-inc/outbound.mjs';
@@ -24,7 +24,7 @@ async function setup(t) {
   return {repository:f.source,db,service};
 }
 async function begin(f,input,sender=actors.sender,recipient=actors.receiver) {
-  const options={repository:f.repository,operationId:input.request_id,deliveryContext:context(sender,recipient)};
+  const options={repository:f.repository,operationId:input.request_id,deliveryContext:context(sender,recipient),messageContext:senderContext(sender.thread_id)};
   const started=await startOutbound({repository:f.repository,deliveryInput:{topic:'Report',...input}},env(sender));
   return {options,sender,recipient,started,action:await nextOutbound(options,env(sender))};
 }

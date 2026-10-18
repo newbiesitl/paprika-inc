@@ -16,8 +16,12 @@ CODEX_THREAD_ID and read that exact chat in actual list_threads/read_thread
 metadata. Use its current native title; never infer it from a role contract,
 registered label, destination role, directory, previous sender or message body.
 Associate a logical role only from the human's assignment or an existing private
-binding to that same thread/host. Unknown titles say “Native title unavailable”;
-unknown roles are omitted.
+binding to that same thread/host. New native writes require a fresh matching
+sender title. An empty, stale, mismatched or otherwise invalid sender observation
+returns `sender_metadata_required` without preparing a native action. Read the
+exact current chat and retry the same operation with fresh `--message-context`;
+never invent a title or substitute the registered label. Unknown roles are omitted.
+An existing pending payload remains frozen even if it contains a legacy fallback.
 
 Use the supported `codex plugin list --json` installed catalog, or a verified
 plugin reference in the current invocation. Pass only enabled installed Inc
@@ -41,7 +45,7 @@ line and keep the exact retrieval details below; they never expose the stored
 body or an excerpt to fit the preview.
 
 Supply these observations privately through `--message-context <file.json>` on
-`bootstrap start` and each `bootstrap next` that prepares a new create/onboard.
+`message next`, `bootstrap start` and each `bootstrap next` that prepares a new create/onboard.
 This is a caller-supplied observation envelope, not a new host API or an
 authenticated identity assertion. Wrap actual tool data; do not fabricate it.
 Refresh observations before each new write. Snapshots expire after five minutes
