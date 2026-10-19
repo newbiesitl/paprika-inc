@@ -2,7 +2,7 @@
   "schema_version": 1,
   "catalog": {
     "version": "0.1.0",
-    "sha256": "2ae9bf4c5dafb58948e38c1d8be8d7bc9dad1d2ad7465dcec585f45068f814d5"
+    "sha256": "058dc5b072fbe0875617f3aec7deffa58b4e725e4052a4d387148c6e249eac29"
   },
   "preset_id": "software-studio",
   "structure_id": "functional-departments",

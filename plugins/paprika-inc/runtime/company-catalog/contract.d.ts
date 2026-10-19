@@ -1,8 +1,9 @@
-/** CAT-BE-01 proposal. Versioned JSON wire contract; no live execution implied. */
+/** CAT-BE-01 candidate. Versioned JSON wire contract; no live execution implied. */
 export type CatalogKind = 'preset' | 'structure' | 'role' | 'pack' | 'workflow' | 'requirement';
 export interface CatalogIdentity { version: string; sha256: string }
 export interface RoleSelection {
   role_id: string;
+  title?: string;
   packs: string[];
   workflows: string[];
   reports_to: string | null;
@@ -66,6 +67,8 @@ export interface ConfigurationResult {
     release_state: 'draft';
   };
   selection?: CompanySelection;
+  roster?: (RoleSelection & { title: string; version: string; review_requirement: 'peer_review_required' | 'human_review_required' })[];
   blueprint?: Record<string, unknown>;
   authoring?: Record<string, unknown>;
+  application?: 'portable_draft_revalidate_selection_and_preview_destination_before_separately_authorized_author_write';
 }

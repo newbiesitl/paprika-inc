@@ -12,7 +12,7 @@
     {
       "kind": "role",
       "id": "coordinator",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "label": "Coordinator",
       "description": "Route human requests and preserve task handoffs.",
       "tags": [],
@@ -153,7 +153,7 @@
     {
       "kind": "role",
       "id": "qa",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "label": "QA",
       "description": "Provide company quality evidence for meaningful feature, pilot, MVP, PR and design-implementation validation.",
       "tags": [],
@@ -200,7 +200,7 @@
     {
       "kind": "role",
       "id": "release-engineer",
-      "version": "0.1.0",
+      "version": "0.1.2",
       "label": "Release Engineer",
       "description": "Sequence reviewed changes and prepare reproducible releases.",
       "tags": [],
@@ -350,7 +350,46 @@
               ]
             }
           ]
-        }
+        },
+        "ownership": [
+          {
+            "path": "docs/work/",
+            "owner_role": "coordinator",
+            "reviewer_roles": [
+              "architect"
+            ]
+          },
+          {
+            "path": "docs/design/",
+            "owner_role": "architect",
+            "reviewer_roles": [
+              "qa"
+            ]
+          },
+          {
+            "path": "src/",
+            "owner_role": "developer",
+            "reviewer_roles": [
+              "architect",
+              "qa"
+            ]
+          },
+          {
+            "path": "tests/",
+            "owner_role": "qa",
+            "reviewer_roles": [
+              "developer"
+            ]
+          },
+          {
+            "path": "release/",
+            "owner_role": "release-engineer",
+            "reviewer_roles": [
+              "architect",
+              "qa"
+            ]
+          }
+        ]
       }
     },
     {
@@ -531,7 +570,37 @@
               ]
             }
           ]
-        }
+        },
+        "ownership": [
+          {
+            "path": "docs/work/",
+            "owner_role": "coordinator",
+            "reviewer_roles": [
+              "scientific-reviewer"
+            ]
+          },
+          {
+            "path": "research/",
+            "owner_role": "researcher",
+            "reviewer_roles": [
+              "scientific-reviewer"
+            ]
+          },
+          {
+            "path": "reviews/",
+            "owner_role": "scientific-reviewer",
+            "reviewer_roles": [
+              "researcher"
+            ]
+          },
+          {
+            "path": "release/",
+            "owner_role": "release-engineer",
+            "reviewer_roles": [
+              "scientific-reviewer"
+            ]
+          }
+        ]
       }
     },
     {
@@ -545,7 +614,7 @@
       "requirements": [],
       "provenance": {
         "path": "docs/architecture/COMPANY-CATALOG.md",
-        "sha256": "2cbd9c9d6b20e85430814af64c3e79215c9edd890067587293c0ce83895381ab"
+        "sha256": "71ee3cacdd402b10e936e6b5046b92cb12d10b59052cee7e981c1e6934fc77a7"
       },
       "evidence": [],
       "data": {
@@ -563,7 +632,7 @@
       "requirements": [],
       "provenance": {
         "path": "docs/architecture/COMPANY-CATALOG.md",
-        "sha256": "2cbd9c9d6b20e85430814af64c3e79215c9edd890067587293c0ce83895381ab"
+        "sha256": "71ee3cacdd402b10e936e6b5046b92cb12d10b59052cee7e981c1e6934fc77a7"
       },
       "evidence": [],
       "data": {
@@ -581,7 +650,7 @@
       "requirements": [],
       "provenance": {
         "path": "docs/architecture/COMPANY-CATALOG.md",
-        "sha256": "2cbd9c9d6b20e85430814af64c3e79215c9edd890067587293c0ce83895381ab"
+        "sha256": "71ee3cacdd402b10e936e6b5046b92cb12d10b59052cee7e981c1e6934fc77a7"
       },
       "evidence": [],
       "data": {
@@ -599,7 +668,7 @@
       "requirements": [],
       "provenance": {
         "path": "docs/architecture/COMPANY-CATALOG.md",
-        "sha256": "2cbd9c9d6b20e85430814af64c3e79215c9edd890067587293c0ce83895381ab"
+        "sha256": "71ee3cacdd402b10e936e6b5046b92cb12d10b59052cee7e981c1e6934fc77a7"
       },
       "evidence": [],
       "data": {
@@ -623,7 +692,7 @@
       "requirements": [],
       "provenance": {
         "path": "docs/architecture/COMPANY-CATALOG.md",
-        "sha256": "2cbd9c9d6b20e85430814af64c3e79215c9edd890067587293c0ce83895381ab"
+        "sha256": "71ee3cacdd402b10e936e6b5046b92cb12d10b59052cee7e981c1e6934fc77a7"
       },
       "evidence": [],
       "data": {
@@ -698,7 +767,7 @@
       "requirements": [],
       "provenance": {
         "path": "docs/architecture/COMPANY-CATALOG.md",
-        "sha256": "2cbd9c9d6b20e85430814af64c3e79215c9edd890067587293c0ce83895381ab"
+        "sha256": "71ee3cacdd402b10e936e6b5046b92cb12d10b59052cee7e981c1e6934fc77a7"
       },
       "evidence": [],
       "data": {
@@ -720,7 +789,7 @@
       "requirements": [],
       "provenance": {
         "path": "docs/architecture/COMPANY-CATALOG.md",
-        "sha256": "2cbd9c9d6b20e85430814af64c3e79215c9edd890067587293c0ce83895381ab"
+        "sha256": "71ee3cacdd402b10e936e6b5046b92cb12d10b59052cee7e981c1e6934fc77a7"
       },
       "evidence": [],
       "data": {
@@ -742,7 +811,7 @@
       "requirements": [],
       "provenance": {
         "path": "docs/architecture/COMPANY-CATALOG.md",
-        "sha256": "2cbd9c9d6b20e85430814af64c3e79215c9edd890067587293c0ce83895381ab"
+        "sha256": "71ee3cacdd402b10e936e6b5046b92cb12d10b59052cee7e981c1e6934fc77a7"
       },
       "evidence": [],
       "data": {
@@ -766,7 +835,7 @@
       "requirements": [],
       "provenance": {
         "path": "docs/architecture/COMPANY-CATALOG.md",
-        "sha256": "2cbd9c9d6b20e85430814af64c3e79215c9edd890067587293c0ce83895381ab"
+        "sha256": "71ee3cacdd402b10e936e6b5046b92cb12d10b59052cee7e981c1e6934fc77a7"
       },
       "evidence": [],
       "data": {}
@@ -784,7 +853,7 @@
       "requirements": [],
       "provenance": {
         "path": "docs/architecture/COMPANY-CATALOG.md",
-        "sha256": "2cbd9c9d6b20e85430814af64c3e79215c9edd890067587293c0ce83895381ab"
+        "sha256": "71ee3cacdd402b10e936e6b5046b92cb12d10b59052cee7e981c1e6934fc77a7"
       },
       "evidence": [],
       "data": {}

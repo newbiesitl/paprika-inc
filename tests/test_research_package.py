@@ -3,11 +3,13 @@ import json
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tempfile
 import unittest
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'scripts'))
 spec = importlib.util.spec_from_file_location('research_package_test', ROOT / 'scripts/plugin_package.py')
 package = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(package)
@@ -88,7 +90,7 @@ class ResearchPackageTests(unittest.TestCase):
             input_file = root / 'synthetic-openalex.json'
             input_file.write_text(json.dumps({'id': 'synthetic:1', 'title': 'Synthetic fixture', 'abstract_inverted_index': {'bounded': [0], 'evidence': [1]}}))
             script = project / '.agents/skills/paper-lookup/scripts/openalex_abstract.py'
-            text = subprocess.check_output(['python3', '-B', str(script), str(input_file), '--text-only'], cwd=root, text=True)
+            text = subprocess.check_output([sys.executable, '-B', str(script), str(input_file), '--text-only'], cwd=root, text=True)
             self.assertIn('bounded evidence', text)
             self.assertTrue(all(skill['state'] == 'intact' for skill in command('status')['skills']))
 

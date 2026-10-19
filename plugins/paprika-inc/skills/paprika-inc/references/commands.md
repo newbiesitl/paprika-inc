@@ -37,3 +37,7 @@ Only install writes project files and private progress. See the
 resume, portability and capability semantics. No upstream plugin is installed.
 
 `message start`, `message next`, `message record`, `message status` and `message reconcile` operate on one private authorized outbound task/report. [Automatic delivery](../../setup-paprika-inc/references/adaptive-delivery.md) documents private inputs, the exact threshold, failures and supported local hosts.
+
+# Company catalog and configuration
+
+`catalog list`, `catalog search --query <text>` and `catalog read --catalog-kind <kind> --catalog-id <id>` share the packaged catalog. Optional `--catalog-kind` filters list/search. `config validate`, `config preview` and `config export` take `--selection <json>` and optional `--catalog-context <json>`; preview also takes the chosen `--repo`. All are read-only. Invalid configurations and file conflicts return exit code 2 with typed diagnostics and no writes. See the [catalog guide](../../setup-paprika-inc/references/company-catalog.md).

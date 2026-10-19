@@ -1,4 +1,4 @@
-# Company catalog contract — version 1 proposal
+# Company catalog contract — version 1 candidate
 
 Work: CAT-BE-01, issue #30. This slice is stacked on draft foundation #29 at
 49af108946ffc0c58792995302d1ea54ee40855b. Governing definition remains
@@ -14,7 +14,7 @@ JSON fixtures live in `tests/fixtures/company-catalog/`. The catalog has a seman
 version and a SHA-256 digest of recursively key-sorted JSON; ordering of arrays
 remains significant. Consumers must retain both in every selection.
 
-Proposed host-neutral operations:
+Implemented host-neutral operations:
 
 | Operation | Input | Output |
 | --- | --- | --- |
@@ -45,8 +45,11 @@ only when all remaining references are valid. Adding roles uses the same catalog
 templates. Reporting is a rooted acyclic tree; the coordinator is its sole root.
 Flat structures require direct reporting to that root. Review cycles are allowed
 (mutual independent review); self-review, duplicate edges and missing peers are
-invalid. Ownership paths come from role templates and use the selected reviewers;
-the existing ownership validator rejects overlaps and unsafe paths.
+invalid. Empty reviewer lists explicitly require human review. An optional `title`
+is nonempty single-line display text up to 160 characters and never changes role ID.
+Preset ownership and its reviewer edges remain independent of role review edges.
+Newly added roles use template ownership paths and selected peer reviewers. The
+existing ownership validator rejects overlaps, dangling reviewers and unsafe paths.
 
 The blueprint format has no reporting field. Export therefore preserves reporting,
 display name, business tags and workflow choices in the portable selection beside
@@ -70,9 +73,9 @@ the draft and expose existing-file differences without changing any file.
 
 ## Review fixtures
 
-The first fixture proposal includes both complete baseline selections, a missing
-capability context, self-review, reporting cycle and stale catalog cases. Runtime
-tests will add unknown/duplicate IDs, required-role removal, planned packs, hostile
-fields, ownership conflicts and destination-file preservation. UI accessibility and
+Fixtures include both complete baseline selections, a missing capability context,
+self-review, reporting cycle and stale catalog cases. Runtime tests cover
+unknown/duplicate IDs, required-role removal, planned packs, hostile fields,
+ownership conflicts and destination-file preservation. UI accessibility and
 actual native rendering belong to the frontend/QA checkpoints, not this backend's
 fixture results.
