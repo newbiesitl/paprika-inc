@@ -5,6 +5,19 @@ description: Set up the local Paprika Inc MVP, discuss and write company roles w
 
 Use `$setup-paprika-inc` for onboarding and the user's chosen existing chat for first-staff discussion. Reuse established inputs. A generic setup invocation begins discussion/planning; installation, file writing, Git publication, bootstrap and service connection need their applicable human request. Continue unchanged authorized work without redundant confirmation. File generation alone creates no chats or powers.
 
+During company initialization, offer the company picker before authoring definitions
+unless the human already chose a company type and configuration. Discover the
+actual `company_catalog_open` tool and invoke it when available; the panel's
+**Company action** defaults to **Initialize a company**. If the tool is absent,
+use the standalone picker from its owning source or the catalog commands in the
+[company catalog guide](references/company-catalog.md); explain that the panel is
+unavailable rather than inventing a tool or claiming that installation enabled it.
+For requested restructuring, use **Restructure an existing company**, open the
+existing saved selection/export, and preserve company identity and current roles.
+Review the proposed type, structure, roles and ownership before applying any
+definition changes. Missing saved selections require mapping the actual current
+definitions first. This workflow does not migrate live chats or active work.
+
 Follow [the concrete MVP workflow](references/mvp-workflow.md), including its blueprint, commands, native host loop and explicit resume. For requested installation, inspect the host's supported local plugin/Plugin Creator installation tools and select the prepared Inc directory, never the repository/vendor tree as a marketplace. Do not claim installation from ZIP validation or automatically upload/deploy an account plugin. Build commands install nothing.
 
 For optional scientific roles, follow [research-core setup](references/research-core.md): select the reviewed set in the role manifest, explicitly plan/install into the chosen project's .agents/skills/, and report each skill's integrity and capabilities separately. Do not install the upstream Scientific Agent Skills plugin or its full catalog. Selected project skills may appear in that project's selector; role references do not restrict discovery. Missing optional tools/services must not block basic Markdown synthesis or critical appraisal.

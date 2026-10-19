@@ -26,6 +26,11 @@
       </div>
       <div id="notice" role="status" aria-live="polite"></div>
       <div class="toolbar">
+        <label for="company-action">Company action</label>
+        <select id="company-action">
+          <option value="initialize">Initialize a company</option>
+          <option value="restructure">Restructure an existing company</option>
+        </select>
         <button id="refresh" type="button">Refresh catalog</button
         ><label class="button secondary" for="import">Open saved draft</label
         ><input
@@ -35,6 +40,7 @@
         /><button id="save" type="button" disabled>Save draft</button
         ><span id="saved" class="muted"></span>
       </div>
+      <p id="action-help" class="help"></p>
       <div id="app" aria-busy="true">
         <p class="loading">Loading company catalogâ€¦</p>
       </div>

@@ -17,6 +17,7 @@ const list = (values = []) =>
   values.map((v) => "<li>" + escape(v) + "</li>").join("");
 const key = "paprika-inc:catalog-draft:v1";
 let model,
+  roleFilter = "",
   step = "configure",
   query = "",
   filter = "all",
@@ -30,6 +31,7 @@ function persist() {
   if (!model.draft) return;
   try {
     sessionStorage.setItem(key, JSON.stringify(model.draft));
+    sessionStorage.setItem(key + ":mode", model.mode);
     $("saved").textContent = "Draft retained in this tab";
   } catch {
     $("saved").textContent =
@@ -405,7 +407,11 @@ function configuration() {
     option("chatgpt", "ChatGPT", model.host === "chatgpt") +
     option("standalone", "Standalone", model.host === "standalone") +
     '</select><p class="help">Choosing a host does not verify a connection. Changing it invalidates the preview.</p></div><h3>Roles and personas</h3><p class="help">Add specialists, select guidance and make review relationships explicit.</p>' +
-    model.entries("role").map(roleCard).join("") +
+    '<label for="role-picker">Configure role</label><select id="role-picker">' +
+    option("", "All roles", !roleFilter) +
+    model.entries("role").map((r) => option(r.id, r.label, roleFilter === r.id)).join("") +
+    '</select>' +
+    model.entries("role").filter((r) => !roleFilter || r.id === roleFilter).map(roleCard).join("") +
     d.roles
       .filter((r) => !model.entry("role", r.role_id))
       .map(
@@ -670,11 +676,22 @@ function bind() {
     render("search");
   });
   $("use-preset")?.addEventListener("click", () => {
-    model.choose(inspected ?? model.draft?.preset_id);
+    try {
+      model.choose(inspected ?? model.draft?.preset_id);
+    } catch (error) {
+      notice(error.message, "error");
+      return;
+    }
     step = "configure";
-    notice("Template selected. Review role and dependency choices.");
+    notice(model.mode === "restructure"
+      ? "Restructuring draft prepared. Existing company identity and roles retained; required roles added. Review all relationships and ownership before applying changes."
+      : "Template selected. Review role and dependency choices.");
     persist();
     render("panel-heading");
+  });
+  $("role-picker")?.addEventListener("change", (e) => {
+    roleFilter = e.target.value;
+    render("role-picker");
   });
   for (const el of document.querySelectorAll("[data-title]"))
     el.oninput = () => {
@@ -843,7 +860,15 @@ async function start() {
         : standaloneTransport();
     $("surface").textContent = transport.surface;
     model = new CatalogModel(transport);
+    const updateAction = () => {
+      $("company-action").value = model.mode;
+      $("action-help").textContent = model.mode === "restructure"
+        ? "Open the existing company's saved draft or export, then choose its new type, structure and roles. Existing roles are retained. Review a proposal; live chats and work remain unchanged. Companies without a saved selection need an explicit mapping from their current definitions first."
+        : "Choose a company type before authoring its definitions and initializing role chats. Save the selection for future restructuring.";
+    };
     try {
+      const mode = new URLSearchParams(location.search).get("mode") ?? sessionStorage.getItem(key + ":mode");
+      model.mode = mode === "restructure" ? "restructure" : "initialize";
       const saved = sessionStorage.getItem(key);
       if (saved) {
         model.import(saved);
@@ -852,6 +877,14 @@ async function start() {
     } catch (e) {
       notice("Saved tab draft could not be loaded: " + e.message, "error");
     }
+    updateAction();
+    $("company-action").onchange = (e) => {
+      model.mode = e.target.value;
+      changed();
+      updateAction();
+      step = "configure";
+      render();
+    };
     $("refresh").onclick = refresh;
     $("save").onclick = () => {
       try {

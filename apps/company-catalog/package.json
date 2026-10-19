@@ -8,6 +8,7 @@
     "start": "node server.mjs",
     "test": "node --test test/*.test.mjs",
     "test:browser": "playwright test",
+    "test:production": "playwright test --config playwright.production.config.mjs",
     "readme:check": "node readme.mjs --check",
     "preview:fixture": "node test/start.mjs"
   },

@@ -4,20 +4,7 @@ CAT-FE-01 for [#30](https://github.com/newbiesitl/paprika-inc/issues/30), connec
 
 This is the catalog/configuration slice of [the standalone GUI](https://github.com/newbiesitl/paprika-inc/issues/15). It does not implement agent hosting. One component and one backend inventory serve the standalone route and native MCP App resource. Existing plugin identity, credentials, service, hosting and installed configuration remain unchanged.
 
-## Current dependency gate
-
-The published contract checkpoint in #31 does not yet contain its runtime module or package-allowlist update. Production startup/preview/export remains blocked until that candidate is published and integrated. The UI adapter calls Backend's actual load/read/configure functions; it does not substitute fixture validation in production.
-
-To inspect this UI candidate now, build it and run the explicit fixture server:
-
-```sh
-npm --prefix apps/company-catalog run build
-npm --prefix apps/company-catalog run preview:fixture
-```
-
-The fixture banner remains visible. It serves canonical catalog/selection examples and simulated responses, without claiming runtime or native-host acceptance.
-
-## Run locally after the Backend dependency
+## Run locally
 
 Use Node.js 24 or newer, from the repository root:
 
@@ -28,6 +15,32 @@ npm --prefix apps/company-catalog start
 ```
 
 Open the printed loopback URL. Only reads, validation, preview and portable export are exposed. The service checks Host/Origin, limits JSON input and exposes no filesystem writer. Project selection is unavailable in the panel; enter a portable repository owner/name, then select the actual destination through the authorized host workflow when applying.
+
+## Initialization and restructuring
+
+For initialization, open `http://127.0.0.1:4317/?mode=initialize`. Choose a company,
+select **Configure this template**, and edit the company identity, organization
+structure and roles. **Configure role** is a dropdown for focusing a role card;
+select **All roles** to view the roster. Cards provide role inclusion, display
+title, reporting-parent dropdown, independent reviewers, skills and workflows.
+Review the configuration, export the reviewed blueprint, and retain its complete
+selection for future edits. Authoring definitions and bootstrapping chats remain
+separate actions in the existing setup workflow.
+
+For restructuring, open `http://127.0.0.1:4317/?mode=restructure`, or select
+**Restructure an existing company** in **Company action**. Open that company's
+saved draft or export first. Changing type retains its identity, structure, tags,
+existing roles and edits, and adds any missing required roles. Review obsolete
+roles, reporting relationships, reviewers and ownership explicitly. Changing
+structure never silently rewires the organization. Incompatible choices are
+reported by validation; stale catalog identities require explicit revalidation.
+
+This is a configuration proposal, not a live migration. Existing definition
+conflicts must be reviewed; protected `author write` does not replace them.
+Live chat reassignment, removal, work transfer and automatic migration are not
+implemented. Companies created without a saved selection need an explicit
+mapping from their current definitions first; do not initialize a replacement
+company to simulate restructuring. All these controls also appear in the MCP App.
 
 ## Native integration
 
@@ -55,8 +68,14 @@ References: [MCP Apps](https://github.com/modelcontextprotocol/ext-apps), [Exten
 npm --prefix apps/company-catalog test
 npm --prefix apps/company-catalog run readme:check
 npm --prefix apps/company-catalog run test:browser
+npm --prefix apps/company-catalog run test:production
 ```
 
-The browser suite uses Playwright and axe. Install its Chromium browser if absent, or set PLAYWRIGHT_CHANNEL=msedge for an available Edge installation. It tests browser fixture states and a simulated host using the official AppBridge. Actual Codex/ChatGPT acceptance is separate. QA's [matrix](https://github.com/newbiesitl/paprika-inc/issues/30#issuecomment-6260944113) remains the independent gate.
+The browser suites use Playwright and axe. Install Chromium if absent, or set
+PLAYWRIGHT_CHANNEL=msedge for an available Edge installation. `test:browser`
+covers fixture states and a simulated host using the official AppBridge.
+`test:production` starts the actual backend on port 4318 and checks initialization,
+role editing, export and restructuring draft preservation. Actual Codex/ChatGPT
+acceptance is separate. QA's [matrix](https://github.com/newbiesitl/paprika-inc/issues/30#issuecomment-6260944113) remains the independent gate.
 
 The build embeds the original Paprika logo unchanged. UI source remains outside the existing skill-plugin distribution.

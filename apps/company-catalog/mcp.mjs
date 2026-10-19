@@ -33,7 +33,7 @@ export function createCatalogMcpServer({ call = invoke, html } = {}) {
     {
       title: "Company catalog",
       description:
-        "Browse Paprika Inc company templates and review a portable draft. Read-only; creates no chats or files.",
+        "Open the company picker during initialization or to restructure an existing company's saved configuration. Choose Company action in the panel, configure roles and review a portable draft. Read-only; creates no chats or files.",
       inputSchema: z.object({}).strict(),
       annotations: {
         readOnlyHint: true,

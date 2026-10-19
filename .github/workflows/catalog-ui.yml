@@ -1,10 +1,10 @@
 name: Catalog UI
 on:
   pull_request:
-    paths: ['apps/company-catalog/**', 'plugins/paprika-inc/runtime/company-catalog/**', 'README.md', '.github/workflows/catalog-ui.yml']
+    paths: ['apps/company-catalog/**', 'plugins/paprika-inc/runtime/**', 'README.md', '.github/workflows/catalog-ui.yml']
   push:
     branches: ['codex/**']
-    paths: ['apps/company-catalog/**', 'plugins/paprika-inc/runtime/company-catalog/**', 'README.md', '.github/workflows/catalog-ui.yml']
+    paths: ['apps/company-catalog/**', 'plugins/paprika-inc/runtime/**', 'README.md', '.github/workflows/catalog-ui.yml']
 permissions:
   contents: read
 jobs:
@@ -22,5 +22,5 @@ jobs:
         working-directory: apps/company-catalog
       - run: npx playwright install --with-deps chromium
         working-directory: apps/company-catalog
-      - run: npm run test:browser
+      - run: npm run test:browser && npm run test:production
         working-directory: apps/company-catalog

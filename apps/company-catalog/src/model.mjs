@@ -112,6 +112,7 @@ export class CatalogModel {
     this.loadGeneration = 0;
     this.cache = new Map();
     this.host = null;
+    this.mode = "initialize";
   }
   entries(kind) {
     return this.catalog?.entries.filter((e) => e.kind === kind) ?? [];
@@ -143,6 +144,24 @@ export class CatalogModel {
     return true;
   }
   choose(id) {
+    if (this.mode === "restructure") {
+      if (!this.draft)
+        throw new Error("Open the existing company's saved draft before restructuring.");
+      const preset = this.entry("preset", id);
+      if (!preset) throw new Error("Preset no longer exists.");
+      if (preset.availability === "planned") return false;
+      // Preserve identity and every existing role. Missing required roles are
+      // added explicitly; incompatible relationships remain visible to review.
+      const next = clone(this.draft);
+      next.preset_id = id;
+      for (const role of preset.data.defaults.roles)
+        if (preset.data.required_roles.includes(role.role_id) &&
+            !next.roles.some((r) => r.role_id === role.role_id))
+          next.roles.push(clone(role));
+      this.draft = next;
+      this.changed();
+      return true;
+    }
     if (this.draft) this.cache.set(this.draft.preset_id, clone(this.draft));
     const preset = this.entry("preset", id);
     if (!preset) throw new Error("Preset no longer exists.");

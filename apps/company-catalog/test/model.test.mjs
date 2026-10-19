@@ -27,6 +27,29 @@ const setup = async (call) => {
   model.choose("software-studio");
   return model;
 };
+
+test("restructuring preserves identity, existing roles, edits and stale evidence", async () => {
+  const m = await setup();
+  m.draft.company.name = "Existing company";
+  m.draft.roles[1].title = "Existing specialist";
+  m.draft.catalog.sha256 = "old";
+  const before = clone(m.draft);
+  m.mode = "restructure";
+  m.preview = { ok: true };
+  m.choose("scientific-research");
+  assert.equal(m.draft.preset_id, "scientific-research");
+  assert.deepEqual(m.draft.company, before.company);
+  for (const role of before.roles)
+    assert.deepEqual(m.draft.roles.find((r) => r.role_id === role.role_id), role);
+  assert(m.draft.roles.some((r) => r.role_id === "researcher"));
+  assert.equal(m.stale, true);
+  assert.equal(m.preview, null);
+  const next = clone(m.draft);
+  assert.equal(m.choose("marketing-agency"), false);
+  assert.deepEqual(m.draft, next);
+  m.draft = null;
+  assert.throws(() => m.choose("software-studio"), /Open the existing company's saved draft/);
+});
 test("both presets initialize from the single backend inventory and retain per-preset edits", async () => {
   const m = await setup();
   assert.deepEqual(m.draft, software);

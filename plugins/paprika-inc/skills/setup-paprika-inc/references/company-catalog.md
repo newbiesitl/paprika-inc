@@ -1,5 +1,31 @@
 # Shared company catalog
 
+## Picker entrypoints
+
+When the host exposes `company_catalog_open`, use it for company initialization
+and requested restructuring. The shared panel has a **Company action** selector
+and a **Configure role** dropdown. Choose initialization before first authoring;
+for restructuring, open the existing saved selection/export before changing its
+type or structure. Reuse an already explicit company choice without prompting
+again. Plain catalog tools are the fallback when the panel is unavailable.
+
+The standalone source at `apps/company-catalog` runs with Node.js 24+: install its
+locked dependencies using `npm ci --ignore-scripts`, build with `npm run build`,
+then `npm start` from that directory. Open the printed loopback address with
+`?mode=initialize` or `?mode=restructure`. This source app is not automatically
+installed by the skill package. Its stdio `mcp-server.mjs` can be configured through
+supported host settings separately; ChatGPT needs a reachable authenticated MCP
+service. Do not claim native registration or rendering from local browser tests.
+
+Restructuring preserves existing identity and roles, adds target-required roles,
+and produces a reviewable draft. Retire or remap obsolete roles explicitly after
+review. Live role chats, active work and installed files are not migrated. Existing
+file conflicts remain blocked by protected authoring. A legacy company without a
+saved selection requires explicit mapping of its definitions, not replacement
+with preset defaults.
+
+## Catalog commands
+
 Use `node <paprika-inc-skill>/scripts/inc.mjs catalog list` to read the shared
 versioned catalog. `catalog search --query research --catalog-kind preset` filters
 the same data. `catalog read --catalog-kind preset --catalog-id scientific-research`
