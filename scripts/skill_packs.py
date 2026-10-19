@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import research_pack
 import engineering_pack
+import extension_pack
 
 CATALOG = 'runtime/skill-packs/catalog.json'
 
@@ -12,6 +13,11 @@ def compose(repository):
     engineering, entry = engineering_pack.compose(repository)
     files.update(engineering)
     catalog['sets']['engineering-core'] = entry
+    extensions, entries = extension_pack.compose(repository)
+    selected = [skill for entry in [*catalog['sets'].values(), *entries.values()] for skill in entry['skills']]
+    research_pack.require(len(selected) == len(set(selected)), 'Selected packs contain duplicate skill names')
+    files.update(extensions)
+    catalog['sets'].update(entries)
     files[CATALOG] = research_pack.encoded(catalog)
     return files
 

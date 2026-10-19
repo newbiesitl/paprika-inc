@@ -29,7 +29,8 @@ export async function probeCapabilities() {
   return { python3: interpreter, executables, credential_presence: credentials, network: 'not_tested', authentication: 'not_tested', full_text_access: 'not_tested', packages_installed: false };
 }
 
-export function capabilityReport(name, probe = {}) {
+export function capabilityReport(name, probe = {}, declared) {
+  if (declared) return declared.map(capability => ({ id: capability.id, state: capability.kind === 'guidance' ? 'guidance_available' : 'requirements_unverified', kind: capability.kind, execution_tested: false, authentication_tested: false }));
   if (name === 'paprika-code-review') return [{ id: 'connected_code_review', state: 'guidance_available', network_required: false, execution_tested: false, efficacy: 'not_benchmarked' }];
   const python = minor => Array.isArray(probe.python3?.version) && (probe.python3.version[0] > 3 || probe.python3.version[0] === 3 && probe.python3.version[1] >= minor);
   const local = (id, available) => ({ id, state: available ? 'local_dependencies_present' : 'local_dependency_missing', execution_tested: false });
@@ -172,7 +173,7 @@ export async function projectSkills(options) {
     entries = await inspectAll();
   }
   return { ok: !conflicts.length, command, read_only: !write, applied: write && completed.length > 0, skill_sets: sets,
-    skills: entries.map(entry => ({ ...entry, capabilities: capabilityReport(entry.name, probe || {}) })), local_observations: probe,
+    skills: entries.map(entry => ({ ...entry, capabilities: capabilityReport(entry.name, probe || {}, packs.find(pack => pack.id === entry.skill_set).capabilities?.[entry.name]) })), local_observations: probe,
     no_op: write && completed.length === 0, scope: 'selected_git_project_only', source_fallback: false,
     limits: ['No host skill discovery, API access, authentication, scientific correctness or review quality verified.', 'Optional paid services, PDF export, figures and Scholar are disabled.', 'Project discovery is shared; role references are not access controls.', 'Cooperating installs serialize; external concurrent file changes require manual reconciliation.'] };
 }

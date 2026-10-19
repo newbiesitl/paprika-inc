@@ -54,7 +54,7 @@ test('installation carries every resource/license and unchanged managed rerun is
   assert.equal((await install(f.source)).no_op, true);
   assert.deepEqual(await readFile(record), before);
   assert.equal(result.source_fallback, false);
-  assert.equal((await lstat(record)).mode & 0o777, 0o600);
+  if (process.platform !== 'win32') assert.equal((await lstat(record)).mode & 0o777, 0o600);
 });
 
 test('an unmanaged name conflicts even when its bytes equal the reviewed pack', async t => {
@@ -75,7 +75,7 @@ for (const mutation of ['modified', 'extra', 'missing']) test(`managed ${mutatio
 
 for (const relative of ['.agents', '.agents/skills', '.agents/skills/paper-lookup']) test(`symlink target ${relative} is refused without writing outside project`, async t => {
   const f = await fixture(t), outside = join(f.base, 'outside'); await mkdir(outside);
-  await mkdir(join(f.source, relative, '..'), {recursive:true}); await symlink(outside, join(f.source, relative));
+  await mkdir(join(f.source, relative, '..'), {recursive:true}); await symlink(outside, join(f.source, relative), process.platform === 'win32' ? 'junction' : 'dir');
   await assert.rejects(install(f.source), code('unsafe_skill_path'));
   assert.deepEqual(await readdir(outside), []);
 });
@@ -83,7 +83,8 @@ for (const relative of ['.agents', '.agents/skills', '.agents/skills/paper-looku
 test('a symlink inside a managed skill blocks integrity and cannot be followed', async t => {
   const f = await fixture(t); await install(f.source);
   const target = join(f.source,'.agents/skills/paper-lookup/SKILL.md'); await rm(target);
-  await symlink(join(f.source,'AGENTS.md'), target);
+  try { await symlink(join(f.source,'AGENTS.md'), target); }
+  catch (error) { if (error.code === 'EPERM') { t.skip('Host does not permit file symlinks.'); return; } throw error; }
   await assert.rejects(install(f.source), code('unsafe_skill_path'));
   assert.match(await readFile(join(f.source,'AGENTS.md'),'utf8'), /Existing user/);
 });

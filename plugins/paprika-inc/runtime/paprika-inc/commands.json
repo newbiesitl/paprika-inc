@@ -1,6 +1,8 @@
 {
   "format": 1,
   "commands": [
+    {"name": "integrations list", "aliases": [], "repository_required": false, "read_only": true, "mvp": true, "description": "List integration candidates and declared adapter routes without installing them."},
+    {"name": "integrations check", "aliases": [], "repository_required": false, "read_only": true, "mvp": true, "description": "Compare declared requirements with caller-supplied host observations; runtime access remains unverified."},
     {"name": "help", "aliases": ["commands", "show commands", "available commands", "show available commands", "show me available commands", "show me the available commands"], "repository_required": false, "description": "Show implemented commands and pending capabilities.", "read_only": true},
     {"name": "validate", "aliases": ["validate company", "validate this company", "validate this company's setup", "validate setup", "check company"], "repository_required": true, "description": "Validate the portable manifest and referenced documents.", "read_only": true},
     {"name": "plan", "aliases": ["setup", "init", "initialize", "setup plan", "plan setup", "plan company", "plan this company's setup", "set up this company"], "repository_required": true, "description": "Prepare a read-only setup plan; apply is pending.", "read_only": true},

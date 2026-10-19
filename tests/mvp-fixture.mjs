@@ -28,6 +28,7 @@ export async function fixture(t, { commit = true } = {}) {
   await git(source, 'config', 'user.email', 'fixture@example.invalid');
   await git(source, 'config', 'commit.gpgsign', 'false');
   await writeFile(join(source, 'AGENTS.md'), '# Existing user directions\nPreserve this file.\n');
+  await writeFile(join(source, '.gitattributes'), '* text=auto eol=lf\n');
   const authored = await authorCompany({ repository: source, spec: blueprint(), write: true });
   if (commit) { await git(source, 'add', '.'); await git(source, 'commit', '-m', 'Fictional company definition'); }
   return { base, source, destination, digest: authored.definition_input_sha256,

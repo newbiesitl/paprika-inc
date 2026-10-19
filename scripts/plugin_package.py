@@ -10,6 +10,7 @@ import subprocess
 import tempfile
 from urllib.parse import unquote, urlsplit
 import zipfile
+import extension_pack
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = Path('plugins/paprika-inc')
@@ -31,6 +32,8 @@ PACKAGE_FILES = frozenset({
     'runtime/paprika-inc/ownership.mjs', 'runtime/paprika-inc/authoring.mjs',
     'runtime/paprika-inc/checkout.mjs', 'runtime/paprika-inc/bootstrap.mjs', 'runtime/paprika-inc/mvp.mjs',
     'runtime/paprika-inc/skill-catalog.mjs', 'runtime/paprika-inc/skill-packs.mjs',
+    'runtime/paprika-inc/extension-pack.mjs', 'runtime/paprika-inc/integration-registry.mjs',
+    'runtime/integrations/registry.json', 'skills/setup-paprika-inc/references/integrations.md',
     'runtime/paprika-inc/message-presentation.mjs', 'runtime/paprika-inc/outbound.mjs',
     'skills/setup-paprika-inc/references/adaptive-delivery.md',
     'skills/paprika-inc/SKILL.md', 'skills/paprika-inc/agents/openai.yaml',
@@ -132,7 +135,7 @@ def payload_files(root, provenance_required=False, bound=False):
         require(not path.name.startswith('.env') and path.name not in {'mcp.json', '.mcp.json', 'paprika-connection.json'} and (path.name != '.app.json' or bound),
                 f'Only an explicitly prepared private bound kit may contain its one existing App reference: {name}')
         require(path.suffix in {'.json', '.md', '.mjs', '.txt', '.yaml', '.png'} or name == 'LICENSE' or
-                name.startswith('runtime/skill-packs/research-core/') and path.suffix in {'.py', '.bib'},
+                (name.startswith('runtime/skill-packs/research-core/') or name.startswith('runtime/skill-packs/') and name in expected) and path.suffix in {'.py', '.bib'},
                 f'Unexpected package payload: {name}')
         require(name in expected, f'Payload is outside the reviewed build allowlist: {name}')
         result.append({'path': name, 'sha256': digest(path.read_bytes())})
@@ -148,7 +151,7 @@ def expected_package_files(root):
     catalog = read_json(contained(root, catalog_path))
     manifest_bytes = contained(root, prefix + 'pack.json').read_bytes()
     pack = json.loads(manifest_bytes)
-    require(catalog['schema_version'] == 1 and set(catalog['sets']) == {'research-core', 'engineering-core'} and
+    require(catalog['schema_version'] == 1 and isinstance(catalog['sets'], dict) and 2 <= len(catalog['sets']) <= 100 and {'research-core', 'engineering-core'} <= set(catalog['sets']) and
             catalog['sets']['research-core'] == {'manifest_sha256': digest(manifest_bytes), 'source_commit': 'a1043ef544e3a100c28e70a736b6cf32554d0677', 'package_version': '2.72.0', 'skills': skills}, 'Invalid research catalog/pin')
     require(pack['schema_version'] == 1 and pack['id'] == 'research-core' and pack['skills'] == skills and
             pack['source'] == {'repository': 'https://github.com/K-Dense-AI/scientific-agent-skills.git', 'commit': 'a1043ef544e3a100c28e70a736b6cf32554d0677', 'package_version': '2.72.0'}, 'Invalid research source/selection')
@@ -164,6 +167,16 @@ def expected_package_files(root):
     for skill in skills:
         for name in ['SKILL.md', 'INC-PORTABILITY.md', 'LICENSE.upstream.md']:
             require(prefix + skill + '/' + name in extra, 'Missing research skill, portability guidance or license')
+    selected = [skill for entry in catalog['sets'].values() for skill in entry['skills']]
+    require(len(selected) == len(set(selected)), 'Catalog contains duplicate skill names')
+    for identity, entry in catalog['sets'].items():
+        require(extension_pack.safe_id(identity), 'Invalid catalog pack ID')
+        if identity in {'research-core', 'engineering-core'}:
+            continue
+        extension_prefix = 'runtime/skill-packs/' + identity + '/'
+        extension, _, payload = extension_pack.load(root / extension_prefix, entry)
+        require(extension['id'] == identity, 'Extension identity mismatch')
+        extra.update(extension_prefix + path for path in payload)
     return PACKAGE_FILES | extra | {catalog_path, prefix + 'pack.json'} | engineering_package_files(root, catalog)
 
 

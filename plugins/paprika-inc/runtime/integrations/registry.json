@@ -1,0 +1,452 @@
+{
+  "schema_version": 1,
+  "adapters": {
+    "agent-skills": {
+      "description": "Reviewed SKILL.md procedures and selected resources packaged for native discovery.",
+      "routes": [
+        {
+          "host": "codex-local",
+          "mode": "native",
+          "requires": [
+            "plugin-skills"
+          ]
+        },
+        {
+          "host": "chatgpt",
+          "mode": "native",
+          "requires": [
+            "plugin-skills"
+          ]
+        }
+      ]
+    },
+    "claude-plugin": {
+      "description": "Extract reusable skills and adapt provider-specific commands, agents and tool names.",
+      "routes": [
+        {
+          "host": "codex-local",
+          "mode": "adaptation-required",
+          "requires": [
+            "plugin-skills"
+          ]
+        },
+        {
+          "host": "chatgpt",
+          "mode": "adaptation-required",
+          "requires": [
+            "plugin-skills"
+          ]
+        }
+      ]
+    },
+    "role-markdown": {
+      "description": "Map persona prose into Paprika role contracts and reusable workflow skills.",
+      "routes": [
+        {
+          "host": "codex-local",
+          "mode": "adaptation-required",
+          "requires": [
+            "plugin-skills"
+          ]
+        },
+        {
+          "host": "chatgpt",
+          "mode": "adaptation-required",
+          "requires": [
+            "plugin-skills"
+          ]
+        }
+      ]
+    },
+    "mcp-http": {
+      "description": "Remote MCP service with separately observed host registration and authentication.",
+      "routes": [
+        {
+          "host": "codex-local",
+          "mode": "native",
+          "requires": [
+            "mcp-http"
+          ]
+        },
+        {
+          "host": "chatgpt",
+          "mode": "native",
+          "requires": [
+            "mcp-http"
+          ]
+        }
+      ]
+    },
+    "mcp-stdio": {
+      "description": "Local MCP process; web ChatGPT requires a reachable hosted service.",
+      "routes": [
+        {
+          "host": "codex-local",
+          "mode": "native",
+          "requires": [
+            "mcp-stdio"
+          ]
+        },
+        {
+          "host": "chatgpt",
+          "mode": "wrapper-required",
+          "requires": [
+            "mcp-http",
+            "remote-worker"
+          ]
+        }
+      ]
+    },
+    "python-library": {
+      "description": "Typed domain operations over a Python library with a separately implemented worker.",
+      "routes": [
+        {
+          "host": "codex-local",
+          "mode": "wrapper-required",
+          "requires": [
+            "python-runtime",
+            "local-process"
+          ]
+        },
+        {
+          "host": "chatgpt",
+          "mode": "wrapper-required",
+          "requires": [
+            "mcp-http",
+            "remote-worker"
+          ]
+        }
+      ]
+    },
+    "rest-service": {
+      "description": "Typed tools translate domain requests into an authenticated service API.",
+      "routes": [
+        {
+          "host": "codex-local",
+          "mode": "wrapper-required",
+          "requires": [
+            "mcp-http"
+          ]
+        },
+        {
+          "host": "chatgpt",
+          "mode": "wrapper-required",
+          "requires": [
+            "mcp-http"
+          ]
+        }
+      ]
+    },
+    "github-action": {
+      "description": "Workflow execution and artifacts in GitHub with scoped dispatch and result tools.",
+      "routes": [
+        {
+          "host": "github-ci",
+          "mode": "native",
+          "requires": [
+            "actions-runner"
+          ]
+        },
+        {
+          "host": "codex-local",
+          "mode": "wrapper-required",
+          "requires": [
+            "github-tools"
+          ]
+        },
+        {
+          "host": "chatgpt",
+          "mode": "wrapper-required",
+          "requires": [
+            "github-tools"
+          ]
+        }
+      ]
+    }
+  },
+  "integrations": [
+    {
+      "id": "knowledge-work-plugins",
+      "title": "Knowledge work plugins",
+      "adapter": "claude-plugin",
+      "sources": {
+        "upstream": {
+          "kind": "git",
+          "url": "https://github.com/anthropics/knowledge-work-plugins",
+          "revision": null
+        }
+      },
+      "license": "Apache-2.0 (top-level observation; recheck selected commit)",
+      "maturity": "candidate",
+      "capabilities": [
+        "legal",
+        "marketing",
+        "finance",
+        "operations"
+      ],
+      "requires": [],
+      "notes": [
+        "Select procedures individually; adapt Claude-specific commands, bindings and hooks."
+      ]
+    },
+    {
+      "id": "financial-services",
+      "title": "Financial services",
+      "adapter": "claude-plugin",
+      "sources": {
+        "upstream": {
+          "kind": "git",
+          "url": "https://github.com/anthropics/financial-services",
+          "revision": null
+        }
+      },
+      "license": "Apache-2.0 (top-level observation; recheck selected commit)",
+      "maturity": "candidate",
+      "capabilities": [
+        "investment-research",
+        "financial-modeling"
+      ],
+      "requires": [],
+      "notes": [
+        "Analytical procedures may transfer; Managed Agents runtime and data subscriptions do not transfer automatically."
+      ]
+    },
+    {
+      "id": "scientific-agent-skills",
+      "title": "Scientific Agent Skills broader catalog",
+      "adapter": "agent-skills",
+      "sources": {
+        "upstream": {
+          "kind": "git",
+          "url": "https://github.com/K-Dense-AI/scientific-agent-skills",
+          "revision": null
+        }
+      },
+      "license": "MIT (top-level observation; recheck selected commit)",
+      "maturity": "candidate",
+      "capabilities": [
+        "scientific-research"
+      ],
+      "requires": [],
+      "notes": [
+        "Paprika curates four skills in research-core. Other upstream skills and dependencies remain candidates."
+      ]
+    },
+    {
+      "id": "marketing-skills",
+      "title": "Marketing Skills",
+      "adapter": "agent-skills",
+      "sources": {
+        "upstream": {
+          "kind": "git",
+          "url": "https://github.com/coreyhaines31/marketingskills",
+          "revision": null
+        }
+      },
+      "license": "MIT (top-level observation; recheck selected commit)",
+      "maturity": "candidate",
+      "capabilities": [
+        "marketing",
+        "growth"
+      ],
+      "requires": [],
+      "notes": [
+        "Inspect shared context, cross-skill links and external service requirements."
+      ]
+    },
+    {
+      "id": "agency-agents",
+      "title": "Agency Agents personas",
+      "adapter": "role-markdown",
+      "sources": {
+        "upstream": {
+          "kind": "git",
+          "url": "https://github.com/msitarzewski/agency-agents",
+          "revision": null
+        }
+      },
+      "license": "MIT (top-level observation; recheck selected commit)",
+      "maturity": "candidate",
+      "capabilities": [
+        "company-personas"
+      ],
+      "requires": [],
+      "notes": [
+        "Persona prose cannot assign live roles or grant authority."
+      ]
+    },
+    {
+      "id": "hr-skills",
+      "title": "Human resources skills",
+      "adapter": "agent-skills",
+      "sources": {
+        "upstream": {
+          "kind": "git",
+          "url": "https://github.com/tuanductran/hr-skills",
+          "revision": null
+        }
+      },
+      "license": "MIT (top-level observation; recheck selected commit)",
+      "maturity": "candidate",
+      "capabilities": [
+        "human-resources"
+      ],
+      "requires": [],
+      "notes": [
+        "Evaluate selected procedures, dependencies and jurisdiction-specific applicability."
+      ]
+    },
+    {
+      "id": "legal-agents",
+      "title": "Legal agents",
+      "adapter": "role-markdown",
+      "sources": {
+        "upstream": {
+          "kind": "git",
+          "url": "https://github.com/judicialmind/legal-agents",
+          "revision": null
+        }
+      },
+      "license": "MIT (top-level observation; recheck selected commit)",
+      "maturity": "candidate",
+      "capabilities": [
+        "legal"
+      ],
+      "requires": [],
+      "notes": [
+        "Map roles and procedures; jurisdiction and professional review remain separate acceptance gates."
+      ]
+    },
+    {
+      "id": "github-mcp",
+      "title": "Official GitHub MCP server",
+      "adapter": "mcp-http",
+      "sources": {
+        "upstream": {
+          "kind": "git",
+          "url": "https://github.com/github/github-mcp-server",
+          "revision": null
+        }
+      },
+      "license": "Review selected upstream license before redistribution",
+      "maturity": "candidate",
+      "capabilities": [
+        "repositories",
+        "issues",
+        "pull-requests"
+      ],
+      "requires": [],
+      "notes": [
+        "Reuse the official connector when available; observe host registration, OAuth and repository permissions separately."
+      ]
+    },
+    {
+      "id": "rdkit",
+      "title": "RDKit chemistry library",
+      "adapter": "python-library",
+      "sources": {
+        "upstream": {
+          "kind": "git",
+          "url": "https://github.com/rdkit/rdkit",
+          "revision": null
+        }
+      },
+      "license": "Review selected upstream license before redistribution",
+      "maturity": "candidate",
+      "capabilities": [
+        "molecular-descriptors"
+      ],
+      "requires": [],
+      "notes": [
+        "Proposed wrapper validates molecular input and returns bounded descriptors and structured errors."
+      ]
+    },
+    {
+      "id": "or-tools",
+      "title": "Google OR-Tools",
+      "adapter": "python-library",
+      "sources": {
+        "upstream": {
+          "kind": "git",
+          "url": "https://github.com/google/or-tools",
+          "revision": null
+        }
+      },
+      "license": "Review selected upstream license before redistribution",
+      "maturity": "candidate",
+      "capabilities": [
+        "scheduling",
+        "optimization"
+      ],
+      "requires": [],
+      "notes": [
+        "Proposed wrapper uses bounded inputs, solver limits and job status/result tools."
+      ]
+    },
+    {
+      "id": "mlflow",
+      "title": "MLflow tracking service",
+      "adapter": "rest-service",
+      "sources": {
+        "upstream": {
+          "kind": "git",
+          "url": "https://github.com/mlflow/mlflow",
+          "revision": null
+        }
+      },
+      "license": "Review selected upstream license before redistribution",
+      "maturity": "candidate",
+      "capabilities": [
+        "experiment-tracking"
+      ],
+      "requires": [],
+      "notes": [
+        "Proposed connector searches runs and retrieves metrics and artifact references; writes are separate operations."
+      ]
+    },
+    {
+      "id": "erpnext",
+      "title": "ERPNext",
+      "adapter": "rest-service",
+      "sources": {
+        "upstream": {
+          "kind": "git",
+          "url": "https://github.com/frappe/erpnext",
+          "revision": null
+        }
+      },
+      "license": "Review selected upstream license before redistribution",
+      "maturity": "candidate",
+      "capabilities": [
+        "manufacturing",
+        "inventory",
+        "business-operations"
+      ],
+      "requires": [],
+      "notes": [
+        "Proposed connector queries inventory and work orders through the supported Frappe API."
+      ]
+    },
+    {
+      "id": "codex-action",
+      "title": "Official Codex GitHub Action",
+      "adapter": "github-action",
+      "sources": {
+        "upstream": {
+          "kind": "git",
+          "url": "https://github.com/openai/codex-action",
+          "revision": null
+        }
+      },
+      "license": "Review selected upstream license before redistribution",
+      "maturity": "candidate",
+      "capabilities": [
+        "repository-automation"
+      ],
+      "requires": [],
+      "notes": [
+        "Actions execution is separate from an existing Codex desktop chat; verify runner and API authentication requirements."
+      ]
+    }
+  ]
+}

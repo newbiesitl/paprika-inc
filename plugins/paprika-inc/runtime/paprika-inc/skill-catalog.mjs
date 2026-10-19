@@ -1,6 +1,9 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, lstat } from 'node:fs/promises';
+import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { requireInput as check } from './errors.mjs';
+import { extensionPack, safePackId } from './extension-pack.mjs';
+import { sourceDigests } from './integration-registry.mjs';
 
 export const skillNames = Object.freeze(['paper-lookup', 'literature-review', 'citation-management', 'scientific-critical-thinking']);
 export const sourceCommit = 'a1043ef544e3a100c28e70a736b6cf32554d0677';
@@ -10,23 +13,38 @@ const engineeringCommits = Object.freeze({
   karpathy_guidelines: '2c606141936f1eeef17fa3043a72095b4765b9c2',
   ponytail: '742e0abae1501e12d1254a81d05f16bba10d08c1',
 });
-const sets = Object.freeze({ 'research-core': skillNames, 'engineering-core': ['paprika-code-review'] });
+function bundledCatalog() {
+  const catalog = JSON.parse(readFileSync(new URL('../skill-packs/catalog.json', import.meta.url), 'utf8'));
+  check(catalog.schema_version === 1 && catalog.sets && typeof catalog.sets === 'object' && !Array.isArray(catalog.sets) &&
+    Object.keys(catalog.sets).length <= 100 && Object.hasOwn(catalog.sets, 'research-core') && Object.hasOwn(catalog.sets, 'engineering-core') &&
+    Object.entries(catalog.sets).every(([id, entry]) => safePackId(id) && entry && Array.isArray(entry.skills) && entry.skills.length > 0 && entry.skills.every(safePackId)),
+  'invalid_skill_pack', 'Invalid bundled skill catalog.');
+  const skills = Object.values(catalog.sets).flatMap(entry => entry.skills);
+  check(new Set(skills).size === skills.length, 'invalid_skill_pack', 'Catalog contains duplicate skill names.');
+  return catalog;
+}
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 const sortedEntries = value => Object.entries(value).sort(([a], [b]) => a.localeCompare(b));
 
 export function validateSkillSets(value) {
   if (value === undefined) return [];
+  const sets = bundledCatalog().sets;
   check(Array.isArray(value) && value.length <= Object.keys(sets).length &&
     new Set(value).size === value.length && value.every(id => typeof id === 'string' && Object.hasOwn(sets, id)),
-  'invalid_skill_sets', 'skill_sets must contain distinct known IDs: research-core, engineering-core.');
+  'invalid_skill_sets', 'skill_sets must contain distinct IDs from the bundled catalog.');
   return [...value];
 }
 
 export function provenance(pack) {
+  if (pack.schema_version === 2) return { source_digests: sourceDigests(pack.sources) };
   return pack.id === 'research-core' ? { source_commit: pack.source.commit } :
     { source_commits: Object.fromEntries(sortedEntries(pack.sources).map(([key, source]) => [key, source.commit])) };
 }
 export function validProvenance(record) {
+  if (record.source_digests !== undefined) return record.source_commit === undefined && record.source_commits === undefined &&
+    record.source_digests && typeof record.source_digests === 'object' && !Array.isArray(record.source_digests) &&
+    Object.keys(record.source_digests).length > 0 && Object.keys(record.source_digests).length <= 32 &&
+    Object.entries(record.source_digests).every(([key, value]) => /^[a-z][a-z0-9_-]{0,95}$/.test(key) && typeof value === 'string' && /^[0-9a-f]{64}$/.test(value));
   if (record.source_commit !== undefined) return /^[0-9a-f]{40}$/.test(record.source_commit) && record.source_commits === undefined;
   return record.source_commits && typeof record.source_commits === 'object' && !Array.isArray(record.source_commits) &&
     same(Object.keys(record.source_commits).sort(), Object.keys(engineeringCommits).sort()) &&
@@ -34,17 +52,23 @@ export function validProvenance(record) {
 }
 export function sameProvenance(record, pack) {
   const expected = provenance(pack);
+  if (expected.source_digests) return Boolean(record.source_digests && same(sortedEntries(record.source_digests), sortedEntries(expected.source_digests)));
   return expected.source_commit ? record.source_commit === expected.source_commit :
     Boolean(record.source_commits && same(sortedEntries(record.source_commits), sortedEntries(expected.source_commits)));
 }
 
 export async function skillPack(id) {
   validateSkillSets([id]);
-  const names = sets[id], root = new URL('../skill-packs/' + id + '/', import.meta.url);
-  const catalog = JSON.parse(await readFile(new URL('../skill-packs/catalog.json', import.meta.url), 'utf8'));
+  const root = new URL('../skill-packs/' + id + '/', import.meta.url);
+  const catalog = bundledCatalog();
+  const info = await lstat(new URL('pack.json', root));
+  check(info.isFile() && !info.isSymbolicLink() && info.size <= 1024 * 1024, 'invalid_skill_pack', 'Pack manifests must be regular files up to 1 MiB.');
   const bytes = await readFile(new URL('pack.json', root));
   const pack = JSON.parse(bytes), entry = catalog.sets?.[id];
-  check(catalog.schema_version === 1 && catalog.sets && same(Object.keys(catalog.sets).sort(), Object.keys(sets).sort()) &&
+  check(pack.id === id, 'invalid_skill_pack', 'Pack ID differs from its catalog key.');
+  if (!['research-core', 'engineering-core'].includes(id)) return extensionPack(pack, bytes, entry, root);
+  const names = id === 'research-core' ? skillNames : ['paprika-code-review'];
+  check(
     entry?.manifest_sha256 === sha(bytes) && pack.schema_version === 1 && pack.id === id &&
     same(pack.skills, names) && same(entry.skills, names), 'invalid_skill_pack', 'The bundled manifest does not match its reviewed catalog.');
   if (id === 'research-core') {

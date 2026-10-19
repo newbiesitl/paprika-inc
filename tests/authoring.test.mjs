@@ -79,7 +79,7 @@ for (const [name, change, errorCode] of [
 
 test('authoring refuses a symlinked company directory', async t => {
   const root = await folder(t), other = await folder(t);
-  await symlink(other, join(root, 'company'));
+  await symlink(other, join(root, 'company'), process.platform === 'win32' ? 'junction' : 'dir');
   await assert.rejects(authorCompany({ repository: root, spec: blueprint(), write: true }), code('unsafe_authoring_path'));
   assert.deepEqual(await readdir(other), ['AGENTS.md']);
 });
