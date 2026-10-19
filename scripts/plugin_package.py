@@ -34,6 +34,8 @@ PACKAGE_FILES = frozenset({
     'runtime/paprika-inc/skill-catalog.mjs', 'runtime/paprika-inc/skill-packs.mjs',
     'runtime/paprika-inc/extension-pack.mjs', 'runtime/paprika-inc/integration-registry.mjs',
     'runtime/integrations/registry.json', 'skills/setup-paprika-inc/references/integrations.md',
+    'runtime/paprika-inc/company-catalog.mjs', 'runtime/company-catalog/catalog.json',
+    'runtime/company-catalog/contract.d.ts', 'skills/setup-paprika-inc/references/company-catalog.md',
     'runtime/paprika-inc/message-presentation.mjs', 'runtime/paprika-inc/outbound.mjs',
     'skills/setup-paprika-inc/references/adaptive-delivery.md',
     'skills/paprika-inc/SKILL.md', 'skills/paprika-inc/agents/openai.yaml',
@@ -134,7 +136,7 @@ def payload_files(root, provenance_required=False, bound=False):
                 f'Private/generated directory in package: {name}')
         require(not path.name.startswith('.env') and path.name not in {'mcp.json', '.mcp.json', 'paprika-connection.json'} and (path.name != '.app.json' or bound),
                 f'Only an explicitly prepared private bound kit may contain its one existing App reference: {name}')
-        require(path.suffix in {'.json', '.md', '.mjs', '.txt', '.yaml', '.png'} or name == 'LICENSE' or
+        require(path.suffix in {'.json', '.md', '.mjs', '.txt', '.yaml', '.png'} or name in {'LICENSE', 'runtime/company-catalog/contract.d.ts'} or
                 (name.startswith('runtime/skill-packs/research-core/') or name.startswith('runtime/skill-packs/') and name in expected) and path.suffix in {'.py', '.bib'},
                 f'Unexpected package payload: {name}')
         require(name in expected, f'Payload is outside the reviewed build allowlist: {name}')

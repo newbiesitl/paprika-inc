@@ -86,3 +86,29 @@ the upstream plugin or activate research skills globally. See
 and [the governing proposal](docs/proposals/SCIENTIFIC-RESEARCH-SKILLS.md).
 
 Inc 0.3.1 adds [native product/sender presentation](plugins/paprika-inc/skills/setup-paprika-inc/references/native-message-presentation.md) for newly prepared onboarding prompts. Actual native observations select a plugin mention and sender title; missing metadata uses plain text. Pending writes retain frozen payloads.
+
+<!-- company-catalog:start -->
+## Company catalog preview
+
+Browse and configure a portable company draft in the [shared catalog UI](apps/company-catalog/README.md). One component supports a standalone local interface and an MCP App resource for supported native hosts. This candidate is not installed or deployed; actual Codex/ChatGPT rendering remains unverified.
+
+| Starting template | Version | Catalog state | Default roster | Default structure |
+| --- | --- | --- | --- | --- |
+| Software studio | 0.1.0 | template | 5 roles | lean-team |
+| Scientific research | 0.1.0 | template | 4 roles | research-lab |
+
+**Organization structures:** Lean team, Functional departments, Research lab. Industry and business-model tags are independent choices.
+
+**Role templates:** Coordinator, Architect, Developer, QA, Release Engineer, Researcher, Scientific Reviewer. Reporting lines and independent reviewers are configured separately.
+
+| Available pack source | Version | Included guidance |
+| --- | --- | --- |
+| Engineering core | 0.1.0 | paprika-code-review |
+| Research core | 0.1.0 | paper-lookup, literature-review, citation-management, scientific-critical-thinking |
+
+Pack source availability does not establish local installation, authentication, native-host verification, task-quality acceptance or release.
+
+**Planned catalog entries:** Marketing agency, Marketing core. The broader [industry and integration roadmap](https://github.com/newbiesitl/paprika-inc/issues/30) is tracked separately.
+
+Generated from the version 0.1.0 [backend catalog](plugins/paprika-inc/runtime/company-catalog/catalog.json); check with npm --prefix apps/company-catalog run readme:check.
+<!-- company-catalog:end -->

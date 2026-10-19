@@ -1,0 +1,1618 @@
+[
+  {
+    "id": "default-title",
+    "request": {
+      "command": "config validate",
+      "selection": {
+        "schema_version": 1,
+        "catalog": {
+          "version": "0.1.0",
+          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+        },
+        "preset_id": "software-studio",
+        "structure_id": "lean-team",
+        "business_model_tags": [],
+        "company": {
+          "id": "example-software-studio",
+          "name": "Software studio",
+          "repository": "fictional/software-studio",
+          "version": "0.1.1",
+          "purpose": "Deliver reviewed software through reproducible releases."
+        },
+        "roles": [
+          {
+            "role_id": "coordinator",
+            "packs": [],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": null,
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "architect",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "qa"
+            ]
+          },
+          {
+            "role_id": "developer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          },
+          {
+            "role_id": "qa",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "release-engineer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          }
+        ]
+      },
+      "catalogContext": {
+        "schema_version": 1
+      }
+    },
+    "response": {
+      "schema_version": 1,
+      "ok": true,
+      "command": "config validate",
+      "read_only": true,
+      "applied": false,
+      "catalog": {
+        "version": "0.1.0",
+        "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+      },
+      "selection_sha256": "bba85cbd107d1442fb6cdf9692bbc141a2d6eb3f4243150e675e373748a89cd7",
+      "diagnostics": [],
+      "requirements": [
+        {
+          "id": "git-client",
+          "state": "unknown"
+        },
+        {
+          "id": "node-runtime",
+          "state": "unknown"
+        }
+      ],
+      "evidence": {
+        "catalog_availability": "template",
+        "package_presence": [
+          {
+            "id": "engineering-core",
+            "state": "bundled"
+          }
+        ],
+        "local_configuration": "unverified",
+        "connection_authentication": "unverified",
+        "native_host_verification": "unverified",
+        "task_quality_acceptance": "unverified",
+        "release_state": "draft"
+      },
+      "selection": {
+        "schema_version": 1,
+        "catalog": {
+          "version": "0.1.0",
+          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+        },
+        "preset_id": "software-studio",
+        "structure_id": "lean-team",
+        "business_model_tags": [],
+        "company": {
+          "id": "example-software-studio",
+          "name": "Software studio",
+          "repository": "fictional/software-studio",
+          "version": "0.1.1",
+          "purpose": "Deliver reviewed software through reproducible releases."
+        },
+        "roles": [
+          {
+            "role_id": "coordinator",
+            "packs": [],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": null,
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "architect",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "qa"
+            ]
+          },
+          {
+            "role_id": "developer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          },
+          {
+            "role_id": "qa",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "release-engineer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          }
+        ]
+      },
+      "roster": [
+        {
+          "role_id": "coordinator",
+          "packs": [],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": null,
+          "reviewers": [
+            "architect"
+          ],
+          "title": "Coordinator",
+          "version": "0.1.1",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "architect",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "qa"
+          ],
+          "title": "Architect",
+          "version": "0.1.0",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "developer",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "architect",
+            "qa"
+          ],
+          "title": "Developer",
+          "version": "0.1.0",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "qa",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "architect"
+          ],
+          "title": "QA",
+          "version": "0.1.1",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "release-engineer",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "architect",
+            "qa"
+          ],
+          "title": "Release Engineer",
+          "version": "0.1.2",
+          "review_requirement": "peer_review_required"
+        }
+      ]
+    }
+  },
+  {
+    "id": "customized-title",
+    "request": {
+      "command": "config validate",
+      "selection": {
+        "schema_version": 1,
+        "catalog": {
+          "version": "0.1.0",
+          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+        },
+        "preset_id": "software-studio",
+        "structure_id": "functional-departments",
+        "business_model_tags": [],
+        "company": {
+          "id": "example-software-studio",
+          "name": "Software studio",
+          "repository": "fictional/software-studio",
+          "version": "0.1.1",
+          "purpose": "Deliver reviewed software through reproducible releases."
+        },
+        "roles": [
+          {
+            "role_id": "coordinator",
+            "packs": [],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": null,
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "architect",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "qa"
+            ]
+          },
+          {
+            "role_id": "developer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "architect",
+            "reviewers": [
+              "architect",
+              "qa"
+            ],
+            "title": "Backend Engineer 日本語"
+          },
+          {
+            "role_id": "qa",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "release-engineer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          }
+        ]
+      },
+      "catalogContext": {
+        "schema_version": 1
+      }
+    },
+    "response": {
+      "schema_version": 1,
+      "ok": true,
+      "command": "config validate",
+      "read_only": true,
+      "applied": false,
+      "catalog": {
+        "version": "0.1.0",
+        "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+      },
+      "selection_sha256": "26c17d321eaeab9be17655d8700ec8198ade59f68962e650015246bf7296591e",
+      "diagnostics": [],
+      "requirements": [
+        {
+          "id": "git-client",
+          "state": "unknown"
+        },
+        {
+          "id": "node-runtime",
+          "state": "unknown"
+        }
+      ],
+      "evidence": {
+        "catalog_availability": "template",
+        "package_presence": [
+          {
+            "id": "engineering-core",
+            "state": "bundled"
+          }
+        ],
+        "local_configuration": "unverified",
+        "connection_authentication": "unverified",
+        "native_host_verification": "unverified",
+        "task_quality_acceptance": "unverified",
+        "release_state": "draft"
+      },
+      "selection": {
+        "schema_version": 1,
+        "catalog": {
+          "version": "0.1.0",
+          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+        },
+        "preset_id": "software-studio",
+        "structure_id": "functional-departments",
+        "business_model_tags": [],
+        "company": {
+          "id": "example-software-studio",
+          "name": "Software studio",
+          "repository": "fictional/software-studio",
+          "version": "0.1.1",
+          "purpose": "Deliver reviewed software through reproducible releases."
+        },
+        "roles": [
+          {
+            "role_id": "coordinator",
+            "packs": [],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": null,
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "architect",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "qa"
+            ]
+          },
+          {
+            "role_id": "developer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "architect",
+            "reviewers": [
+              "architect",
+              "qa"
+            ],
+            "title": "Backend Engineer 日本語"
+          },
+          {
+            "role_id": "qa",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "release-engineer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          }
+        ]
+      },
+      "roster": [
+        {
+          "role_id": "coordinator",
+          "packs": [],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": null,
+          "reviewers": [
+            "architect"
+          ],
+          "title": "Coordinator",
+          "version": "0.1.1",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "architect",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "qa"
+          ],
+          "title": "Architect",
+          "version": "0.1.0",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "developer",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "architect",
+          "reviewers": [
+            "architect",
+            "qa"
+          ],
+          "title": "Backend Engineer 日本語",
+          "version": "0.1.0",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "qa",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "architect"
+          ],
+          "title": "QA",
+          "version": "0.1.1",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "release-engineer",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "architect",
+            "qa"
+          ],
+          "title": "Release Engineer",
+          "version": "0.1.2",
+          "review_requirement": "peer_review_required"
+        }
+      ]
+    }
+  },
+  {
+    "id": "human-review",
+    "request": {
+      "command": "config validate",
+      "selection": {
+        "schema_version": 1,
+        "catalog": {
+          "version": "0.1.0",
+          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+        },
+        "preset_id": "software-studio",
+        "structure_id": "lean-team",
+        "business_model_tags": [],
+        "company": {
+          "id": "example-software-studio",
+          "name": "Software studio",
+          "repository": "fictional/software-studio",
+          "version": "0.1.1",
+          "purpose": "Deliver reviewed software through reproducible releases."
+        },
+        "roles": [
+          {
+            "role_id": "coordinator",
+            "packs": [],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": null,
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "architect",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "qa"
+            ]
+          },
+          {
+            "role_id": "developer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": []
+          },
+          {
+            "role_id": "qa",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "release-engineer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          }
+        ]
+      },
+      "catalogContext": {
+        "schema_version": 1
+      }
+    },
+    "response": {
+      "schema_version": 1,
+      "ok": true,
+      "command": "config validate",
+      "read_only": true,
+      "applied": false,
+      "catalog": {
+        "version": "0.1.0",
+        "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+      },
+      "selection_sha256": "64962cecf91d119483711ebb6b6eace2596e32d3383031049dc282c27fc7edf2",
+      "diagnostics": [],
+      "requirements": [
+        {
+          "id": "git-client",
+          "state": "unknown"
+        },
+        {
+          "id": "node-runtime",
+          "state": "unknown"
+        }
+      ],
+      "evidence": {
+        "catalog_availability": "template",
+        "package_presence": [
+          {
+            "id": "engineering-core",
+            "state": "bundled"
+          }
+        ],
+        "local_configuration": "unverified",
+        "connection_authentication": "unverified",
+        "native_host_verification": "unverified",
+        "task_quality_acceptance": "unverified",
+        "release_state": "draft"
+      },
+      "selection": {
+        "schema_version": 1,
+        "catalog": {
+          "version": "0.1.0",
+          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+        },
+        "preset_id": "software-studio",
+        "structure_id": "lean-team",
+        "business_model_tags": [],
+        "company": {
+          "id": "example-software-studio",
+          "name": "Software studio",
+          "repository": "fictional/software-studio",
+          "version": "0.1.1",
+          "purpose": "Deliver reviewed software through reproducible releases."
+        },
+        "roles": [
+          {
+            "role_id": "coordinator",
+            "packs": [],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": null,
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "architect",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "qa"
+            ]
+          },
+          {
+            "role_id": "developer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": []
+          },
+          {
+            "role_id": "qa",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "release-engineer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          }
+        ]
+      },
+      "roster": [
+        {
+          "role_id": "coordinator",
+          "packs": [],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": null,
+          "reviewers": [
+            "architect"
+          ],
+          "title": "Coordinator",
+          "version": "0.1.1",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "architect",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "qa"
+          ],
+          "title": "Architect",
+          "version": "0.1.0",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "developer",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [],
+          "title": "Developer",
+          "version": "0.1.0",
+          "review_requirement": "human_review_required"
+        },
+        {
+          "role_id": "qa",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "architect"
+          ],
+          "title": "QA",
+          "version": "0.1.1",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "release-engineer",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "architect",
+            "qa"
+          ],
+          "title": "Release Engineer",
+          "version": "0.1.2",
+          "review_requirement": "peer_review_required"
+        }
+      ]
+    }
+  },
+  {
+    "id": "empty-capabilities",
+    "request": {
+      "command": "config validate",
+      "selection": {
+        "schema_version": 1,
+        "catalog": {
+          "version": "0.1.0",
+          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+        },
+        "preset_id": "software-studio",
+        "structure_id": "lean-team",
+        "business_model_tags": [],
+        "company": {
+          "id": "example-software-studio",
+          "name": "Software studio",
+          "repository": "fictional/software-studio",
+          "version": "0.1.1",
+          "purpose": "Deliver reviewed software through reproducible releases."
+        },
+        "roles": [
+          {
+            "role_id": "coordinator",
+            "packs": [],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": null,
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "architect",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "qa"
+            ]
+          },
+          {
+            "role_id": "developer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          },
+          {
+            "role_id": "qa",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "release-engineer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          }
+        ]
+      },
+      "catalogContext": {
+        "schema_version": 1,
+        "host": "codex-local",
+        "capabilities": []
+      }
+    },
+    "response": {
+      "schema_version": 1,
+      "ok": true,
+      "command": "config validate",
+      "read_only": true,
+      "applied": false,
+      "catalog": {
+        "version": "0.1.0",
+        "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+      },
+      "selection_sha256": "bba85cbd107d1442fb6cdf9692bbc141a2d6eb3f4243150e675e373748a89cd7",
+      "diagnostics": [],
+      "requirements": [
+        {
+          "id": "git-client",
+          "state": "missing"
+        },
+        {
+          "id": "node-runtime",
+          "state": "missing"
+        }
+      ],
+      "evidence": {
+        "catalog_availability": "template",
+        "package_presence": [
+          {
+            "id": "engineering-core",
+            "state": "bundled"
+          }
+        ],
+        "local_configuration": "unverified",
+        "connection_authentication": "unverified",
+        "native_host_verification": "unverified",
+        "task_quality_acceptance": "unverified",
+        "release_state": "draft"
+      },
+      "selection": {
+        "schema_version": 1,
+        "catalog": {
+          "version": "0.1.0",
+          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+        },
+        "preset_id": "software-studio",
+        "structure_id": "lean-team",
+        "business_model_tags": [],
+        "company": {
+          "id": "example-software-studio",
+          "name": "Software studio",
+          "repository": "fictional/software-studio",
+          "version": "0.1.1",
+          "purpose": "Deliver reviewed software through reproducible releases."
+        },
+        "roles": [
+          {
+            "role_id": "coordinator",
+            "packs": [],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": null,
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "architect",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "qa"
+            ]
+          },
+          {
+            "role_id": "developer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          },
+          {
+            "role_id": "qa",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "release-engineer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          }
+        ]
+      },
+      "roster": [
+        {
+          "role_id": "coordinator",
+          "packs": [],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": null,
+          "reviewers": [
+            "architect"
+          ],
+          "title": "Coordinator",
+          "version": "0.1.1",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "architect",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "qa"
+          ],
+          "title": "Architect",
+          "version": "0.1.0",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "developer",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "architect",
+            "qa"
+          ],
+          "title": "Developer",
+          "version": "0.1.0",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "qa",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "architect"
+          ],
+          "title": "QA",
+          "version": "0.1.1",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "release-engineer",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "architect",
+            "qa"
+          ],
+          "title": "Release Engineer",
+          "version": "0.1.2",
+          "review_requirement": "peer_review_required"
+        }
+      ]
+    }
+  },
+  {
+    "id": "host-switch",
+    "request": {
+      "command": "config validate",
+      "selection": {
+        "schema_version": 1,
+        "catalog": {
+          "version": "0.1.0",
+          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+        },
+        "preset_id": "software-studio",
+        "structure_id": "lean-team",
+        "business_model_tags": [],
+        "company": {
+          "id": "example-software-studio",
+          "name": "Software studio",
+          "repository": "fictional/software-studio",
+          "version": "0.1.1",
+          "purpose": "Deliver reviewed software through reproducible releases."
+        },
+        "roles": [
+          {
+            "role_id": "coordinator",
+            "packs": [],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": null,
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "architect",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "qa"
+            ]
+          },
+          {
+            "role_id": "developer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          },
+          {
+            "role_id": "qa",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "release-engineer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          }
+        ]
+      },
+      "catalogContext": {
+        "schema_version": 1,
+        "host": "chatgpt",
+        "capabilities": [
+          "node-24",
+          "git"
+        ]
+      }
+    },
+    "response": {
+      "schema_version": 1,
+      "ok": true,
+      "command": "config validate",
+      "read_only": true,
+      "applied": false,
+      "catalog": {
+        "version": "0.1.0",
+        "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+      },
+      "selection_sha256": "bba85cbd107d1442fb6cdf9692bbc141a2d6eb3f4243150e675e373748a89cd7",
+      "diagnostics": [],
+      "requirements": [
+        {
+          "id": "git-client",
+          "state": "unsupported"
+        },
+        {
+          "id": "node-runtime",
+          "state": "unsupported"
+        }
+      ],
+      "evidence": {
+        "catalog_availability": "template",
+        "package_presence": [
+          {
+            "id": "engineering-core",
+            "state": "bundled"
+          }
+        ],
+        "local_configuration": "unverified",
+        "connection_authentication": "unverified",
+        "native_host_verification": "unverified",
+        "task_quality_acceptance": "unverified",
+        "release_state": "draft"
+      },
+      "selection": {
+        "schema_version": 1,
+        "catalog": {
+          "version": "0.1.0",
+          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+        },
+        "preset_id": "software-studio",
+        "structure_id": "lean-team",
+        "business_model_tags": [],
+        "company": {
+          "id": "example-software-studio",
+          "name": "Software studio",
+          "repository": "fictional/software-studio",
+          "version": "0.1.1",
+          "purpose": "Deliver reviewed software through reproducible releases."
+        },
+        "roles": [
+          {
+            "role_id": "coordinator",
+            "packs": [],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": null,
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "architect",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "qa"
+            ]
+          },
+          {
+            "role_id": "developer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          },
+          {
+            "role_id": "qa",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "release-engineer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          }
+        ]
+      },
+      "roster": [
+        {
+          "role_id": "coordinator",
+          "packs": [],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": null,
+          "reviewers": [
+            "architect"
+          ],
+          "title": "Coordinator",
+          "version": "0.1.1",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "architect",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "qa"
+          ],
+          "title": "Architect",
+          "version": "0.1.0",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "developer",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "architect",
+            "qa"
+          ],
+          "title": "Developer",
+          "version": "0.1.0",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "qa",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "architect"
+          ],
+          "title": "QA",
+          "version": "0.1.1",
+          "review_requirement": "peer_review_required"
+        },
+        {
+          "role_id": "release-engineer",
+          "packs": [
+            "engineering-core"
+          ],
+          "workflows": [
+            "reviewed-software"
+          ],
+          "reports_to": "coordinator",
+          "reviewers": [
+            "architect",
+            "qa"
+          ],
+          "title": "Release Engineer",
+          "version": "0.1.2",
+          "review_requirement": "peer_review_required"
+        }
+      ]
+    }
+  },
+  {
+    "id": "stale-catalog",
+    "request": {
+      "command": "config validate",
+      "selection": {
+        "schema_version": 1,
+        "catalog": {
+          "version": "0.1.0",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "preset_id": "software-studio",
+        "structure_id": "lean-team",
+        "business_model_tags": [],
+        "company": {
+          "id": "example-software-studio",
+          "name": "Software studio",
+          "repository": "fictional/software-studio",
+          "version": "0.1.1",
+          "purpose": "Deliver reviewed software through reproducible releases."
+        },
+        "roles": [
+          {
+            "role_id": "coordinator",
+            "packs": [],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": null,
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "architect",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "qa"
+            ]
+          },
+          {
+            "role_id": "developer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          },
+          {
+            "role_id": "qa",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect"
+            ]
+          },
+          {
+            "role_id": "release-engineer",
+            "packs": [
+              "engineering-core"
+            ],
+            "workflows": [
+              "reviewed-software"
+            ],
+            "reports_to": "coordinator",
+            "reviewers": [
+              "architect",
+              "qa"
+            ]
+          }
+        ]
+      },
+      "catalogContext": {
+        "schema_version": 1
+      }
+    },
+    "response": {
+      "schema_version": 1,
+      "ok": false,
+      "command": "config validate",
+      "read_only": true,
+      "applied": false,
+      "catalog": {
+        "version": "0.1.0",
+        "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+      },
+      "selection_sha256": null,
+      "diagnostics": [
+        {
+          "code": "stale_catalog",
+          "path": "$.catalog",
+          "message": "The catalog version or digest changed. Refresh and review the retained draft before preview/export."
+        }
+      ],
+      "requirements": [
+        {
+          "id": "git-client",
+          "state": "unknown"
+        },
+        {
+          "id": "node-runtime",
+          "state": "unknown"
+        }
+      ],
+      "evidence": {
+        "catalog_availability": "template",
+        "package_presence": [
+          {
+            "id": "engineering-core",
+            "state": "bundled"
+          }
+        ],
+        "local_configuration": "unverified",
+        "connection_authentication": "unverified",
+        "native_host_verification": "unverified",
+        "task_quality_acceptance": "unverified",
+        "release_state": "draft"
+      }
+    }
+  }
+]

@@ -1,0 +1,26 @@
+name: Catalog UI
+on:
+  pull_request:
+    paths: ['apps/company-catalog/**', 'plugins/paprika-inc/runtime/**', 'README.md', '.github/workflows/catalog-ui.yml']
+  push:
+    branches: ['codex/**']
+    paths: ['apps/company-catalog/**', 'plugins/paprika-inc/runtime/**', 'README.md', '.github/workflows/catalog-ui.yml']
+permissions:
+  contents: read
+jobs:
+  catalog-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24'
+      - run: npm ci --ignore-scripts
+        working-directory: apps/company-catalog
+      - run: npm run build && npm test && npm run readme:check
+        working-directory: apps/company-catalog
+      - run: npx playwright install --with-deps chromium
+        working-directory: apps/company-catalog
+      - run: npm run test:browser && npm run test:production
+        working-directory: apps/company-catalog

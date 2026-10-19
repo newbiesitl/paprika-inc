@@ -1,0 +1,29 @@
+{
+  "name": "@paprika-inc/company-catalog-ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "start": "node server.mjs",
+    "test": "node --test test/*.test.mjs",
+    "test:browser": "playwright test",
+    "test:production": "playwright test --config playwright.production.config.mjs",
+    "readme:check": "node readme.mjs --check",
+    "preview:fixture": "node test/start.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/client": "2.3.1",
+    "@modelcontextprotocol/core": "2.3.1",
+    "@modelcontextprotocol/ext-apps": "2.0.3",
+    "@modelcontextprotocol/server": "2.3.1",
+    "fflate": "0.8.3",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.64.1",
+    "esbuild": "0.28.2",
+    "prettier": "3.9.10"
+  }
+}

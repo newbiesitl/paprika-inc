@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "catalog": {
+    "version": "0.1.0",
+    "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+  },
+  "preset_id": "scientific-research",
+  "structure_id": "research-lab",
+  "business_model_tags": [],
+  "company": {
+    "id": "example-research-lab",
+    "name": "Scientific research",
+    "repository": "fictional/research-lab",
+    "version": "0.1.1",
+    "purpose": "Produce traceable research and reproducible, reviewed artifacts."
+  },
+  "roles": [
+    {
+      "role_id": "coordinator",
+      "packs": [],
+      "workflows": [
+        "reviewed-research"
+      ],
+      "reports_to": null,
+      "reviewers": [
+        "scientific-reviewer"
+      ]
+    },
+    {
+      "role_id": "researcher",
+      "packs": [
+        "research-core"
+      ],
+      "workflows": [
+        "reviewed-research"
+      ],
+      "reports_to": "coordinator",
+      "reviewers": [
+        "scientific-reviewer"
+      ]
+    },
+    {
+      "role_id": "scientific-reviewer",
+      "packs": [
+        "research-core"
+      ],
+      "workflows": [
+        "reviewed-research"
+      ],
+      "reports_to": "coordinator",
+      "reviewers": [
+        "researcher"
+      ]
+    },
+    {
+      "role_id": "release-engineer",
+      "packs": [
+        "engineering-core"
+      ],
+      "workflows": [
+        "reviewed-research"
+      ],
+      "reports_to": "coordinator",
+      "reviewers": [
+        "scientific-reviewer"
+      ]
+    }
+  ]
+}

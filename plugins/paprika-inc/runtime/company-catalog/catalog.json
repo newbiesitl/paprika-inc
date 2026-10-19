@@ -1,0 +1,862 @@
+{
+  "schema_version": 1,
+  "version": "0.1.0",
+  "business_model_tags": [
+    "b2b",
+    "b2c",
+    "saas",
+    "open-source",
+    "nonprofit"
+  ],
+  "entries": [
+    {
+      "kind": "role",
+      "id": "coordinator",
+      "version": "0.1.1",
+      "label": "Coordinator",
+      "description": "Route human requests and preserve task handoffs.",
+      "tags": [],
+      "availability": "template",
+      "requirements": [],
+      "provenance": {
+        "path": "plugins/paprika-inc/skills/setup-paprika-inc/assets/it-company-blueprint.json",
+        "sha256": "cefe820fd533f4918b2f8c1d5edccafa096ad267f650b6c0327f15c67fd88731"
+      },
+      "evidence": [],
+      "data": {
+        "blueprint": {
+          "id": "coordinator",
+          "version": "0.1.1",
+          "title": "Coordinator",
+          "purpose": "Route human requests and preserve task handoffs.",
+          "responsibilities": [
+            "Choose one owner and reviewer; consult relevant specialists within actual human grants.",
+            "Introduce the human to the responsible role for detailed discussion.",
+            "Record whether independent QA is needed and why under the selected company policy; batch meaningful validation checkpoints instead of dispatching QA for every task or PR."
+          ],
+          "boundaries": [
+            "Routing grants no review, publication or deployment authority."
+          ],
+          "inputs": [
+            "Scoped human assignment and relevant evidence."
+          ],
+          "outputs": [
+            "Reviewable deliverable and explicit evidence limits."
+          ],
+          "escalation": [
+            "Raise missing scope, authority or evidence while continuing independent work."
+          ]
+        },
+        "ownership_paths": [
+          "docs/work/"
+        ],
+        "allowed_packs": [
+          "engineering-core",
+          "research-core"
+        ],
+        "required_packs": []
+      }
+    },
+    {
+      "kind": "role",
+      "id": "architect",
+      "version": "0.1.0",
+      "label": "Architect",
+      "description": "Own design and technical acceptance.",
+      "tags": [],
+      "availability": "template",
+      "requirements": [],
+      "provenance": {
+        "path": "plugins/paprika-inc/skills/setup-paprika-inc/assets/it-company-blueprint.json",
+        "sha256": "cefe820fd533f4918b2f8c1d5edccafa096ad267f650b6c0327f15c67fd88731"
+      },
+      "evidence": [],
+      "data": {
+        "blueprint": {
+          "id": "architect",
+          "version": "0.1.0",
+          "title": "Architect",
+          "purpose": "Own design and technical acceptance.",
+          "responsibilities": [
+            "Define interfaces and acceptance criteria.",
+            "Review substantive changes independently."
+          ],
+          "boundaries": [
+            "Obtain independent review of own changes."
+          ],
+          "inputs": [
+            "Scoped human assignment and relevant evidence."
+          ],
+          "outputs": [
+            "Reviewable deliverable and explicit evidence limits."
+          ],
+          "escalation": [
+            "Raise missing scope, authority or evidence while continuing independent work."
+          ]
+        },
+        "ownership_paths": [
+          "docs/design/"
+        ],
+        "allowed_packs": [
+          "engineering-core",
+          "research-core"
+        ],
+        "required_packs": []
+      }
+    },
+    {
+      "kind": "role",
+      "id": "developer",
+      "version": "0.1.0",
+      "label": "Developer",
+      "description": "Implement the selected software outcome.",
+      "tags": [],
+      "availability": "template",
+      "requirements": [],
+      "provenance": {
+        "path": "plugins/paprika-inc/skills/setup-paprika-inc/assets/it-company-blueprint.json",
+        "sha256": "cefe820fd533f4918b2f8c1d5edccafa096ad267f650b6c0327f15c67fd88731"
+      },
+      "evidence": [],
+      "data": {
+        "blueprint": {
+          "id": "developer",
+          "version": "0.1.0",
+          "title": "Developer",
+          "purpose": "Implement the selected software outcome.",
+          "responsibilities": [
+            "Build the scoped behavior with proportionate tests and recovery evidence."
+          ],
+          "boundaries": [
+            "Do not publish or expand scope without authority."
+          ],
+          "inputs": [
+            "Scoped human assignment and relevant evidence."
+          ],
+          "outputs": [
+            "Reviewable deliverable and explicit evidence limits."
+          ],
+          "escalation": [
+            "Raise missing scope, authority or evidence while continuing independent work."
+          ]
+        },
+        "ownership_paths": [
+          "src/"
+        ],
+        "allowed_packs": [
+          "engineering-core",
+          "research-core"
+        ],
+        "required_packs": []
+      }
+    },
+    {
+      "kind": "role",
+      "id": "qa",
+      "version": "0.1.1",
+      "label": "QA",
+      "description": "Provide company quality evidence for meaningful feature, pilot, MVP, PR and design-implementation validation.",
+      "tags": [],
+      "availability": "template",
+      "requirements": [],
+      "provenance": {
+        "path": "plugins/paprika-inc/skills/setup-paprika-inc/assets/it-company-blueprint.json",
+        "sha256": "cefe820fd533f4918b2f8c1d5edccafa096ad267f650b6c0327f15c67fd88731"
+      },
+      "evidence": [],
+      "data": {
+        "blueprint": {
+          "id": "qa",
+          "version": "0.1.1",
+          "title": "QA",
+          "purpose": "Provide company quality evidence for meaningful feature, pilot, MVP, PR and design-implementation validation.",
+          "responsibilities": [
+            "Trace affected callers, test regressions and report evidence limits.",
+            "Use a bounded acceptance brief, reuse valid evidence and retest affected behavior after changes; routine low-risk edits do not automatically require QA."
+          ],
+          "boundaries": [
+            "No self-approval or release authority."
+          ],
+          "inputs": [
+            "Scoped human assignment and relevant evidence."
+          ],
+          "outputs": [
+            "Reviewable deliverable and explicit evidence limits."
+          ],
+          "escalation": [
+            "Raise missing scope, authority or evidence while continuing independent work."
+          ]
+        },
+        "ownership_paths": [
+          "tests/"
+        ],
+        "allowed_packs": [
+          "engineering-core",
+          "research-core"
+        ],
+        "required_packs": []
+      }
+    },
+    {
+      "kind": "role",
+      "id": "release-engineer",
+      "version": "0.1.2",
+      "label": "Release Engineer",
+      "description": "Sequence reviewed changes and prepare reproducible releases.",
+      "tags": [],
+      "availability": "template",
+      "requirements": [],
+      "provenance": {
+        "path": "plugins/paprika-inc/skills/setup-paprika-inc/assets/it-company-blueprint.json",
+        "sha256": "cefe820fd533f4918b2f8c1d5edccafa096ad267f650b6c0327f15c67fd88731"
+      },
+      "evidence": [],
+      "data": {
+        "blueprint": {
+          "id": "release-engineer",
+          "version": "0.1.2",
+          "title": "Release Engineer",
+          "purpose": "Sequence reviewed changes and prepare reproducible releases.",
+          "responsibilities": [
+            "Track PR/artifact dependencies and reviews for exact revisions.",
+            "Merge reviewed PRs under the actual owner delegation after independent architect/domain acceptance and QA where required by the selected company policy or assigned acceptance gates, with exact-head checks and repository protections satisfied.",
+            "Build versioned artifacts with provenance, release notes and rollback information.",
+            "Execute publication only under actual human release authorization."
+          ],
+          "boundaries": [
+            "Review belongs to other roles; no self-approval or waived checks.",
+            "Packaging does not establish scientific validity or live environment readiness.",
+            "An existing PR-only maintainer exception needs explicit coverage in the actual owner grant; never change protections or evade host denials. Merge authority does not grant publication or deployment."
+          ],
+          "inputs": [
+            "Scoped human assignment and relevant evidence."
+          ],
+          "outputs": [
+            "Reviewable deliverable and explicit evidence limits."
+          ],
+          "escalation": [
+            "Raise missing scope, authority or evidence while continuing independent work."
+          ]
+        },
+        "ownership_paths": [
+          "release/"
+        ],
+        "allowed_packs": [
+          "engineering-core",
+          "research-core"
+        ],
+        "required_packs": []
+      }
+    },
+    {
+      "kind": "preset",
+      "id": "software-studio",
+      "version": "0.1.0",
+      "label": "Software studio",
+      "description": "Deliver reviewed software through reproducible releases.",
+      "tags": [],
+      "availability": "template",
+      "requirements": [
+        "node-runtime",
+        "git-client"
+      ],
+      "provenance": {
+        "path": "plugins/paprika-inc/skills/setup-paprika-inc/assets/it-company-blueprint.json",
+        "sha256": "cefe820fd533f4918b2f8c1d5edccafa096ad267f650b6c0327f15c67fd88731"
+      },
+      "evidence": [],
+      "data": {
+        "coordinator_role": "coordinator",
+        "required_roles": [
+          "coordinator",
+          "architect",
+          "developer",
+          "qa"
+        ],
+        "defaults": {
+          "structure_id": "lean-team",
+          "business_model_tags": [],
+          "company": {
+            "id": "example-software-studio",
+            "name": "Software studio",
+            "repository": "fictional/software-studio",
+            "version": "0.1.1",
+            "purpose": "Deliver reviewed software through reproducible releases."
+          },
+          "roles": [
+            {
+              "role_id": "coordinator",
+              "packs": [],
+              "workflows": [
+                "reviewed-software"
+              ],
+              "reports_to": null,
+              "reviewers": [
+                "architect"
+              ]
+            },
+            {
+              "role_id": "architect",
+              "packs": [
+                "engineering-core"
+              ],
+              "workflows": [
+                "reviewed-software"
+              ],
+              "reports_to": "coordinator",
+              "reviewers": [
+                "qa"
+              ]
+            },
+            {
+              "role_id": "developer",
+              "packs": [
+                "engineering-core"
+              ],
+              "workflows": [
+                "reviewed-software"
+              ],
+              "reports_to": "coordinator",
+              "reviewers": [
+                "architect",
+                "qa"
+              ]
+            },
+            {
+              "role_id": "qa",
+              "packs": [
+                "engineering-core"
+              ],
+              "workflows": [
+                "reviewed-software"
+              ],
+              "reports_to": "coordinator",
+              "reviewers": [
+                "architect"
+              ]
+            },
+            {
+              "role_id": "release-engineer",
+              "packs": [
+                "engineering-core"
+              ],
+              "workflows": [
+                "reviewed-software"
+              ],
+              "reports_to": "coordinator",
+              "reviewers": [
+                "architect",
+                "qa"
+              ]
+            }
+          ]
+        },
+        "ownership": [
+          {
+            "path": "docs/work/",
+            "owner_role": "coordinator",
+            "reviewer_roles": [
+              "architect"
+            ]
+          },
+          {
+            "path": "docs/design/",
+            "owner_role": "architect",
+            "reviewer_roles": [
+              "qa"
+            ]
+          },
+          {
+            "path": "src/",
+            "owner_role": "developer",
+            "reviewer_roles": [
+              "architect",
+              "qa"
+            ]
+          },
+          {
+            "path": "tests/",
+            "owner_role": "qa",
+            "reviewer_roles": [
+              "developer"
+            ]
+          },
+          {
+            "path": "release/",
+            "owner_role": "release-engineer",
+            "reviewer_roles": [
+              "architect",
+              "qa"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "role",
+      "id": "researcher",
+      "version": "0.1.0",
+      "label": "Researcher",
+      "description": "Investigate scoped questions and synthesize evidence.",
+      "tags": [],
+      "availability": "template",
+      "requirements": [],
+      "provenance": {
+        "path": "plugins/paprika-inc/skills/setup-paprika-inc/assets/research-company-blueprint.json",
+        "sha256": "7978fbcdd56c0d28effae2238ba2f7d292657162dc995bcc421163f8d8f50bf1"
+      },
+      "evidence": [],
+      "data": {
+        "blueprint": {
+          "id": "researcher",
+          "version": "0.1.0",
+          "title": "Researcher",
+          "purpose": "Investigate scoped questions and synthesize evidence.",
+          "responsibilities": [
+            "Record search/source provenance, methods, uncertainty and reproducible outputs."
+          ],
+          "boundaries": [
+            "Do not self-approve scientific claims or publish restricted material."
+          ],
+          "inputs": [
+            "Scoped human assignment and relevant evidence."
+          ],
+          "outputs": [
+            "Reviewable deliverable and explicit evidence limits."
+          ],
+          "escalation": [
+            "Raise missing scope, authority or evidence while continuing independent work."
+          ]
+        },
+        "ownership_paths": [
+          "research/"
+        ],
+        "allowed_packs": [
+          "engineering-core",
+          "research-core"
+        ],
+        "required_packs": []
+      }
+    },
+    {
+      "kind": "role",
+      "id": "scientific-reviewer",
+      "version": "0.1.0",
+      "label": "Scientific Reviewer",
+      "description": "Independently appraise claims, methods and evidence.",
+      "tags": [],
+      "availability": "template",
+      "requirements": [],
+      "provenance": {
+        "path": "plugins/paprika-inc/skills/setup-paprika-inc/assets/research-company-blueprint.json",
+        "sha256": "7978fbcdd56c0d28effae2238ba2f7d292657162dc995bcc421163f8d8f50bf1"
+      },
+      "evidence": [],
+      "data": {
+        "blueprint": {
+          "id": "scientific-reviewer",
+          "version": "0.1.0",
+          "title": "Scientific Reviewer",
+          "purpose": "Independently appraise claims, methods and evidence.",
+          "responsibilities": [
+            "Evaluate bias, validity, uncertainty and whether conclusions follow from evidence."
+          ],
+          "boundaries": [
+            "No self-review or publication authority; package integrity is not scientific validation."
+          ],
+          "inputs": [
+            "Scoped human assignment and relevant evidence."
+          ],
+          "outputs": [
+            "Reviewable deliverable and explicit evidence limits."
+          ],
+          "escalation": [
+            "Raise missing scope, authority or evidence while continuing independent work."
+          ]
+        },
+        "ownership_paths": [
+          "reviews/"
+        ],
+        "allowed_packs": [
+          "engineering-core",
+          "research-core"
+        ],
+        "required_packs": []
+      }
+    },
+    {
+      "kind": "preset",
+      "id": "scientific-research",
+      "version": "0.1.0",
+      "label": "Scientific research",
+      "description": "Produce traceable research and reproducible, reviewed artifacts.",
+      "tags": [],
+      "availability": "template",
+      "requirements": [
+        "node-runtime",
+        "git-client"
+      ],
+      "provenance": {
+        "path": "plugins/paprika-inc/skills/setup-paprika-inc/assets/research-company-blueprint.json",
+        "sha256": "7978fbcdd56c0d28effae2238ba2f7d292657162dc995bcc421163f8d8f50bf1"
+      },
+      "evidence": [],
+      "data": {
+        "coordinator_role": "coordinator",
+        "required_roles": [
+          "coordinator",
+          "researcher",
+          "scientific-reviewer"
+        ],
+        "defaults": {
+          "structure_id": "research-lab",
+          "business_model_tags": [],
+          "company": {
+            "id": "example-research-lab",
+            "name": "Scientific research",
+            "repository": "fictional/research-lab",
+            "version": "0.1.1",
+            "purpose": "Produce traceable research and reproducible, reviewed artifacts."
+          },
+          "roles": [
+            {
+              "role_id": "coordinator",
+              "packs": [],
+              "workflows": [
+                "reviewed-research"
+              ],
+              "reports_to": null,
+              "reviewers": [
+                "scientific-reviewer"
+              ]
+            },
+            {
+              "role_id": "researcher",
+              "packs": [
+                "research-core"
+              ],
+              "workflows": [
+                "reviewed-research"
+              ],
+              "reports_to": "coordinator",
+              "reviewers": [
+                "scientific-reviewer"
+              ]
+            },
+            {
+              "role_id": "scientific-reviewer",
+              "packs": [
+                "research-core"
+              ],
+              "workflows": [
+                "reviewed-research"
+              ],
+              "reports_to": "coordinator",
+              "reviewers": [
+                "researcher"
+              ]
+            },
+            {
+              "role_id": "release-engineer",
+              "packs": [
+                "engineering-core"
+              ],
+              "workflows": [
+                "reviewed-research"
+              ],
+              "reports_to": "coordinator",
+              "reviewers": [
+                "scientific-reviewer"
+              ]
+            }
+          ]
+        },
+        "ownership": [
+          {
+            "path": "docs/work/",
+            "owner_role": "coordinator",
+            "reviewer_roles": [
+              "scientific-reviewer"
+            ]
+          },
+          {
+            "path": "research/",
+            "owner_role": "researcher",
+            "reviewer_roles": [
+              "scientific-reviewer"
+            ]
+          },
+          {
+            "path": "reviews/",
+            "owner_role": "scientific-reviewer",
+            "reviewer_roles": [
+              "researcher"
+            ]
+          },
+          {
+            "path": "release/",
+            "owner_role": "release-engineer",
+            "reviewer_roles": [
+              "scientific-reviewer"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "structure",
+      "id": "lean-team",
+      "version": "0.1.0",
+      "label": "Lean team",
+      "description": "Reporting structure independent of industry and peer review.",
+      "tags": [],
+      "availability": "template",
+      "requirements": [],
+      "provenance": {
+        "path": "docs/architecture/COMPANY-CATALOG.md",
+        "sha256": "60e048fa78d66aedd42cc7c36536deafbfd998c8fdec20ca8e51b42c14fd1a09"
+      },
+      "evidence": [],
+      "data": {
+        "reporting": "flat"
+      }
+    },
+    {
+      "kind": "structure",
+      "id": "functional-departments",
+      "version": "0.1.0",
+      "label": "Functional departments",
+      "description": "Reporting structure independent of industry and peer review.",
+      "tags": [],
+      "availability": "template",
+      "requirements": [],
+      "provenance": {
+        "path": "docs/architecture/COMPANY-CATALOG.md",
+        "sha256": "60e048fa78d66aedd42cc7c36536deafbfd998c8fdec20ca8e51b42c14fd1a09"
+      },
+      "evidence": [],
+      "data": {
+        "reporting": "tree"
+      }
+    },
+    {
+      "kind": "structure",
+      "id": "research-lab",
+      "version": "0.1.0",
+      "label": "Research lab",
+      "description": "Reporting structure independent of industry and peer review.",
+      "tags": [],
+      "availability": "template",
+      "requirements": [],
+      "provenance": {
+        "path": "docs/architecture/COMPANY-CATALOG.md",
+        "sha256": "60e048fa78d66aedd42cc7c36536deafbfd998c8fdec20ca8e51b42c14fd1a09"
+      },
+      "evidence": [],
+      "data": {
+        "reporting": "tree"
+      }
+    },
+    {
+      "kind": "workflow",
+      "id": "reviewed-software",
+      "version": "0.1.0",
+      "label": "Reviewed software delivery",
+      "description": "Human-scoped work, independent review, and a separately authorized release.",
+      "tags": [],
+      "availability": "template",
+      "requirements": [],
+      "provenance": {
+        "path": "docs/architecture/COMPANY-CATALOG.md",
+        "sha256": "60e048fa78d66aedd42cc7c36536deafbfd998c8fdec20ca8e51b42c14fd1a09"
+      },
+      "evidence": [],
+      "data": {
+        "required_packs": [],
+        "steps": [
+          "Scope",
+          "Implement or investigate",
+          "Independent review",
+          "Authorized release"
+        ]
+      }
+    },
+    {
+      "kind": "workflow",
+      "id": "reviewed-research",
+      "version": "0.1.0",
+      "label": "Reviewed research output",
+      "description": "Human-scoped work, independent review, and a separately authorized release.",
+      "tags": [],
+      "availability": "template",
+      "requirements": [],
+      "provenance": {
+        "path": "docs/architecture/COMPANY-CATALOG.md",
+        "sha256": "60e048fa78d66aedd42cc7c36536deafbfd998c8fdec20ca8e51b42c14fd1a09"
+      },
+      "evidence": [],
+      "data": {
+        "required_packs": [],
+        "steps": [
+          "Scope",
+          "Implement or investigate",
+          "Independent review",
+          "Authorized release"
+        ]
+      }
+    },
+    {
+      "kind": "pack",
+      "id": "engineering-core",
+      "version": "0.1.0",
+      "label": "Engineering core",
+      "description": "Packaged guidance; installation, external access and task quality require separate evidence.",
+      "tags": [],
+      "availability": "available",
+      "requirements": [],
+      "provenance": {
+        "path": "plugins/paprika-inc/runtime/skill-packs/engineering-core/pack.json",
+        "sha256": "adb30bc37c74e7b6a8fff412ed76242f51121449074635a5c9427680ef56cc6a"
+      },
+      "evidence": [],
+      "data": {
+        "skill_set": "engineering-core",
+        "skills": [
+          "paprika-code-review"
+        ],
+        "manifest_sha256": "adb30bc37c74e7b6a8fff412ed76242f51121449074635a5c9427680ef56cc6a",
+        "requires_packs": []
+      }
+    },
+    {
+      "kind": "pack",
+      "id": "research-core",
+      "version": "0.1.0",
+      "label": "Research core",
+      "description": "Packaged guidance; installation, external access and task quality require separate evidence.",
+      "tags": [],
+      "availability": "available",
+      "requirements": [
+        "python-runtime"
+      ],
+      "provenance": {
+        "path": "plugins/paprika-inc/runtime/skill-packs/research-core/pack.json",
+        "sha256": "988d91a74704904dd08598ab5ca39d9b06018d52dddf5fece717f0cb7df4b101"
+      },
+      "evidence": [],
+      "data": {
+        "skill_set": "research-core",
+        "skills": [
+          "paper-lookup",
+          "literature-review",
+          "citation-management",
+          "scientific-critical-thinking"
+        ],
+        "manifest_sha256": "988d91a74704904dd08598ab5ca39d9b06018d52dddf5fece717f0cb7df4b101",
+        "requires_packs": []
+      }
+    },
+    {
+      "kind": "requirement",
+      "id": "node-runtime",
+      "version": "0.1.0",
+      "label": "Node.js 24 or newer",
+      "description": "Prerequisite observation; does not certify authentication or execution.",
+      "tags": [],
+      "availability": "available",
+      "requirements": [],
+      "provenance": {
+        "path": "docs/architecture/COMPANY-CATALOG.md",
+        "sha256": "60e048fa78d66aedd42cc7c36536deafbfd998c8fdec20ca8e51b42c14fd1a09"
+      },
+      "evidence": [],
+      "data": {
+        "capability": "node-24",
+        "hosts": [
+          "codex-local",
+          "standalone"
+        ]
+      }
+    },
+    {
+      "kind": "requirement",
+      "id": "git-client",
+      "version": "0.1.0",
+      "label": "Git client",
+      "description": "Prerequisite observation; does not certify authentication or execution.",
+      "tags": [],
+      "availability": "available",
+      "requirements": [],
+      "provenance": {
+        "path": "docs/architecture/COMPANY-CATALOG.md",
+        "sha256": "60e048fa78d66aedd42cc7c36536deafbfd998c8fdec20ca8e51b42c14fd1a09"
+      },
+      "evidence": [],
+      "data": {
+        "capability": "git",
+        "hosts": [
+          "codex-local",
+          "standalone"
+        ]
+      }
+    },
+    {
+      "kind": "requirement",
+      "id": "python-runtime",
+      "version": "0.1.0",
+      "label": "Python for research helper scripts",
+      "description": "Prerequisite observation; does not certify authentication or execution.",
+      "tags": [],
+      "availability": "available",
+      "requirements": [],
+      "provenance": {
+        "path": "docs/architecture/COMPANY-CATALOG.md",
+        "sha256": "60e048fa78d66aedd42cc7c36536deafbfd998c8fdec20ca8e51b42c14fd1a09"
+      },
+      "evidence": [],
+      "data": {
+        "capability": "python",
+        "hosts": [
+          "codex-local",
+          "standalone"
+        ]
+      }
+    },
+    {
+      "kind": "preset",
+      "id": "marketing-agency",
+      "version": "0.1.0",
+      "label": "Marketing agency",
+      "description": "Planned industry preset tracked by issue #30.",
+      "tags": [
+        "marketing"
+      ],
+      "availability": "planned",
+      "requirements": [],
+      "provenance": {
+        "path": "docs/architecture/COMPANY-CATALOG.md",
+        "sha256": "60e048fa78d66aedd42cc7c36536deafbfd998c8fdec20ca8e51b42c14fd1a09"
+      },
+      "evidence": [],
+      "data": {}
+    },
+    {
+      "kind": "pack",
+      "id": "marketing-core",
+      "version": "0.1.0",
+      "label": "Marketing core",
+      "description": "Planned pack; no skill payload is shipped.",
+      "tags": [
+        "marketing"
+      ],
+      "availability": "planned",
+      "requirements": [],
+      "provenance": {
+        "path": "docs/architecture/COMPANY-CATALOG.md",
+        "sha256": "60e048fa78d66aedd42cc7c36536deafbfd998c8fdec20ca8e51b42c14fd1a09"
+      },
+      "evidence": [],
+      "data": {}
+    }
+  ]
+}

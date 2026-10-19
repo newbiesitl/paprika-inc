@@ -1,6 +1,12 @@
 {
   "format": 1,
   "commands": [
+    {"name": "catalog list", "aliases": [], "repository_required": false, "read_only": true, "mvp": true, "description": "List the shared company presets, structures, roles, packs, workflows and requirements."},
+    {"name": "catalog search", "aliases": [], "repository_required": false, "read_only": true, "mvp": true, "description": "Search the same versioned catalog by labels, descriptions, IDs and tags."},
+    {"name": "catalog read", "aliases": [], "repository_required": false, "read_only": true, "mvp": true, "description": "Read an exact kind/ID and its version; usable presets include a portable default selection."},
+    {"name": "config validate", "aliases": [], "repository_required": false, "read_only": true, "mvp": true, "description": "Validate a retained company selection and separate capability observations from runtime evidence."},
+    {"name": "config preview", "aliases": [], "repository_required": true, "read_only": true, "mvp": true, "description": "Preview protected authoring diffs and conflicts without replacing files or creating chats."},
+    {"name": "config export", "aliases": [], "repository_required": false, "read_only": true, "mvp": true, "description": "Export a valid portable draft and blueprint after checking catalog freshness."},
     {"name": "integrations list", "aliases": [], "repository_required": false, "read_only": true, "mvp": true, "description": "List integration candidates and declared adapter routes without installing them."},
     {"name": "integrations check", "aliases": [], "repository_required": false, "read_only": true, "mvp": true, "description": "Compare declared requirements with caller-supplied host observations; runtime access remains unverified."},
     {"name": "help", "aliases": ["commands", "show commands", "available commands", "show available commands", "show me available commands", "show me the available commands"], "repository_required": false, "description": "Show implemented commands and pending capabilities.", "read_only": true},
