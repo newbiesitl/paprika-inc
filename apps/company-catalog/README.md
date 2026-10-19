@@ -4,7 +4,20 @@ CAT-FE-01 for [#30](https://github.com/newbiesitl/paprika-inc/issues/30), connec
 
 This is the catalog/configuration slice of [the standalone GUI](https://github.com/newbiesitl/paprika-inc/issues/15). It does not implement agent hosting. One component and one backend inventory serve the standalone route and native MCP App resource. Existing plugin identity, credentials, service, hosting and installed configuration remain unchanged.
 
-## Run locally
+## Current dependency gate
+
+The published contract checkpoint in #31 does not yet contain its runtime module or package-allowlist update. Production startup/preview/export remains blocked until that candidate is published and integrated. The UI adapter calls Backend's actual load/read/configure functions; it does not substitute fixture validation in production.
+
+To inspect this UI candidate now, build it and run the explicit fixture server:
+
+```sh
+npm --prefix apps/company-catalog run build
+npm --prefix apps/company-catalog run preview:fixture
+```
+
+The fixture banner remains visible. It serves canonical catalog/selection examples and simulated responses, without claiming runtime or native-host acceptance.
+
+## Run locally after the Backend dependency
 
 Use Node.js 24 or newer, from the repository root:
 
