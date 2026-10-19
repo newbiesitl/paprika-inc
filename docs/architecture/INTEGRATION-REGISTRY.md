@@ -43,6 +43,9 @@ development. Public submission has separate hosting and review requirements.
 
 These are feasible integration paths, not evidence that the user's account has
 every capability or that an upstream tool has passed a Paprika task evaluation.
+Paprika's implemented company-chat bootstrap remains local Codex. Exposing skills
+or MCP tools in ChatGPT does not implement ChatGPT company-chat provisioning or
+extend the bootstrap's supported host contract.
 
 | Example | Proposed wrapper or connector | Codex path | ChatGPT path | GitHub path |
 | --- | --- | --- | --- | --- |
