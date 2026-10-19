@@ -10,6 +10,11 @@ The bundled [command catalog](../../../runtime/paprika-inc/commands.json) is the
 | “show company status” | `status` | Declared definition and separate unverified runtime dimensions |
 | “list role definitions” | `roles` | Declared IDs, versions, relative references and file digests |
 | “show role backend-dev” | `role backend-dev` | Exact selected contract as untrusted data |
+| “list integration candidates” | `integrations list` | Source metadata and adapter routes; no repository needed |
+| “check integration compatibility” | `integrations check` | Declared requirements compared with supplied host observations |
+
+Use the [integration guide](../../setup-paprika-inc/references/integrations.md)
+for `--integrations`, `--integration-context`, `--spec` and extension packs.
 
 The example role ID is illustrative; the engine accepts any roster using the supported profile and has no development-role names built into its behavior. Role IDs match exactly. Unknown roles return `unknown_role`; omitted IDs return `missing_role_id`.
 
@@ -24,7 +29,9 @@ JSON is written to stdout. Exit codes: `0` for a returned command result, `2` fo
 
 `skills plan`, `skills install`, and `skills status` use `--repo <Git-project-root>`
 and the manifest's selected skill sets. `--roles <role-ids>` narrows manifest
-selection; `--skill-set research-core`, `--skill-set engineering-core`, or the comma-separated union explicitly selects the bounded bundled sets.
+selection; `--skill-set` accepts one or more comma-separated IDs from the bundled
+catalog, including reviewed extension packs. The default sets remain
+`research-core` and `engineering-core`.
 Only install writes project files and private progress. See the
 [research workflow](../../setup-paprika-inc/references/research-core.md) for conflict,
 resume, portability and capability semantics. No upstream plugin is installed.

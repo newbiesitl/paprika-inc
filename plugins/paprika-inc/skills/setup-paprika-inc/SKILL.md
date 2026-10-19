@@ -31,6 +31,11 @@ For an agreed engineering/QA role, follow the optional [engineering-core workflo
 
 During company discussion and role creation, use [role recommendations](references/role-recommendations.md). Recommend a Coordinator and a separate Release Engineer for IT and research companies when workflow volume warrants them; keep technical/scientific review with other roles. Discuss model/effort preferences and use exact human-approved native parameters. Templates neither create chats nor authorize publication.
 
+For third-party compatibility and new optional packs, use the
+[integration guide](references/integrations.md). Treat catalog candidates and
+caller-supplied host observations as declarations; inspect their reported
+requirements before proposing a native skill, connector or worker.
+
 For an owner-authorized release workflow, follow [delegated reviewed merges](references/role-recommendations.md#delegate-reviewed-merges).
 Use [proportionate company QA](references/role-recommendations.md#proportionate-company-qa)
 for meaningful validation checkpoints; do not dispatch QA for every task or PR.

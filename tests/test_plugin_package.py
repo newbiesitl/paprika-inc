@@ -1,4 +1,4 @@
-import importlib.util
+import sys
 import json
 from pathlib import Path
 import shutil
@@ -9,12 +9,19 @@ from unittest.mock import patch
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location('plugin_package', ROOT / 'scripts/plugin_package.py')
-package = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(package)
+sys.path.insert(0, str(ROOT / 'scripts'))
+import plugin_package as package
 
 
 class PluginPackageTests(unittest.TestCase):
+    def file_symlink(self, link, target):
+        try:
+            link.symlink_to(target)
+        except OSError as error:
+            if isinstance(error, PermissionError) or getattr(error, 'winerror', None) == 1314:
+                self.skipTest('Host does not permit file symlinks')
+            raise
+
     def setUp(self):
         self.scratch = tempfile.TemporaryDirectory(prefix='inc-package-test-')
         self.addCleanup(self.scratch.cleanup)
@@ -103,7 +110,7 @@ class PluginPackageTests(unittest.TestCase):
                     else:
                         path.unlink()
                         if kind == 'symlink':
-                            path.symlink_to(target / 'assets/paprika-inc-icon.png')
+                            self.file_symlink(path, target / 'assets/paprika-inc-icon.png')
                     with self.assertRaises(ValueError):
                         package.verify_package(target)
 
@@ -250,7 +257,7 @@ class PluginPackageTests(unittest.TestCase):
                 elif kind == 'binding':
                     (target / '.app.json').write_text('{}')
                 else:
-                    (target / 'escape.md').symlink_to(ROOT / 'README.md')
+                    self.file_symlink(target / 'escape.md', ROOT / 'README.md')
                 with self.assertRaises(ValueError):
                     package.verify_package(target)
 

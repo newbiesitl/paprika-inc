@@ -69,7 +69,7 @@ test('help needs no repository or service and distinguishes plan from apply', as
   assert.equal(result.command, 'help');
   assert.equal(result.read_only, true);
   assert.match(result.setup_behavior, /never apply/);
-  assert.equal(result.commands.length, 22);
+  assert.equal(result.commands.length, 24);
 });
 
 test('generic fictional roster validates; IDs, digests and shared files are reported', async t => {
@@ -210,7 +210,8 @@ test('contract mismatch, duplicate declarations, empty policy and invalid docume
 test('contract symlinks are rejected even within the repository', async t => {
   const root = await fixture(t);
   await rename(join(root, 'roles/planner.md'), join(root, 'original.md'));
-  await symlink(join(root, 'original.md'), join(root, 'roles/planner.md'));
+  try { await symlink(join(root, 'original.md'), join(root, 'roles/planner.md')); }
+  catch (error) { if (error.code === 'EPERM') { t.skip('Host does not permit file symlinks.'); return; } throw error; }
   await assert.rejects(inspectDefinition(root), hasCode('unsafe_path'));
 });
 
