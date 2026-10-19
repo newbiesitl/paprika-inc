@@ -467,7 +467,7 @@ function review() {
     d.roles.length +
     "</strong><span>Selected roles</span></div><div><strong>" +
     new Set(d.roles.flatMap((r) => r.packs)).size +
-    '</strong><span>Skill packs</span></div></div><div class="table-wrap"><table><caption class="help">Resulting roster — reporting and review are independent</caption><thead><tr><th>Role</th><th>Reports to</th><th>Reviewers</th><th>Packs / workflows</th></tr></thead><tbody>' +
+    '</strong><span>Skill packs</span></div></div><div class="table-wrap" role="region" aria-label="Resulting roster" tabindex="0"><table><caption class="help">Resulting roster — reporting and review are independent</caption><thead><tr><th>Role</th><th>Reports to</th><th>Reviewers</th><th>Packs / workflows</th></tr></thead><tbody>' +
     d.roles
       .map(
         (r) =>

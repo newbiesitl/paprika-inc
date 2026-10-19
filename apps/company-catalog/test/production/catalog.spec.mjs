@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 import { unzipSync, strFromU8 } from "fflate";
+import AxeBuilder from "@axe-core/playwright";
 
 test("initialize through the real backend, edit a role and export a portable company", async ({ page }) => {
   await page.goto("/?mode=initialize");
@@ -76,4 +77,19 @@ test("action changes survive reload and diagnostics reveal a filtered role", asy
   await page.locator('[data-diagnostic="$.roles[2].title"]').click();
   await expect(page.getByLabel("Configure role", { exact: true })).toHaveValue("developer");
   await expect(page.locator("#title-developer")).toBeFocused();
+});
+
+test("narrow review roster is keyboard scrollable and accessible", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/?mode=initialize");
+  await page.getByLabel("Choose a company").selectOption("software-studio");
+  await page.getByRole("button", { name: "Configure this template" }).click();
+  await page.getByRole("button", { name: "Review configuration", exact: true }).click();
+  const roster = page.getByRole("region", { name: "Resulting roster", exact: true });
+  await roster.focus();
+  await expect(roster).toBeFocused();
+  await page.keyboard.press("ArrowRight");
+  await expect.poll(() => roster.evaluate((el) => el.scrollLeft)).toBeGreaterThan(0);
+  const audit = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
+  expect(audit.violations).toEqual([]);
 });
