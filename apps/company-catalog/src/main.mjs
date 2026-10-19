@@ -1,5 +1,7 @@
 import { CatalogModel, readDraft, clone } from "./model.mjs";
 import { nativeTransport, standaloneTransport } from "./transports.mjs";
+import { repositoryArchive } from "./repository-archive.mjs";
+import { refinementBrief } from "./refinement.mjs";
 const $ = (id) => document.getElementById(id),
   escape = (v) =>
     String(v ?? "").replace(
@@ -18,6 +20,7 @@ const list = (values = []) =>
 const key = "paprika-inc:catalog-draft:v1";
 let model,
   roleFilter = "",
+  refinementSubmittedGeneration = null,
   step = "configure",
   query = "",
   filter = "all",
@@ -44,10 +47,10 @@ const changed = () => {
   model.changed();
   persist();
 };
-function download(value, name) {
+function download(value, name, format = "json") {
   const url = URL.createObjectURL(
-    new Blob([JSON.stringify(value, null, 2) + "\n"], {
-      type: "application/json",
+    new Blob([format === "json" ? JSON.stringify(value, null, 2) + "\n" : value], {
+      type: format === "zip" ? "application/zip" : format === "text" ? "text/plain;charset=utf-8" : "application/json",
     }),
   );
   const link = document.createElement("a");
@@ -538,8 +541,16 @@ function review() {
     "<details><summary>Portable selection and catalog identity</summary><pre>" +
     escape(JSON.stringify(d, null, 2)) +
     '</pre></details><div class="actions"><button id="back" class="secondary">Edit configuration</button><button id="export" ' +
-    (!p.ok || model.stale || working ? "disabled" : "") +
-    ">Export reviewed blueprint</button></div>"
+    (!model.canExport || working ? "disabled" : "") +
+    '>Export reviewed blueprint</button><button id="export-files" ' +
+    (!model.canExport || working ? "disabled" : "") +
+    '>Download repository files (starter)</button><button id="refinement-brief" ' +
+    (!model.canExport || working ? "disabled" : "") +
+    '>Download AI refinement brief</button>' +
+    (model.transport.refine ? '<button id="refine-chat" ' +
+      (!model.canExport || working || refinementSubmittedGeneration === model.generation ? "disabled" : "") +
+      '>Refine with AI in this chat</button>' : "") +
+    '</div><p class="help">Refine the blueprint with your LLM before adopting tailored role contracts. The ZIP is a template-based starter: company/company.json, ownership and policy files, company/roles/&lt;role-id&gt;/agent.md, and catalog-selection.json for later restructuring. Downloads never overwrite repository files. Use the refinement brief in your chosen chat; the UI does not claim an LLM has reviewed these files.</p>'
   );
 }
 function integrationPanel() {
@@ -806,6 +817,42 @@ function bind() {
       render();
     }
   });
+  $("export-files")?.addEventListener("click", async () => {
+    working = true;
+    render();
+    try {
+      const result = await model.export();
+      download(repositoryArchive(result), "paprika-company-files.zip", "zip");
+      notice("Repository files generated. Review the company/ directory before adding it to your repository; existing files have not been changed.");
+    } catch (e) {
+      notice(e.message, "error");
+    } finally {
+      working = false;
+      render();
+    }
+  });
+  for (const id of ["refinement-brief", "refine-chat"])
+    $(id)?.addEventListener("click", async () => {
+      working = true;
+      render();
+      try {
+        const result = await model.export();
+        const brief = refinementBrief(result, model.mode);
+        if (id === "refine-chat") {
+          refinementSubmittedGeneration = model.generation;
+          await model.transport.refine(brief);
+          notice("Refinement brief handed to this chat. LLM generation, validation and review are still pending.");
+        } else {
+          download(brief, "paprika-company-refinement.txt", "text");
+          notice("Refinement brief downloaded. Attach it to your chosen LLM chat to tailor and validate the role contracts.");
+        }
+      } catch (error) {
+        notice(error.message + (id === "refine-chat" ? " Check the chat before retrying an uncertain handoff; no automatic retry was made." : ""), "error");
+      } finally {
+        working = false;
+        render();
+      }
+    });
 }
 function toggle(values, value, on) {
   const index = values.indexOf(value);

@@ -38,6 +38,11 @@ class CompanyCatalogPackageTests(unittest.TestCase):
                 exported = invoke('config', 'export', '--selection', draft)
                 self.assertEqual(len(exported['blueprint']['roles']), roles)
                 self.assertEqual(exported['selection'], selection)
+                files = {f['path']: f['content'] for f in exported['repository_files']}
+                self.assertEqual(json.loads(files['company/company.json'])['company_id'], selection['company']['id'])
+                self.assertEqual(json.loads(files['company/catalog-selection.json']), selection)
+                for role in selection['roles']:
+                    self.assertIn('company/roles/' + role['role_id'] + '/agent.md', files)
                 self.assertTrue(all(p['state'] == 'bundled' for p in exported['evidence']['package_presence']))
                 self.assertEqual(exported['evidence']['native_host_verification'], 'unverified')
                 destination = root / preset

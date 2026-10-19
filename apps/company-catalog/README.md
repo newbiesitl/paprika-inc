@@ -23,9 +23,30 @@ select **Configure this template**, and edit the company identity, organization
 structure and roles. **Configure role** is a dropdown for focusing a role card;
 select **All roles** to view the roster. Cards provide role inclusion, display
 title, reporting-parent dropdown, independent reviewers, skills and workflows.
-Review the configuration, export the reviewed blueprint, and retain its complete
-selection for future edits. Authoring definitions and bootstrapping chats remain
-separate actions in the existing setup workflow.
+Review the configuration and retain its complete selection for future edits.
+The intended authoring sequence is picker, blueprint, LLM refinement, validation
+and human/peer review, then repository files. **Download AI refinement brief**
+packages the blueprint and company context for your chosen LLM chat. When a native
+host advertises text-message support, **Refine with AI in this chat** explicitly
+hands the same brief to the current conversation. This is a handoff, not proof of
+LLM completion, validation or acceptance. No API key or background LLM call is used.
+
+**Download repository files (starter)** generates a ZIP with the real canonical
+layout, including `company/company.json`, `company/ownership.json`, shared policy
+files, every `company/roles/<role-id>/agent.md`, and `company/catalog-selection.json`.
+These deterministic files contain template prose until refined. The refinement
+brief instructs the LLM to preserve IDs/relationships, tailor the role text, then
+use `author plan --spec <refined-blueprint.json> --repo <chosen-repository>` to
+validate and preview the actual contracts before application. Keep the refined
+blueprint separately: reopening a catalog selection does not import polished prose.
+
+Extract starter files into a scratch directory for review. Add reviewed files under
+the repository's `company/` directory; do not blindly extract over existing files.
+For a real destination diff, set `PAPRIKA_CATALOG_REPO` to its absolute directory
+before starting the local server. This setting stays local and is not accepted
+from browser inputs. Existing-file conflicts remain visible; a structurally valid
+proposal can still be exported without overwriting them. Authoring definitions and
+bootstrapping chats remain separate actions in the existing setup workflow.
 
 For restructuring, open `http://127.0.0.1:4317/?mode=restructure`, or select
 **Restructure an existing company** in **Company action**. Open that company's

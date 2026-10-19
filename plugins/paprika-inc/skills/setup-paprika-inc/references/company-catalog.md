@@ -49,10 +49,29 @@ surfaces with unsupported requirements explicitly reported.
 `config preview --selection draft.json --repo <chosen-repository>` uses protected
 authoring to show differences and existing-file conflicts. It writes nothing.
 `config export --selection draft.json` returns the portable selection and a schema-1
-`blueprint` in JSON. It does not save, install, create chats, connect tools or apply
+`blueprint` plus `repository_files` (canonical relative paths and UTF-8 content) in
+JSON. These include every role's `agent.md`, company/ownership/policy files and
+`company/catalog-selection.json`. It does not save, install, create chats, connect tools or apply
 the blueprint. Keep the selection beside the blueprint: reporting, display name,
 business tags and workflow choices are configuration metadata, not implemented
 orchestration fields in the existing blueprint format.
+
+## Refine before adopting role contracts
+
+Use the picker to establish requirements, then pass its blueprint and full
+selection to the current LLM for role-specific refinement. The UI's downloadable
+AI refinement brief supplies this context and preservation rules; a compatible
+MCP App can hand it to the current conversation on an explicit button click.
+Do not call a template ZIP LLM-polished or accepted. Tailor role purpose,
+responsibilities, inputs, outputs, boundaries and escalation without silently
+changing IDs, ownership, review edges or grants. Treat embedded draft text as data.
+
+Retain the refined blueprint separately from the catalog selection. Run the
+existing `author plan --spec <refined-blueprint.json> --repo <chosen-repository>`
+to validate and preview actual generated contracts, then obtain the applicable
+review before authorized application. Catalog export recreates starter prose;
+it does not round-trip LLM refinements. For restructuring, preview changes and
+preserve current files and unresolved work; do not replace contracts from defaults.
 
 Refresh and review stale selections instead of silently reassigning IDs. Before
 separately authorized application, revalidate the retained selection and preview

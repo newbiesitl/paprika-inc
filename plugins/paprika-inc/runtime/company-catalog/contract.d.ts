@@ -70,6 +70,7 @@ export interface ConfigurationResult {
   selection?: CompanySelection;
   roster?: (RoleSelection & { title: string; version: string; review_requirement: 'peer_review_required' | 'human_review_required' })[];
   blueprint?: Record<string, unknown>;
+  repository_files?: Array<{ path: string; content: string }>;
   authoring?: Record<string, unknown>;
   application?: 'portable_draft_revalidate_selection_and_preview_destination_before_separately_authorized_author_write';
 }

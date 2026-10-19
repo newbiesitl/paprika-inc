@@ -1,6 +1,23 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { readFile } from "node:fs/promises";
+
+test("native bridge sends a refinement brief only after explicit action", async ({ page }) => {
+  await page.goto("/harness");
+  const frame = page.frameLocator("#catalog-frame");
+  await frame.getByLabel("Choose a company").selectOption("software-studio");
+  await frame.getByRole("button", { name: "Configure this template" }).click();
+  await frame.getByRole("button", { name: "Review configuration", exact: true }).click();
+  expect(await page.evaluate(() => window.refinementMessages ?? [])).toEqual([]);
+  await frame.getByRole("button", { name: "Refine with AI in this chat" }).click();
+  await expect(frame.locator("#notice")).toContainText("handed to this chat");
+  const messages = await page.evaluate(() => window.refinementMessages);
+  expect(messages).toHaveLength(1);
+  expect(messages[0].role).toBe("user");
+  expect(messages[0].content[0].text).toContain('"blueprint"');
+  expect(messages[0].content[0].text).toContain("NOT been LLM-refined");
+  await expect(frame.getByRole("button", { name: "Refine with AI in this chat" })).toBeDisabled();
+});
 const fixture = JSON.parse(
   await readFile(
     new URL(

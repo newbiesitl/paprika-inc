@@ -17,6 +17,14 @@ existing saved selection/export, and preserve company identity and current roles
 Review the proposed type, structure, roles and ownership before applying any
 definition changes. Missing saved selections require mapping the actual current
 definitions first. This workflow does not migrate live chats or active work.
+The picker establishes the blueprint; use the current LLM to refine role purpose,
+responsibilities, inputs/outputs and boundaries before adopting tailored agent.md
+files. Preserve approved IDs, ownership and reviewer relationships, validate the
+refined blueprint with author plan, and review its actual generated contracts.
+The UI's repository ZIP is explicitly a template-based starter, while its AI
+refinement brief hands the blueprint/context to a selected chat. A handoff is not
+LLM completion. Keep the refined blueprint separately; catalog re-export does not
+preserve polished prose. Follow the catalog guide's refinement workflow.
 
 Follow [the concrete MVP workflow](references/mvp-workflow.md), including its blueprint, commands, native host loop and explicit resume. For requested installation, inspect the host's supported local plugin/Plugin Creator installation tools and select the prepared Inc directory, never the repository/vendor tree as a marketplace. Do not claim installation from ZIP validation or automatically upload/deploy an account plugin. Build commands install nothing.
 

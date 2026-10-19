@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { readFile } from "node:fs/promises";
+import { unzipSync, strFromU8 } from "fflate";
 
 test("initialize through the real backend, edit a role and export a portable company", async ({ page }) => {
   await page.goto("/?mode=initialize");
@@ -16,6 +17,19 @@ test("initialize through the real backend, edit a role and export a portable com
   expect(result.ok).toBe(true);
   expect(result.applied).toBe(false);
   expect(result.blueprint.roles.find((r) => r.id === "developer").title).toBe("Application Engineer");
+  const zipDownload = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Download repository files" }).click();
+  const files = unzipSync(await readFile(await (await zipDownload).path()));
+  const manifest = JSON.parse(strFromU8(files["company/company.json"]));
+  expect(manifest.roles.map((r) => r.id)).toEqual(result.selection.roles.map((r) => r.role_id));
+  expect(strFromU8(files["company/roles/developer/agent.md"])).toContain("# Application Engineer");
+  expect(JSON.parse(strFromU8(files["company/catalog-selection.json"]))).toEqual(result.selection);
+  const briefDownload = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Download AI refinement brief" }).click();
+  const brief = await readFile(await (await briefDownload).path(), "utf8");
+  expect(brief).toContain("NOT been LLM-refined");
+  expect(brief).toContain("Application Engineer");
+  expect(brief).toContain('"blueprint"');
 });
 
 test("restructure imports the existing selection and retains company identity and roles across types", async ({ page }) => {

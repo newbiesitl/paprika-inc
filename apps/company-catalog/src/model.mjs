@@ -24,6 +24,7 @@ export function readDraft(text) {
         "evidence",
         "selection",
         "blueprint",
+        "repository_files",
         "roster",
         "application",
       ])
@@ -128,6 +129,11 @@ export class CatalogModel {
         this.draft.catalog.version !== this.catalog.catalog.version)
     );
   }
+  get canExport() {
+    return !this.stale && !!this.preview && (this.preview.ok ||
+      !!this.preview.selection && this.preview.diagnostics?.length > 0 &&
+      this.preview.diagnostics.every((d) => d.code === "authoring_conflict"));
+  }
   async load() {
     const seq = ++this.loadGeneration;
     const result = await this.transport.call("list");
@@ -203,7 +209,7 @@ export class CatalogModel {
     return result;
   }
   async export() {
-    if (this.stale || !this.preview?.ok)
+    if (!this.canExport)
       throw new Error("Review the current configuration before exporting.");
     const seq = this.generation;
     const result = await this.transport.call("export", {

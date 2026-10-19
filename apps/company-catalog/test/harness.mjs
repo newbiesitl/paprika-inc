@@ -7,9 +7,14 @@ const unsupported = new URLSearchParams(location.search).has("unsupported");
 const bridge = new AppBridge(
   null,
   { name: "Browser test fixture", version: "1.0.0" },
-  unsupported ? {} : { serverTools: {} },
+  unsupported ? {} : { serverTools: {}, message: { text: {} } },
   { hostContext: { theme: "light" } },
 );
+bridge.onmessage = async (message) => {
+  window.refinementMessages ??= [];
+  window.refinementMessages.push(message);
+  return {};
+};
 bridge.oncalltool = async ({ name, arguments: args }) => {
   const op = name.replace("company_catalog_", "");
   const response = await fetch("/api/" + op, {

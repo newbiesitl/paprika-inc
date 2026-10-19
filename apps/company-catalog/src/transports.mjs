@@ -58,6 +58,12 @@ export async function nativeTransport() {
   return {
     surface: "Native MCP App panel",
     app,
+    ...(app.getHostCapabilities()?.message?.text ? {
+      async refine(text) {
+        const result = await app.sendMessage({ role: "user", content: [{ type: "text", text }] }, { timeout: 15000 });
+        if (result.isError) throw new Error("The host rejected the refinement handoff. Download the brief to continue.");
+      },
+    } : {}),
     async call(operation, args = {}) {
       return unwrap(
         await app.callServerTool(

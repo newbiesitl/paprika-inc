@@ -231,6 +231,9 @@ export async function configureCompany({ catalog, selection, catalogContext = { 
     version: entries.get(key('role', role.role_id)).version, review_requirement: role.reviewers.length ? 'peer_review_required' : 'human_review_required' }));
   if (command === 'config export') {
     result.blueprint = blueprint;
+    result.repository_files = Object.entries({ ...renderCompany(blueprint),
+      'company/catalog-selection.json': JSON.stringify(selection, null, 2) + '\n' })
+      .map(([path, content]) => ({ path, content }));
     result.application = 'portable_draft_revalidate_selection_and_preview_destination_before_separately_authorized_author_write';
   }
   if (command === 'config preview') {
