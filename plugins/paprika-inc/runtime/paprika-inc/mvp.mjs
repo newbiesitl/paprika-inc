@@ -3,11 +3,13 @@ import { checkoutCompany } from './checkout.mjs';
 import { beginBootstrap, nextBootstrap, recordBootstrap, bindBootstrapRole, bootstrapStatus } from './bootstrap.mjs';
 import { projectSkills } from './skill-packs.mjs';
 import { integrationCommand } from './integration-registry.mjs';
+import { companyCatalogCommand } from './company-catalog.mjs';
 
 import {startOutbound,nextOutbound,recordOutbound,outboundStatus,reconcileOutbound} from './outbound.mjs';
 
 export async function executeMvp(options) {
   const command = options.command;
+  if (command.startsWith('catalog ') || command.startsWith('config ')) return companyCatalogCommand(options);
   if (command.startsWith('integrations ')) return integrationCommand(options);
   if(command.startsWith('message ')) return ({'message start':startOutbound,'message next':nextOutbound,
     'message record':recordOutbound,'message status':outboundStatus,'message reconcile':reconcileOutbound})[command](options);

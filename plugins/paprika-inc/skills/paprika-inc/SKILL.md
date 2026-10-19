@@ -68,3 +68,5 @@ verify current-head reviews, CI and protections. An existing PR-only maintainer
 exception requires explicit coverage in that grant. Never self-approve, change
 protections or evade a host denial. Publication and installation remain separately
 authorized. These instructions do not create a grant for another company.
+
+For requested browse/select/configure work, use the [shared company catalog](../setup-paprika-inc/references/company-catalog.md). Catalog list/search/read and config validate/preview/export are read-only. Retain the complete selection and catalog digest, distinguish planned templates from bundled packs and unverified runtime evidence, and revalidate/preview before separately authorized application.
