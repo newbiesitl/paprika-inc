@@ -28,16 +28,17 @@ const notice = (text, kind = "") => {
   $("notice").textContent = text;
 };
 function persist() {
-  if (!model.draft) return;
   try {
-    sessionStorage.setItem(key, JSON.stringify(model.draft));
     sessionStorage.setItem(key + ":mode", model.mode);
-    $("saved").textContent = "Draft retained in this tab";
+    if (model.draft) {
+      sessionStorage.setItem(key, JSON.stringify(model.draft));
+      $("saved").textContent = "Draft retained in this tab";
+    }
   } catch {
     $("saved").textContent =
       "Tab storage unavailable. Save a draft to keep it.";
   }
-  $("save").disabled = false;
+  $("save").disabled = !model.draft;
 }
 const changed = () => {
   model.changed();
@@ -640,6 +641,7 @@ function bind() {
       const index = path.match(/roles\[(\d+)\]/)?.[1];
       const role =
         index === undefined ? null : model.draft.roles[Number(index)];
+      roleFilter = role?.role_id ?? "";
       const target = company
         ? {
             id: "company-id",
@@ -880,6 +882,11 @@ async function start() {
     updateAction();
     $("company-action").onchange = (e) => {
       model.mode = e.target.value;
+      if (window.parent === window) {
+        const url = new URL(location.href);
+        url.searchParams.set("mode", model.mode);
+        history.replaceState(null, "", url);
+      }
       changed();
       updateAction();
       step = "configure";

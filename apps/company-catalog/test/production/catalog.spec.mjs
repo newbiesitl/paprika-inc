@@ -46,3 +46,20 @@ test("restructure imports the existing selection and retains company identity an
   await expect(page.getByLabel("Company action", { exact: true })).toHaveValue("restructure");
   await expect(page.getByLabel("Company name", { exact: true })).toHaveValue("Existing company");
 });
+
+test("action changes survive reload and diagnostics reveal a filtered role", async ({ page }) => {
+  await page.goto("/?mode=initialize");
+  await page.getByLabel("Company action", { exact: true }).selectOption("restructure");
+  await page.reload();
+  await expect(page.getByLabel("Company action", { exact: true })).toHaveValue("restructure");
+  await page.getByLabel("Company action", { exact: true }).selectOption("initialize");
+  await page.getByLabel("Choose a company").selectOption("software-studio");
+  await page.getByRole("button", { name: "Configure this template" }).click();
+  await page.getByLabel("Configure role", { exact: true }).selectOption("developer");
+  await page.locator("#title-developer").fill("");
+  await page.getByLabel("Configure role", { exact: true }).selectOption("architect");
+  await page.getByRole("button", { name: "Review configuration", exact: true }).click();
+  await page.locator('[data-diagnostic="$.roles[2].title"]').click();
+  await expect(page.getByLabel("Configure role", { exact: true })).toHaveValue("developer");
+  await expect(page.locator("#title-developer")).toBeFocused();
+});
