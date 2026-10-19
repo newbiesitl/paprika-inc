@@ -3,6 +3,7 @@ export type CatalogKind = 'preset' | 'structure' | 'role' | 'pack' | 'workflow' 
 export interface CatalogIdentity { version: string; sha256: string }
 export interface RoleSelection {
   role_id: string;
+  /** Nonempty single line, at most 160 UTF-16 code units. Identity stays role_id. */
   title?: string;
   packs: string[];
   workflows: string[];

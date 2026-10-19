@@ -63,6 +63,19 @@ test('optional removal works, peer-review cycles remain valid, and empty reviewe
   assert.equal(result.evidence.task_quality_acceptance, 'unverified');
 });
 
+test('role title bounds count UTF-16 units consistently for non-BMP and combining text', async () => {
+  for (const title of ['\u{1f52c}'.repeat(80), 'e\u0301'.repeat(80)]) {
+    const selection = preset(); selection.roles[2].title = title;
+    const result = await configure(selection, { command: 'config export' });
+    assert.equal(result.ok, true); assert.equal(result.blueprint.roles[2].title, title);
+    selection.roles[2].title += 'x';
+    const invalid = await configure(selection, { command: 'config export' });
+    assert.equal(invalid.ok, false);
+    assert.ok(invalid.diagnostics.some(d => d.code === 'invalid_role_title'));
+    assert.equal(invalid.blueprint, undefined);
+  }
+});
+
 const failures = [
   ['required-role removal', s => { s.roles = s.roles.filter(r => r.role_id !== 'architect'); }, 'missing_required_role'],
   ['dangling optional reference', s => { s.roles[2].reviewers = ['release-engineer']; s.roles.pop(); }, 'invalid_reviewer'],

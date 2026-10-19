@@ -46,7 +46,9 @@ templates. Reporting is a rooted acyclic tree; the coordinator is its sole root.
 Flat structures require direct reporting to that root. Review cycles are allowed
 (mutual independent review); self-review, duplicate edges and missing peers are
 invalid. Empty reviewer lists explicitly require human review. An optional `title`
-is nonempty single-line display text up to 160 characters and never changes role ID.
+is nonempty single-line display text up to 160 UTF-16 code units and never changes
+role ID. A non-BMP character counts as two units, matching JavaScript string length
+and HTML maxlength; combining marks count separately.
 Preset ownership and its reviewer edges remain independent of role review edges.
 Newly added roles use template ownership paths and selected peer reviewers. The
 existing ownership validator rejects overlaps, dangling reviewers and unsafe paths.
@@ -79,3 +81,8 @@ unknown/duplicate IDs, required-role removal, planned packs, hostile fields,
 ownership conflicts and destination-file preservation. UI accessibility and
 actual native rendering belong to the frontend/QA checkpoints, not this backend's
 fixture results.
+
+`customized-title.json` and `human-review.json` retain the complete editable draft.
+`response-examples.json` records complete validation envelopes for these drafts,
+absent/empty observations, a host switch and stale catalog input. These examples
+are generated from the candidate runtime; independent acceptance remains separate.
