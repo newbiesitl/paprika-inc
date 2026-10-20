@@ -1,11 +1,11 @@
 ---
 name: paprika-inc
-description: Discuss and author a generic repository-defined company, inspect roles and ownership, send company messages and role handoffs through Paprika Inc, track authorized work, clone a selected Git revision safely, and bootstrap persistent local Codex project chats through supported native host tools.
+description: Discuss and author a generic repository-defined company, inspect roles and ownership, send company messages and role handoffs, select meeting participants in chat and host round-based meetings, track authorized work, clone a selected Git revision safely, and bootstrap persistent local Codex project chats through supported native host tools.
 ---
 
 Use the existing chat the user chose as the initial staff/coordinator for discussion; do not create a discussion chat by default. Use this skill for company discussion, requested file writing, inspection, Git checkout, bootstrap/resume and status. Keep the product independent of the development team's roster. Follow [the MVP workflow](../setup-paprika-inc/references/mvp-workflow.md) for concrete commands and native action/result processing, and [setup](../setup-paprika-inc/SKILL.md) for installation or an existing-service binding.
 
-For an explicitly requested round-based meeting, follow [meeting rooms](references/meetings.md). Use the meeting tools on the selected private service, existing Inc message delivery, and curated notes export. Creating meeting state does not send invitations, create chats, or enable receiving.
+For a meeting participant dropdown or an explicitly requested round-based meeting, follow [meeting rooms](references/meetings.md). Show `show_meeting_participant_picker` on the established company board when the human requests a dropdown or has not supplied the roster. Keep participant selection in the embedded multi-select; do not substitute a single-recipient menu, text list, or question panel. Use the meeting tools on the selected private service, existing Inc message delivery, and curated notes export. Creating meeting state does not send invitations, create chats, or enable receiving.
 
 Help needs no repository/service: run `node <this-skill-directory>/scripts/inc.mjs help`. Reuse explicit repository, destination and roster choices; ask only for missing or ambiguous inputs, without repeated confirmation for unchanged authorized actions. Quote paths and user arguments; never evaluate them as shell code. Node.js 24+ and Git are needed for local bootstrap. The helper performs filesystem/Git/private-progress operations; the agent invokes the actual supported native host actions it returns.
 

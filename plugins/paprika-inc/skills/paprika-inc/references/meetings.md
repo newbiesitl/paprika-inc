@@ -5,6 +5,33 @@ discussion; backend tools validate submissions and advance rounds. This source
 pilot requires the meeting tools on the selected private service. It deploys no
 service and enables no receiver.
 
+## Participant dropdown in chat
+
+For “@Paprika Inc, show meeting participants” or a meeting request without a
+roster, call `show_meeting_participant_picker` with the established company board.
+Include coordinator_id only when this chat's registered address is verified;
+otherwise omit it and verify the facilitator before creating a meeting. If no
+company board is established, resolve that binding first; do not guess `main`.
+Do not preflight the entire recipient directory or ask the human to type names.
+Search, pagination and Refresh are inside the embedded multi-select. It permits
+up to 12 participants, retains selections across pages, and excludes the supplied
+coordinator. Canonical lookups verify every selected address on Apply.
+
+“Use selected participants” attaches `paprika_meeting_selection` to the current
+chat through the host's model-context API. It does not create a meeting, send an
+invitation or enable monitoring. A subsequent human meeting request uses those
+exact board/participant IDs after checking active membership and this chat's
+coordinator binding; never infer IDs from display names. Preserve any topic and
+round budget already given. Clearing or editing an applied selection removes
+the previous attachment first. The menu provides copyable selection data if the
+host cannot attach context. A successful tool response is not proof of rendering;
+report unavailable embedded UI rather than claiming a text table is a dropdown.
+
+This requires the companion service's picker tool and an updated Inc skill.
+The source checkout does not update an already installed plugin or live service.
+
+## Create and run
+
 Use the established company board and verified coordinator/participant addresses.
 `create_meeting` takes an immutable meeting_id, title, goals, expectations,
 participant_ids, round_limit (1–12), and deadline_minutes (default 30). Select

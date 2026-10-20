@@ -58,12 +58,25 @@ conflicts; Inc routes match stored notices; UI/APIs retain owner/origin checks.
 Browser acceptance exercises create/join/two rounds/pass/closure/notes/export and
 a small screen. Fixture host results do not establish live chat delivery.
 
+The in-chat entry is `@Paprika Inc, show meeting participants`. The companion
+`show_meeting_participant_picker` tool serves an inline MCP App with a searchable
+multi-select, pagination, retained selections and a 12-participant cap. It uses
+the company's selected board, optionally excludes the verified coordinator,
+revalidates every address on Apply, and attaches the roster to chat via
+`ui/update-model-context`. Choosing alone creates no meeting or invitations.
+The Inc skill consumes the attached IDs when the human requests the meeting.
+The private-board setup page remains available as well. Native host rendering
+requires the updated service/plugin connection and is distinct from local
+bridge-fixture tests.
+
 Reusable service changes are reviewed upstream before Inc adopts their exact
 commit through docs/DEPENDENCIES.md. This candidate leaves vendor/ unchanged and
 does not imply the installed/live service exposes meeting tools. Live chat
 exchange and production deployment need evidence after the integrated candidate
 is available.
 
-Companion Messenger candidate: commit `cb09bedf949364b5ff94bbd0a82d342b7d2ca90a`
-on `codex/meeting-room`. It is a local implementation candidate pending upstream
-publication and review, not an adopted dependency pin.
+Companion Messenger candidate: [PR #43](https://github.com/newbiesitl/paprika-messenger/pull/43),
+commit `4b2fe397466eb3f009825fce41fc12c99b2d25d0` on `codex/meeting-room`.
+It requires upstream review and service rollout; this reference is not an
+adopted dependency pin. The live service and installed Inc plugin must both
+expose the compatible meeting workflow before native chat acceptance.
