@@ -11,22 +11,47 @@ const entries = (kind) => catalog.entries.filter((e) => e.kind === kind);
 const safe = (value) =>
   String(value).replaceAll("|", "\\|").replaceAll("\n", " ");
 export function catalogSection() {
-  const rows = entries("preset")
-    .filter((p) => p.availability !== "planned")
-    .map(
-      (p) =>
-        "| " +
-        [
-          p.label,
-          p.version,
-          p.availability,
-          p.data.defaults.roles.length + " roles",
-          p.data.defaults.structure_id,
-        ]
-          .map(safe)
-          .join(" | ") +
-        " |",
+  const label = (kind, id) =>
+    entries(kind).find((e) => e.id === id)?.label ?? id;
+  const presets = entries("preset").map((p) => {
+    const defaults = p.data.defaults;
+    return (
+      "| " +
+      [
+        p.label,
+        p.version,
+        p.availability,
+        defaults
+          ? defaults.roles.map((r) => label("role", r.role_id)).join(", ")
+          : "—",
+        defaults ? label("structure", defaults.structure_id) : "—",
+      ]
+        .map(safe)
+        .join(" | ") +
+      " |"
     );
+  });
+  const structures = entries("structure").map(
+    (e) =>
+      "| " +
+      [
+        e.label,
+        e.id,
+        e.data.reporting === "flat" ? "Direct to coordinator" : "Reporting tree",
+        e.availability,
+      ]
+        .map(safe)
+        .join(" | ") +
+      " |",
+  );
+  const roles = entries("role").map(
+    (e) =>
+      "| " +
+      [e.label, e.id, e.description, e.availability]
+        .map(safe)
+        .join(" | ") +
+      " |",
+  );
   const packs = entries("pack")
     .filter((p) => p.availability !== "planned")
     .map(
@@ -43,21 +68,27 @@ export function catalogSection() {
     "",
     "Browse and configure a portable company draft in the [shared catalog UI](apps/company-catalog/README.md). One component supports a standalone local interface and an MCP App resource for supported native hosts. This candidate is not installed or deployed; actual Codex/ChatGPT rendering remains unverified.",
     "",
-    "| Starting template | Version | Catalog state | Default roster | Default structure |",
+    "### Company types",
+    "",
+    "| Starting template | Version | Catalog state | Default roles | Default structure |",
     "| --- | --- | --- | --- | --- |",
-    ...rows,
+    ...presets,
     "",
-    "**Organization structures:** " +
-      entries("structure")
-        .map((e) => safe(e.label))
-        .join(", ") +
-      ". Industry and business-model tags are independent choices.",
+    "### Organization structures",
     "",
-    "**Role templates:** " +
-      entries("role")
-        .map((e) => safe(e.label))
-        .join(", ") +
-      ". Reporting lines and independent reviewers are configured separately.",
+    "| Structure | Stable ID | Reporting shape | Catalog state |",
+    "| --- | --- | --- | --- |",
+    ...structures,
+    "",
+    "Structures are independent of company type and business-model tags. Review relationships are configured separately from reporting lines.",
+    "",
+    "### Role templates",
+    "",
+    "| Role | Stable ID | Purpose | Catalog state |",
+    "| --- | --- | --- | --- |",
+    ...roles,
+    "",
+    "Role selection defines a draft roster; it does not create live chats or grant permissions.",
     "",
     "| Available pack source | Version | Included guidance |",
     "| --- | --- | --- |",
@@ -65,9 +96,9 @@ export function catalogSection() {
     "",
     "Pack source availability does not establish local installation, authentication, native-host verification, task-quality acceptance or release.",
     "",
-    "**Planned catalog entries:** " +
+    "**Other planned catalog entries:** " +
       catalog.entries
-        .filter((e) => e.availability === "planned")
+        .filter((e) => e.availability === "planned" && e.kind !== "preset")
         .map((e) => safe(e.label))
         .join(", ") +
       ". The broader [industry and integration roadmap](https://github.com/newbiesitl/paprika-inc/issues/30) is tracked separately.",
