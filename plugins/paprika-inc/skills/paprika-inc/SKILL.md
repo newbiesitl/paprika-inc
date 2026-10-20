@@ -60,6 +60,8 @@ This procedure adds no timer, implementation dispatch or messaging authority.
 
 During company discussion and role creation, use [role recommendations](../setup-paprika-inc/references/role-recommendations.md). Recommend a Coordinator and a separate Release Engineer for IT and research companies when workflow volume warrants them; keep technical/scientific review with other roles. Discuss model/effort preferences and use exact human-approved native parameters. Templates neither create chats nor authorize publication.
 
+For model defaults and a requested role-aware reset, follow [model defaults](../setup-paprika-inc/references/model-defaults.md). Preserve an explicit chat override before the role default; report unavailable pairs without substitution. The read-only plan does not change native chats or the host reset button. Respect the human's choice to handle live changes.
+
 For an owner-authorized release workflow, follow [delegated reviewed merges](../setup-paprika-inc/references/role-recommendations.md#delegate-reviewed-merges).
 Use [proportionate company QA](../setup-paprika-inc/references/role-recommendations.md#proportionate-company-qa)
 for meaningful validation checkpoints; do not dispatch QA for every task or PR.

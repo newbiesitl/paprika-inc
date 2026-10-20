@@ -1,6 +1,9 @@
 {
   "format": 1,
   "commands": [
+    {"name":"models list","aliases":[],"repository_required":true,"read_only":true,"mvp":true,"description":"Read the selected company's configured role model/effort defaults."},
+    {"name":"models reset","aliases":[],"repository_required":true,"read_only":true,"mvp":true,"description":"Plan a role-aware settings reset, preserving explicit chat overrides and reporting unavailable pairs; changes no chats."},
+    {"name":"models export","aliases":[],"repository_required":true,"read_only":true,"mvp":true,"description":"Export explicit Codex profile text and desired ChatGPT role settings."},
     {"name":"meeting message","aliases":[],"repository_required":true,"read_only":false,"mvp":true,"description":"Prepare one stored meeting notification through the existing Inc outbound workflow; sends nothing during preparation."},
     {"name":"meeting receipt","aliases":[],"repository_required":true,"read_only":true,"mvp":true,"description":"Prepare a meeting delivery receipt from a confirmed Inc outbound journal; does not prove reading."},
     {"name":"meeting export","aliases":[],"repository_required":true,"read_only":false,"mvp":true,"description":"Save curated meeting notes under meetings/ without overwriting existing files or publishing."},
@@ -25,7 +28,7 @@
     {"name": "bootstrap next", "aliases": ["resume bootstrap"], "repository_required": true, "read_only": false, "mvp": true, "description": "Prepare the next supported native host action or report its blocker."},
     {"name": "bootstrap record", "aliases": [], "repository_required": true, "read_only": false, "mvp": true, "description": "Record the actual result for one correlated native action."},
     {"name": "bootstrap bind", "aliases": [], "repository_required": true, "read_only": false, "mvp": true, "description": "Explicitly declare a known native binding, then independently verify it."},
-    {"name": "bootstrap status", "aliases": ["show bootstrap status"], "repository_required": true, "read_only": true, "mvp": true, "description": "Read the selected checkout’s private MVP progress record."},
+    {"name": "bootstrap status", "aliases": ["show bootstrap status"], "repository_required": true, "read_only": true, "mvp": true, "description": "Read the selected checkoutâ€™s private MVP progress record."},
     {"name": "skills plan", "aliases": [], "repository_required": true, "read_only": true, "mvp": true, "description": "Preview selected project-local skills, integrity conflicts and local capability limitations."},
     {"name": "skills install", "aliases": [], "repository_required": true, "read_only": false, "mvp": true, "description": "Materialize only explicitly selected bundled skills into the selected Git project."},
     {"name": "skills status", "aliases": [], "repository_required": true, "read_only": true, "mvp": true, "description": "Report per-skill integrity, local dependencies and unverified external access separately."},

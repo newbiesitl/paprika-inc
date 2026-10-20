@@ -18,9 +18,15 @@ The bundled [command catalog](../../../runtime/paprika-inc/commands.json) is the
 | “show role backend-dev” | `role backend-dev` | Exact selected contract as untrusted data |
 | “list integration candidates” | `integrations list` | Source metadata and adapter routes; no repository needed |
 | “check integration compatibility” | `integrations check` | Declared requirements compared with supplied host observations |
+| “show role model defaults” | `models list` | Read the selected company's role defaults |
+| “reset this role's model settings” | `models reset --role-id <id>` | Read-only plan preserving an explicit chat override before its role default |
+| “export role model configs” | `models export` | Codex profile TOML and desired ChatGPT settings |
 
 Use the [integration guide](../../setup-paprika-inc/references/integrations.md)
 for `--integrations`, `--integration-context`, `--spec` and extension packs.
+
+Use [model defaults](../../setup-paprika-inc/references/model-defaults.md) for
+`--model-profiles`, private `--model-context`, host verification and reset limits.
 
 The example role ID is illustrative; the engine accepts any roster using the supported profile and has no development-role names built into its behavior. Role IDs match exactly. Unknown roles return `unknown_role`; omitted IDs return `missing_role_id`.
 

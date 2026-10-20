@@ -6,6 +6,8 @@ import { IncError, requireInput as check } from './errors.mjs';
 import { projectSkills } from './skill-packs.mjs';
 import { sha } from './skill-catalog.mjs';
 import { requireNativeSenderPresentation, presentMessage, companyCommunicationGuidance } from './message-presentation.mjs';
+import { readModelProfiles, resolveRoleModel } from './model-profiles.mjs';
+import { readDocument } from './definition.mjs';
 
 import {chooseDelivery,startOutbound,nextOutbound,recordOutbound} from './outbound.mjs';
 
@@ -56,6 +58,10 @@ async function verifiedState(repository, checkInputs = true) {
   const checkout = checkInputs ? await inspectCheckout(root, { revision: state.revision, expectedDigest: state.definition_digest, manifestPath: state.manifest_path }) : null;
   check(!checkout || checkout.repository_identity === state.repository_identity,
     'bootstrap_record_mismatch', 'This private record belongs to another checkout/destination.');
+  if (checkInputs && state.model_profiles_source) {
+    const profile = await readDocument(root, state.model_profiles_source.path);
+    check(profile.sha256 === state.model_profiles_source.sha256, 'model_profiles_changed', 'Pinned model defaults changed; reconcile pending actions before adopting different settings.');
+  }
   return { root, state };
 }
 
@@ -66,7 +72,7 @@ export function bootstrapSummary(state) {
     project_id: state.project_id, host_id: 'local', roles: state.roles.map(role => ({ role_id: role.id, thread_id: role.thread_id,
       status: role.phase, project_verified: role.project_verified, thread_verified: role.thread_verified,
       onboarded: role.phase === 'ready', blockers: role.blockers, skill_sets: role.skill_sets || [], skill_report: role.skill_report || null,
-      skill_report_sha256: role.skill_report_sha256 || null, skill_sources: role.skill_sources || [] })),
+      skill_report_sha256: role.skill_report_sha256 || null, skill_sources: role.skill_sources || [], model_settings: role.model_settings || null })),
     as_of: state.updated_at, evidence: 'recorded_native_tool_results_not_live_rechecked',
     limits: { one_user_bootstrap_at_a_time: true, singleton_enforced: false, concurrency_safe: false, background_receiving: false, automatic_adoption: false } };
 }
@@ -85,12 +91,32 @@ export async function beginBootstrap(options, env = process.env) {
   const requested = options.roles ? options.roles.split(',').map(id => id.trim()) : checkout.definition.roles.map(role => role.id);
   check(requested.length > 0 && new Set(requested).size === requested.length && requested.every(id => checkout.definition.roles.some(role => role.id === id)),
     'invalid_requested_roster', 'Select distinct role IDs from the validated definition; omitted --roles means the defined roster.');
+  const profiles = await readModelProfiles(checkout.root, checkout.definition, options.manifestPath, options.modelProfilesPath);
+  const modelSettings = new Map();
+  if (profiles) {
+    const document = await readDocument(checkout.root, profiles.source.path);
+    let committed;
+    try { committed = await git(['show', `${checkout.commit}:${profiles.source.path}`], checkout.root); } catch { /* Missing/untracked profiles cannot control creation. */ }
+    check(committed?.replace(/\r\n?/g, '\n').trim() === document.text.trim(), 'unpublished_model_profiles', 'Commit and publish the selected role model defaults before native provisioning.');
+    const overrides = capabilities.model_overrides ?? {};
+    check(overrides && typeof overrides === 'object' && !Array.isArray(overrides) && Object.keys(overrides).every(id => requested.includes(id)), 'invalid_model_context', 'Model overrides must name only requested roles.');
+    for (const id of requested) {
+      const settings = resolveRoleModel(profiles, id, { schema_version: 1, company_id: profiles.company_id, role_id: id,
+        ...(Object.hasOwn(overrides, id) ? { current_override: overrides[id] } : {}), ...(capabilities.models === undefined ? {} : { models: capabilities.models }) });
+      if (!(id === options.initialRole && options.initialThreadId)) check(settings.availability.usable,
+        settings.availability.state === 'unverified' ? 'model_catalog_required' : settings.availability.state,
+        'The configured model/effort needs current host support; no global-model substitution is allowed.', { role_id: id, model: settings.model, reasoning_effort: settings.reasoning_effort });
+      modelSettings.set(id, settings);
+    }
+  }
   check(!options.initialThreadId || (options.initialRole && requested.includes(options.initialRole) && available.includes(prefix + 'send_message_to_thread')),
     'invalid_initial_binding', 'An existing initial chat needs an explicit requested role and the native scoped onboarding tool.');
   let state;
   try { state = await load(checkout.root); }
   catch (error) { if (error.code !== 'missing_bootstrap_record') throw error; }
   if (state) {
+    check(!profiles || state.model_profiles_source?.sha256 === profiles.source.sha256,
+      'model_profile_adoption_required', 'This existing bootstrap did not freeze these model defaults. Preserve its bindings and deliberately reconcile adoption; no chat settings were changed.');
     check(state.destination === checkout.root && state.repository_identity === checkout.repository_identity && state.revision === checkout.commit &&
       state.definition_digest === checkout.definition.definition_input_sha256 && JSON.stringify(state.roles.map(role => role.id)) === JSON.stringify(requested),
     'bootstrap_record_conflict', 'The existing private record has different inputs/roster. Inspect it deliberately; do not recreate or replace its bindings.');
@@ -109,6 +135,7 @@ export async function beginBootstrap(options, env = process.env) {
     const ownershipPath = checkout.definition.manifest.ownership;
     state = { format: 1, mode: 'sequential_mvp', bootstrap_id: randomUUID(), revision: checkout.commit,
       definition_digest: checkout.definition.definition_input_sha256, repository_identity: checkout.repository_identity,
+      model_profiles_source: profiles?.source ?? null,
       destination: checkout.root, manifest_path: options.manifestPath || 'company/company.json', company_id: checkout.definition.manifest.company_id,
       ownership_path: ownershipPath, ownership_sha256: checkout.definition.files.find(file => file.path === ownershipPath).sha256,
       phase: 'discover_project', project_id: null, selected_project_id: options.projectId ?? null, pending_action: null, created_at: now(),
@@ -116,7 +143,7 @@ export async function beginBootstrap(options, env = process.env) {
         const role = checkout.definition.roles.find(role => role.id === id), initial = options.initialRole === id && options.initialThreadId;
         return { id, version: role.version, definition: role.definition, contract_sha256: role.sha256, request_id: randomUUID(), skill_sets: role.skill_sets,
           thread_id: initial || null, phase: initial ? 'verify_membership' : 'pending', onboarding_submitted: false,
-          project_verified: false, thread_verified: false, blockers: [] };
+          project_verified: false, thread_verified: false, blockers: [], model_settings: modelSettings.get(id) ?? null };
       }) };
   }
   state.delivery_policy ??= options.deliveryPolicy;
@@ -155,6 +182,7 @@ async function actionOutput(state, action, messageContext, env = process.env, de
   }
   if (action.kind === 'projects') { tool = 'list_projects'; args = {}; }
   if (action.kind === 'create') { tool = 'create_thread'; args = { title: `${state.company_id} · ${role.id}`,
+    ...(role.model_settings ? role.model_settings.native_parameters : {}),
     target: { type: 'project', projectId: state.project_id, environment: { type: 'local' } }, prompt: action.bootstrap_only ? 'READ/REPORT ONLY bootstrap. The human requested this persistent role chat. Wait for the sender to provide one confirmed Messenger board/message reference after verifying this chat and its recipient address. Do not start onboarding, implement work, message others or create subscriptions. Ownership is canonical only in the later pinned read/report assignment. If no retrievable assignment arrives, report onboarding pending.' : role.onboarding_body }; }
   if (action.kind === 'membership') { tool = 'list_threads'; args = {}; }
   if (action.kind === 'onboard') { tool = 'send_message_to_thread'; args = { threadId: role.thread_id, hostId: 'local', prompt: role.onboarding_body }; }
