@@ -76,7 +76,7 @@ exchange and production deployment need evidence after the integrated candidate
 is available.
 
 Companion Messenger candidate: [PR #43](https://github.com/newbiesitl/paprika-messenger/pull/43),
-commit `4b2fe397466eb3f009825fce41fc12c99b2d25d0` on `codex/meeting-room`.
+commit `9d8d97c69729aaffd736246880a7ba17a0905426` on `codex/meeting-room`.
 It requires upstream review and service rollout; this reference is not an
 adopted dependency pin. The live service and installed Inc plugin must both
 expose the compatible meeting workflow before native chat acceptance.
