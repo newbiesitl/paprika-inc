@@ -1,6 +1,9 @@
 {
   "format": 1,
   "commands": [
+    {"name":"meeting message","aliases":[],"repository_required":true,"read_only":false,"mvp":true,"description":"Prepare one stored meeting notification through the existing Inc outbound workflow; sends nothing during preparation."},
+    {"name":"meeting receipt","aliases":[],"repository_required":true,"read_only":true,"mvp":true,"description":"Prepare a meeting delivery receipt from a confirmed Inc outbound journal; does not prove reading."},
+    {"name":"meeting export","aliases":[],"repository_required":true,"read_only":false,"mvp":true,"description":"Save curated meeting notes under meetings/ without overwriting existing files or publishing."},
     {"name": "catalog list", "aliases": [], "repository_required": false, "read_only": true, "mvp": true, "description": "List the shared company presets, structures, roles, packs, workflows and requirements."},
     {"name": "catalog search", "aliases": [], "repository_required": false, "read_only": true, "mvp": true, "description": "Search the same versioned catalog by labels, descriptions, IDs and tags."},
     {"name": "catalog read", "aliases": [], "repository_required": false, "read_only": true, "mvp": true, "description": "Read an exact kind/ID and its version; usable presets include a portable default selection."},

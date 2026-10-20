@@ -81,6 +81,8 @@ Generated from the version 0.1.0 [backend catalog](plugins/paprika-inc/runtime/c
 
 ## Try the implemented commands
 
+The [meeting room pilot](docs/MEETING-PILOT.md) adds Inc delivery helpers and notes export for the round-based private-board service candidate. Follow the [meeting procedure](plugins/paprika-inc/skills/paprika-inc/references/meetings.md) for its tools and commands.
+
 Node.js 24 or newer runs the contained helper without additional npm dependencies:
 
 ```sh
