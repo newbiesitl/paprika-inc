@@ -38,6 +38,7 @@ PACKAGE_FILES = frozenset({
     'runtime/paprika-inc/company-catalog.mjs', 'runtime/company-catalog/catalog.json',
     'runtime/company-catalog/contract.d.ts', 'skills/setup-paprika-inc/references/company-catalog.md',
     'runtime/paprika-inc/message-presentation.mjs', 'runtime/paprika-inc/outbound.mjs',
+    'runtime/paprika-inc/meeting-pilot.mjs', 'skills/paprika-inc/references/meetings.md',
     'skills/setup-paprika-inc/references/adaptive-delivery.md',
     'skills/paprika-inc/SKILL.md', 'skills/paprika-inc/agents/openai.yaml',
     'skills/paprika-inc/assets/paprika-inc-icon.png',

@@ -69,7 +69,10 @@ test('help needs no repository or service and distinguishes plan from apply', as
   assert.equal(result.command, 'help');
   assert.equal(result.read_only, true);
   assert.match(result.setup_behavior, /never apply/);
-  assert.equal(result.commands.length, 33);
+  assert.equal(result.commands.length, 36);
+  for (const name of ['models list', 'models reset', 'models export', 'meeting message', 'meeting receipt', 'meeting export']) {
+    assert.ok(result.commands.some(command => command.name === name), `${name} remains available after integration`);
+  }
 });
 
 test('generic fictional roster validates; IDs, digests and shared files are reported', async t => {

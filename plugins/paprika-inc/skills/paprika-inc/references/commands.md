@@ -1,5 +1,11 @@
 # Commands and outputs
 
+For the meeting service pilot, see [meeting rooms](meetings.md): `meeting message`
+prepares an existing Inc outbound operation, `meeting receipt` prepares its
+confirmed service receipt, and `meeting export` saves curated notes under
+`meetings/`. Use `--meeting-report` for a private tool result, `--notification`
+for one stored notice, and `--export-name` for a different export folder.
+
 The bundled [command catalog](../../../runtime/paprika-inc/commands.json) is the executable alias list. Inspection accepts a selected directory through `--repo`; `--manifest` selects a relative manifest. The commands below remain read-only. Explicit MVP authoring/checkout/bootstrap commands are described afterward and may write company/Git/private-progress files.
 
 | Request | Command | Result |
