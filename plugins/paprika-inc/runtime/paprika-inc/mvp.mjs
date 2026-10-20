@@ -4,11 +4,13 @@ import { beginBootstrap, nextBootstrap, recordBootstrap, bindBootstrapRole, boot
 import { projectSkills } from './skill-packs.mjs';
 import { integrationCommand } from './integration-registry.mjs';
 import { companyCatalogCommand } from './company-catalog.mjs';
+import { modelCommand } from './model-profiles.mjs';
 
 import {startOutbound,nextOutbound,recordOutbound,outboundStatus,reconcileOutbound} from './outbound.mjs';
 
 export async function executeMvp(options) {
   const command = options.command;
+  if (command.startsWith('models ')) return modelCommand(options);
   if (command.startsWith('catalog ') || command.startsWith('config ')) return companyCatalogCommand(options);
   if (command.startsWith('integrations ')) return integrationCommand(options);
   if(command.startsWith('message ')) return ({'message start':startOutbound,'message next':nextOutbound,

@@ -9,7 +9,7 @@
     },
     "backend-dev": {
       "model": "gpt-6.1-sol",
-      "thinking": "high"
+      "thinking": "xhigh"
     },
     "frontend-dev": {
       "model": "gpt-6.1-sol",
@@ -17,7 +17,7 @@
     },
     "scientific-researcher": {
       "model": "gpt-6-astra",
-      "thinking": "xhigh"
+      "thinking": "max"
     },
     "qa": {
       "model": "gpt-6.1-sol",
@@ -25,18 +25,19 @@
     },
     "coordinator": {
       "model": "gpt-6-astra",
-      "thinking": "xhigh"
+      "thinking": "high"
     },
     "release-engineer": {
       "model": "gpt-6.1-sol",
-      "thinking": "high"
+      "thinking": "xhigh"
     }
   },
   "notes": [
-    "Preferences are not authority; apply only with the actual human model choice.",
-    "Verify the current host supports the model/effort pair. Do not silently substitute.",
-    "The MVP helper does not read this file yet; native provisioning passes model and thinking explicitly.",
-    "No existing chat is changed by this file. All seven model pairs were human-selected; actual authorization and live bindings stay private."
+    "Role defaults match the current saved chat overrides selected by the human on October 20, 2026.",
+    "An explicit chat override takes precedence during a Paprika model-reset plan; otherwise use this exact role default.",
+    "Bootstrap freezes configured defaults and passes explicit model/thinking parameters for newly requested native role chats after checking host capabilities.",
+    "Unavailable models/efforts are reported without substituting a global default. These files do not change existing chats or the host app reset button.",
+    "Actual native bindings and settings observations remain private."
   ],
   "legacy_role_preferences": {
     "front-desk": {

@@ -1,6 +1,9 @@
 {
   "format": 1,
   "commands": [
+    {"name":"models list","aliases":[],"repository_required":true,"read_only":true,"mvp":true,"description":"Read the selected company's configured role model/effort defaults."},
+    {"name":"models reset","aliases":[],"repository_required":true,"read_only":true,"mvp":true,"description":"Plan a role-aware settings reset, preserving explicit chat overrides and reporting unavailable pairs; changes no chats."},
+    {"name":"models export","aliases":[],"repository_required":true,"read_only":true,"mvp":true,"description":"Export explicit Codex profile text and desired ChatGPT role settings."},
     {"name": "catalog list", "aliases": [], "repository_required": false, "read_only": true, "mvp": true, "description": "List the shared company presets, structures, roles, packs, workflows and requirements."},
     {"name": "catalog search", "aliases": [], "repository_required": false, "read_only": true, "mvp": true, "description": "Search the same versioned catalog by labels, descriptions, IDs and tags."},
     {"name": "catalog read", "aliases": [], "repository_required": false, "read_only": true, "mvp": true, "description": "Read an exact kind/ID and its version; usable presets include a portable default selection."},

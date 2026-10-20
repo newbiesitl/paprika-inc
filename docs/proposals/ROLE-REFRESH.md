@@ -74,9 +74,9 @@ into the runtime.
 ## Models at creation and initialization
 
 [model-preferences.json](../../company/model-preferences.json) records the selected
-native creation parameters. QA's authorized initialization uses them now; the
-Coordinator's current preference is Astra/xhigh (MODEL-002 below). Other
-roles use them during the approved replacement once their handoffs and review are verified.
+native creation parameters. MODEL-002 selected Astra/xhigh for the Coordinator;
+MODEL-003 below refreshes current defaults. Use the canonical profile during an
+approved replacement after handoff and review are verified.
 These are workload-based choices, not measured claims of comparative performance.
 
 MODEL-001 updates the selected Scientific Researcher pair to `gpt-6-astra` /
@@ -94,18 +94,23 @@ as requested by Charles on October 17, 2026. The prior choice was `gpt-6.1-sol` 
 the live setting separately. This source records the requested preference, not
 an independently host-confirmed setting or a grant to alter existing chats.
 
+MODEL-003 (October 20, 2026) refreshes the role defaults from the saved chat
+overrides at the human's request. The canonical profile contains the exact current
+pairs; preserve MODEL-001/002 as historical selections. Explicit later chat
+overrides take precedence during a Paprika reset plan. Existing live chat changes
+remain with the human.
+
 The current native host tool accepts model and thinking parameters. The generic
-MVP helper does not yet consume this file; it must not pretend it applied a profile.
+MVP helper now consumes an optional profile for newly requested creation, freezes
+its digest and parameters, and requires current host capability observations.
 For native creation, pass the approved exact values and validate availability
 against the host. Missing support is explicit; never silently choose another model.
 Onboarding records requested versus host-confirmed settings, actual project/cwd,
 definition digest, skill integrity and limitations.
 
-A follow-up product change can add optional per-role preferences to authoring and
-bootstrap: inspect recommendations, obtain or reuse the exact human choice, freeze
-it with the assignment, validate host support, pass native parameters and preserve
-it on uncertain-outcome reconciliation. Do not make a repository profile grant its
-own model override or encode this team's model choices into the generic engine.
+Use the [model defaults workflow](../../plugins/paprika-inc/skills/setup-paprika-inc/references/model-defaults.md)
+for read-only reset plans and Codex/ChatGPT settings export. A repository profile
+does not grant an override, and no team's model choices are encoded in the engine.
 
 ## Replacement sequence
 

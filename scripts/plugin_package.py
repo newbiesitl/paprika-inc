@@ -31,6 +31,7 @@ PACKAGE_FILES = frozenset({
     'runtime/paprika-inc/errors.mjs', 'runtime/paprika-inc/messenger-adapter.mjs',
     'runtime/paprika-inc/ownership.mjs', 'runtime/paprika-inc/authoring.mjs',
     'runtime/paprika-inc/checkout.mjs', 'runtime/paprika-inc/bootstrap.mjs', 'runtime/paprika-inc/mvp.mjs',
+    'runtime/paprika-inc/model-profiles.mjs', 'skills/setup-paprika-inc/references/model-defaults.md',
     'runtime/paprika-inc/skill-catalog.mjs', 'runtime/paprika-inc/skill-packs.mjs',
     'runtime/paprika-inc/extension-pack.mjs', 'runtime/paprika-inc/integration-registry.mjs',
     'runtime/integrations/registry.json', 'skills/setup-paprika-inc/references/integrations.md',
