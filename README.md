@@ -14,6 +14,71 @@ Paprika Inc will reconstruct a company from reviewed role definitions, assignmen
 
 Messenger remains an independent project. The current kit includes a pinned service-selection component and its license; its read-only commands need no separate Messenger plugin installation. Future service integration must inspect and reuse the owner's compatible private service before considering provisioning. Live service binding, lifecycle integration and coexistence remain acceptance gates.
 
+## The company developing Paprika Inc
+
+Our own [development company](company/README.md) is a single-host, local Codex
+bootstrap candidate. Its manifest names the Coordinator as the coordinating role;
+the contracts below define responsibilities, not live agents or permissions.
+
+| Role | Stable ID | Main responsibility |
+| --- | --- | --- |
+| [Chief Architect](company/roles/chief-architect/agent.md) | `chief-architect` | Design, interfaces, and acceptance gates |
+| [Backend Dev](company/roles/backend-dev/agent.md) | `backend-dev` | Company engine, host adapters, and integrations |
+| [Frontend Dev](company/roles/frontend-dev/agent.md) | `frontend-dev` | Setup, status, and recovery interactions |
+| [Scientific Researcher](company/roles/scientific-researcher/agent.md) | `scientific-researcher` | Research and evidence appraisal |
+| [QA Engineer](company/roles/qa/agent.md) | `qa` | Independent validation and acceptance evidence |
+| [Coordinator](company/roles/coordinator/agent.md) | `coordinator` | Human intake and task handoffs |
+| [Release Engineer](company/roles/release-engineer/agent.md) | `release-engineer` | Reviewed merge order and reproducible releases |
+
+<!-- company-catalog:start -->
+## Company catalog preview
+
+Browse and configure a portable company draft in the [shared catalog UI](apps/company-catalog/README.md). One component supports a standalone local interface and an MCP App resource for supported native hosts. This candidate is not installed or deployed; actual Codex/ChatGPT rendering remains unverified.
+
+### Company types
+
+| Starting template | Version | Catalog state | Default roles | Default structure |
+| --- | --- | --- | --- | --- |
+| Software studio | 0.1.0 | template | Coordinator, Architect, Developer, QA, Release Engineer | Lean team |
+| Scientific research | 0.1.0 | template | Coordinator, Researcher, Scientific Reviewer, Release Engineer | Research lab |
+| Marketing agency | 0.1.0 | planned | — | — |
+
+### Organization structures
+
+| Structure | Stable ID | Reporting shape | Catalog state |
+| --- | --- | --- | --- |
+| Lean team | lean-team | Direct to coordinator | template |
+| Functional departments | functional-departments | Reporting tree | template |
+| Research lab | research-lab | Reporting tree | template |
+
+Structures are independent of company type and business-model tags. Review relationships are configured separately from reporting lines.
+
+### Role templates
+
+| Role | Stable ID | Purpose | Catalog state |
+| --- | --- | --- | --- |
+| Coordinator | coordinator | Route human requests and preserve task handoffs. | template |
+| Architect | architect | Own design and technical acceptance. | template |
+| Developer | developer | Implement the selected software outcome. | template |
+| QA | qa | Provide company quality evidence for meaningful feature, pilot, MVP, PR and design-implementation validation. | template |
+| Release Engineer | release-engineer | Sequence reviewed changes and prepare reproducible releases. | template |
+| Researcher | researcher | Investigate scoped questions and synthesize evidence. | template |
+| Scientific Reviewer | scientific-reviewer | Independently appraise claims, methods and evidence. | template |
+
+Role selection defines a draft roster; it does not create live chats or grant permissions.
+
+| Available pack source | Version | Included guidance |
+| --- | --- | --- |
+| Engineering core | 0.1.0 | paprika-code-review |
+| Research core | 0.1.0 | paper-lookup, literature-review, citation-management, scientific-critical-thinking |
+
+Pack source availability does not establish local installation, authentication, native-host verification, task-quality acceptance or release.
+
+**Other planned catalog entries:** Marketing core. The broader [industry and integration roadmap](https://github.com/newbiesitl/paprika-inc/issues/30) is tracked separately.
+
+Generated from the version 0.1.0 [backend catalog](plugins/paprika-inc/runtime/company-catalog/catalog.json); check with npm --prefix apps/company-catalog run readme:check.
+<!-- company-catalog:end -->
+
 ## Try the implemented commands
 
 The [meeting room pilot](docs/MEETING-PILOT.md) adds Inc delivery helpers and notes export for the round-based private-board service candidate. Follow the [meeting procedure](plugins/paprika-inc/skills/paprika-inc/references/meetings.md) for its tools and commands.
@@ -88,29 +153,3 @@ the upstream plugin or activate research skills globally. See
 and [the governing proposal](docs/proposals/SCIENTIFIC-RESEARCH-SKILLS.md).
 
 Inc 0.3.1 adds [native product/sender presentation](plugins/paprika-inc/skills/setup-paprika-inc/references/native-message-presentation.md) for newly prepared onboarding prompts. Actual native observations select a plugin mention and sender title; missing metadata uses plain text. Pending writes retain frozen payloads.
-
-<!-- company-catalog:start -->
-## Company catalog preview
-
-Browse and configure a portable company draft in the [shared catalog UI](apps/company-catalog/README.md). One component supports a standalone local interface and an MCP App resource for supported native hosts. This candidate is not installed or deployed; actual Codex/ChatGPT rendering remains unverified.
-
-| Starting template | Version | Catalog state | Default roster | Default structure |
-| --- | --- | --- | --- | --- |
-| Software studio | 0.1.0 | template | 5 roles | lean-team |
-| Scientific research | 0.1.0 | template | 4 roles | research-lab |
-
-**Organization structures:** Lean team, Functional departments, Research lab. Industry and business-model tags are independent choices.
-
-**Role templates:** Coordinator, Architect, Developer, QA, Release Engineer, Researcher, Scientific Reviewer. Reporting lines and independent reviewers are configured separately.
-
-| Available pack source | Version | Included guidance |
-| --- | --- | --- |
-| Engineering core | 0.1.0 | paprika-code-review |
-| Research core | 0.1.0 | paper-lookup, literature-review, citation-management, scientific-critical-thinking |
-
-Pack source availability does not establish local installation, authentication, native-host verification, task-quality acceptance or release.
-
-**Planned catalog entries:** Marketing agency, Marketing core. The broader [industry and integration roadmap](https://github.com/newbiesitl/paprika-inc/issues/30) is tracked separately.
-
-Generated from the version 0.1.0 [backend catalog](plugins/paprika-inc/runtime/company-catalog/catalog.json); check with npm --prefix apps/company-catalog run readme:check.
-<!-- company-catalog:end -->
