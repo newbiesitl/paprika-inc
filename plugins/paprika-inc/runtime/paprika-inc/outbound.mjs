@@ -50,9 +50,15 @@ async function update(repository, operationId, operation) {
 const summary = state => ({ok:state.phase === 'submitted' || state.phase === 'stored_events_only', status:state.phase,
   operation_id:state.id, delivery:state.policy, message_id:state.message_id ?? null, transport:state.transport ?? null,
   native_submission:state.phase === 'submitted' ? 'submitted' : 'unconfirmed', recipient_fetch:'unverified',
+  ...(state.input.meeting_notification ? {meeting_notification:structuredClone(state.input.meeting_notification)} : {}),
   ...(state.handoff ? {handoff_depth:state.handoff.depth,handoff_limit:state.handoff.limit} : {})});
 export async function startOutbound({repository,deliveryInput},env=process.env) {
   check(deliveryInput && validId(deliveryInput.request_id),'invalid_message','Supply a private delivery input with request_id and body.');
+  if (deliveryInput.meeting_notification !== undefined) {
+    const notice=deliveryInput.meeting_notification;
+    check(notice && typeof notice === 'object' && Object.keys(notice).sort().join(',') === 'board,meeting_id,notification_id,recipient_id,sender_id'
+      && Object.values(notice).every(validId) && notice.board.length <= 64, 'invalid_message', 'Use the exact stored meeting notification metadata.');
+  }
   const policy=chooseDelivery(deliveryInput.body,deliveryInput.delivery_policy,deliveryInput);
   const input=structuredClone(deliveryInput), fingerprint=hash(input), id=input.request_id;
   check(typeof env.CODEX_THREAD_ID === 'string' && env.CODEX_THREAD_ID,'sender_unavailable','Native current chat metadata is required.');
@@ -64,6 +70,9 @@ export async function startOutbound({repository,deliveryInput},env=process.env) 
 }
 function freezeRoute(state, context, messageContext) {
   const {sender,recipient,native,board,deployment}=context ?? {};
+  const meeting=state.input.meeting_notification;
+  if (meeting) check(board === meeting.board && sender?.id === meeting.sender_id && recipient?.id === meeting.recipient_id,
+    'invalid_delivery_route', 'The meeting notice must keep its stored board, sender and recipient.');
   check(validId(board) && board.length <= 64 && typeof deployment === 'string' && deployment.trim(),'delivery_setup_required','Provide the selected existing service/board and verified routes.');
   for(const [name,entry] of [['sender',sender],['recipient',recipient]]) check(entry && validId(entry.id) && entry.board === board && !entry.unregistered_at && entry.registration_status !== 'unregistered'
     && typeof entry.label === 'string' && entry.label.trim() && Buffer.byteLength(entry.label) <= 120,'invalid_delivery_route','Resolve active canonical '+name+' on the selected board.');

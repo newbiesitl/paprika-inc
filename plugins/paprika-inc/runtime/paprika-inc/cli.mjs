@@ -6,6 +6,7 @@ import { parseJson } from './definition.mjs';
 export function parseArguments(argv) {
   const options = {}, words = [];
   const flags = { '--catalog-kind': 'catalogKind', '--catalog-id': 'catalogId', '--query': 'query', '--selection': 'selectionPath', '--catalog-context': 'catalogContextPath',
+    '--meeting-report':'meetingReportPath', '--notification':'notificationId', '--export-name':'exportName',
     '--integration-context': 'integrationContextPath', '--integrations': 'integrationIds', '--repo': 'repository', '--manifest': 'manifestPath', '--service-report': 'serviceReportPath',
     '--delivery-input':'deliveryInputPath', '--delivery-context':'deliveryContextPath', '--delivery-policy':'deliveryPolicyPath', '--operation':'operationId', '--delivery-action':'deliveryActionId', '--spec': 'specPath', '--host-capabilities': 'hostCapabilitiesPath', '--result': 'hostResultPath', '--message-context': 'messageContextPath',
     '--destination': 'destination', '--revision': 'revision', '--definition-digest': 'expectedDigest',
@@ -35,7 +36,7 @@ export async function runCli(argv = process.argv.slice(2), output = process.stdo
   try {
     const { serviceReportPath, ...options } = parseArguments(argv);
     mutating = routeCommand(options.command).spec.read_only === false;
-    for (const [pathKey, valueKey] of [['selectionPath', 'selection'], ['catalogContextPath', 'catalogContext'], ['integrationContextPath', 'integrationContext'], ['specPath', 'spec'], ['hostCapabilitiesPath', 'hostCapabilities'], ['hostResultPath', 'hostResult'], ['messageContextPath', 'messageContext'], ['deliveryInputPath','deliveryInput'], ['deliveryContextPath','deliveryContext'], ['deliveryPolicyPath','deliveryPolicy']]) {
+    for (const [pathKey, valueKey] of [['meetingReportPath','meetingReport'], ['selectionPath', 'selection'], ['catalogContextPath', 'catalogContext'], ['integrationContextPath', 'integrationContext'], ['specPath', 'spec'], ['hostCapabilitiesPath', 'hostCapabilities'], ['hostResultPath', 'hostResult'], ['messageContextPath', 'messageContext'], ['deliveryInputPath','deliveryInput'], ['deliveryContextPath','deliveryContext'], ['deliveryPolicyPath','deliveryPolicy']]) {
       if (!options[pathKey]) continue;
       let handle;
       try {
