@@ -13,10 +13,10 @@ const entry = (c, kind, id) => c.entries.find(e => e.kind === kind && e.id === i
 async function folder(t) { const root = await mkdtemp(join(tmpdir(), 'inc-catalog-')); t.after(() => rm(root, { recursive: true, force: true })); return root; }
 
 test('one catalog supports kind filtering, literal search, exact read and clone-safe defaults', () => {
-  assert.equal(readCompanyCatalog(catalog, { query: 'RESEARCH', catalogKind: 'preset' }).entries.length, 1);
+  assert.ok(readCompanyCatalog(catalog, { query: 'RESEARCH', catalogKind: 'preset' }).entries.some(e => e.id === 'scientific-research'));
   assert.equal(readCompanyCatalog(catalog, { query: '[.*]' }).entries.length, 0);
   assert.equal(readCompanyCatalog(catalog, { catalogKind: 'structure' }).entries.length, 3);
-  assert.equal(readCompanyCatalog(catalog, { catalogKind: 'preset' }).entries.find(e => e.id === 'marketing-agency').availability, 'planned');
+  assert.equal(readCompanyCatalog(catalog, { catalogKind: 'preset' }).entries.find(e => e.id === 'marketing-agency').tier, 'extension');
   const a = preset(); a.roles[0].reviewers.push('untrusted');
   assert.ok(!preset().roles[0].reviewers.includes('untrusted'));
   assert.throws(() => readCompanyCatalog(catalog, { command: 'catalog read', catalogKind: 'role', catalogId: 'missing' }), { code: 'unknown_catalog_entry' });
@@ -93,7 +93,6 @@ const failures = [
   ['planned pack', s => s.roles[1].packs.push('marketing-core'), 'planned_entry'],
   ['duplicate pack', s => s.roles[1].packs.push('engineering-core'), 'invalid_role_selection'],
   ['unknown workflow', s => s.roles[1].workflows.push('unknown'), 'unknown_entry'],
-  ['planned preset', s => { s.preset_id = 'marketing-agency'; }, 'planned_entry'],
   ['unknown structure', s => { s.structure_id = 'matrix'; }, 'unknown_entry'],
   ['unknown business tag', s => s.business_model_tags.push('unknown'), 'invalid_business_tags'],
   ['private field', s => { s.connection = { token: 'fictional-secret' }; }, 'invalid_selection'],

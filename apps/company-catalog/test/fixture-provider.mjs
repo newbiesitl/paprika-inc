@@ -5,6 +5,9 @@ const read = async (path) =>
 const raw = await read(
   "../../../plugins/paprika-inc/runtime/company-catalog/catalog.json",
 );
+// Keep planned-preset behavior covered independently of the shipped inventory.
+raw.entries.push({ kind: "preset", id: "planned-company-fixture", label: "Planned fixture company",
+  availability: "planned", description: "Fixture only", tags: [], data: {} });
 const baseline = await read(
   "../../../tests/fixtures/company-catalog/software-studio.json",
 );

@@ -19,7 +19,7 @@ export const catalogDigest = x => createHash('sha256').update(JSON.stringify(can
 export const catalogIdentity = catalog => ({ version: catalog.version, sha256: catalogDigest(catalog) });
 const key = (kind, identity) => `${kind}:${identity}`;
 const indexCatalog = catalog => new Map(catalog.entries.map(e => [key(e.kind, e.id), e]));
-const entryFields = ['kind', 'id', 'version', 'label', 'description', 'tags', 'availability', 'requirements', 'provenance', 'evidence', 'data'];
+const entryFields = ['kind', 'id', 'version', 'label', 'description', 'tags', 'availability', 'requirements', 'provenance', 'evidence', 'data', 'tier'];
 const roleFields = ['id', 'version', 'title', 'purpose', 'responsibilities', 'boundaries', 'inputs', 'outputs', 'escalation'];
 
 function acyclic(nodes, edges, fail) {
@@ -41,7 +41,9 @@ export function validateCompanyCatalog(catalog) {
     Array.isArray(catalog.entries) && catalog.entries.length > 0 && catalog.entries.length <= 500, 'Unsupported or malformed company catalog.');
   const seen = new Set();
   for (const e of catalog.entries) {
-    valid(fields(e, entryFields) && catalogKinds.includes(e.kind) && id(e.id) && typeof e.version === 'string' && semver.test(e.version) &&
+    valid(fields(e, entryFields, entryFields.filter(f => f !== 'tier')) &&
+      (e.tier === undefined || ['essential', 'extension'].includes(e.tier)) &&
+      catalogKinds.includes(e.kind) && id(e.id) && typeof e.version === 'string' && semver.test(e.version) &&
       text(e.label, 160) && text(e.description) && ids(e.tags) && ids(e.requirements) &&
       ['template', 'available', 'planned'].includes(e.availability) && object(e.data), 'Invalid catalog entry fields.');
     valid(!seen.has(key(e.kind, e.id)), 'Duplicate catalog kind/ID.'); seen.add(key(e.kind, e.id));

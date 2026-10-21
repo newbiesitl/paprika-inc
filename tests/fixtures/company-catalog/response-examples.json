@@ -6,8 +6,8 @@
       "selection": {
         "schema_version": 1,
         "catalog": {
-          "version": "0.1.0",
-          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+          "version": "0.2.0",
+          "sha256": "23b590be16cca2f29aeda495af7f0cebe60bfe539b1fb55f5fb267ff41a1d714"
         },
         "preset_id": "software-studio",
         "structure_id": "lean-team",
@@ -98,10 +98,10 @@
       "read_only": true,
       "applied": false,
       "catalog": {
-        "version": "0.1.0",
-        "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+        "version": "0.2.0",
+        "sha256": "23b590be16cca2f29aeda495af7f0cebe60bfe539b1fb55f5fb267ff41a1d714"
       },
-      "selection_sha256": "bba85cbd107d1442fb6cdf9692bbc141a2d6eb3f4243150e675e373748a89cd7",
+      "selection_sha256": "80c8d9d45efeaf1c7510cfd63d40deaffb7dde9de22d319eaa3972e4fcf991b3",
       "diagnostics": [],
       "requirements": [
         {
@@ -130,8 +130,8 @@
       "selection": {
         "schema_version": 1,
         "catalog": {
-          "version": "0.1.0",
-          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+          "version": "0.2.0",
+          "sha256": "23b590be16cca2f29aeda495af7f0cebe60bfe539b1fb55f5fb267ff41a1d714"
         },
         "preset_id": "software-studio",
         "structure_id": "lean-team",
@@ -302,8 +302,8 @@
       "selection": {
         "schema_version": 1,
         "catalog": {
-          "version": "0.1.0",
-          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+          "version": "0.2.0",
+          "sha256": "23b590be16cca2f29aeda495af7f0cebe60bfe539b1fb55f5fb267ff41a1d714"
         },
         "preset_id": "software-studio",
         "structure_id": "functional-departments",
@@ -395,10 +395,10 @@
       "read_only": true,
       "applied": false,
       "catalog": {
-        "version": "0.1.0",
-        "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+        "version": "0.2.0",
+        "sha256": "23b590be16cca2f29aeda495af7f0cebe60bfe539b1fb55f5fb267ff41a1d714"
       },
-      "selection_sha256": "26c17d321eaeab9be17655d8700ec8198ade59f68962e650015246bf7296591e",
+      "selection_sha256": "a98a1b9cc7469a0d8259645f15d081b8b096535205761c1cb26d446a6d9d646a",
       "diagnostics": [],
       "requirements": [
         {
@@ -427,8 +427,8 @@
       "selection": {
         "schema_version": 1,
         "catalog": {
-          "version": "0.1.0",
-          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+          "version": "0.2.0",
+          "sha256": "23b590be16cca2f29aeda495af7f0cebe60bfe539b1fb55f5fb267ff41a1d714"
         },
         "preset_id": "software-studio",
         "structure_id": "functional-departments",
@@ -600,8 +600,8 @@
       "selection": {
         "schema_version": 1,
         "catalog": {
-          "version": "0.1.0",
-          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+          "version": "0.2.0",
+          "sha256": "23b590be16cca2f29aeda495af7f0cebe60bfe539b1fb55f5fb267ff41a1d714"
         },
         "preset_id": "software-studio",
         "structure_id": "lean-team",
@@ -689,10 +689,10 @@
       "read_only": true,
       "applied": false,
       "catalog": {
-        "version": "0.1.0",
-        "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+        "version": "0.2.0",
+        "sha256": "23b590be16cca2f29aeda495af7f0cebe60bfe539b1fb55f5fb267ff41a1d714"
       },
-      "selection_sha256": "64962cecf91d119483711ebb6b6eace2596e32d3383031049dc282c27fc7edf2",
+      "selection_sha256": "d3324afd92b79238b29fa7af5f9228fe6cf43b414075f8dcb06e74a243c0b9bd",
       "diagnostics": [],
       "requirements": [
         {
@@ -721,8 +721,8 @@
       "selection": {
         "schema_version": 1,
         "catalog": {
-          "version": "0.1.0",
-          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+          "version": "0.2.0",
+          "sha256": "23b590be16cca2f29aeda495af7f0cebe60bfe539b1fb55f5fb267ff41a1d714"
         },
         "preset_id": "software-studio",
         "structure_id": "lean-team",
@@ -887,8 +887,8 @@
       "selection": {
         "schema_version": 1,
         "catalog": {
-          "version": "0.1.0",
-          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+          "version": "0.2.0",
+          "sha256": "23b590be16cca2f29aeda495af7f0cebe60bfe539b1fb55f5fb267ff41a1d714"
         },
         "preset_id": "software-studio",
         "structure_id": "lean-team",
@@ -981,10 +981,10 @@
       "read_only": true,
       "applied": false,
       "catalog": {
-        "version": "0.1.0",
-        "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+        "version": "0.2.0",
+        "sha256": "23b590be16cca2f29aeda495af7f0cebe60bfe539b1fb55f5fb267ff41a1d714"
       },
-      "selection_sha256": "bba85cbd107d1442fb6cdf9692bbc141a2d6eb3f4243150e675e373748a89cd7",
+      "selection_sha256": "80c8d9d45efeaf1c7510cfd63d40deaffb7dde9de22d319eaa3972e4fcf991b3",
       "diagnostics": [],
       "requirements": [
         {
@@ -1013,8 +1013,8 @@
       "selection": {
         "schema_version": 1,
         "catalog": {
-          "version": "0.1.0",
-          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+          "version": "0.2.0",
+          "sha256": "23b590be16cca2f29aeda495af7f0cebe60bfe539b1fb55f5fb267ff41a1d714"
         },
         "preset_id": "software-studio",
         "structure_id": "lean-team",
@@ -1185,8 +1185,8 @@
       "selection": {
         "schema_version": 1,
         "catalog": {
-          "version": "0.1.0",
-          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+          "version": "0.2.0",
+          "sha256": "23b590be16cca2f29aeda495af7f0cebe60bfe539b1fb55f5fb267ff41a1d714"
         },
         "preset_id": "software-studio",
         "structure_id": "lean-team",
@@ -1282,10 +1282,10 @@
       "read_only": true,
       "applied": false,
       "catalog": {
-        "version": "0.1.0",
-        "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+        "version": "0.2.0",
+        "sha256": "23b590be16cca2f29aeda495af7f0cebe60bfe539b1fb55f5fb267ff41a1d714"
       },
-      "selection_sha256": "bba85cbd107d1442fb6cdf9692bbc141a2d6eb3f4243150e675e373748a89cd7",
+      "selection_sha256": "80c8d9d45efeaf1c7510cfd63d40deaffb7dde9de22d319eaa3972e4fcf991b3",
       "diagnostics": [],
       "requirements": [
         {
@@ -1314,8 +1314,8 @@
       "selection": {
         "schema_version": 1,
         "catalog": {
-          "version": "0.1.0",
-          "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+          "version": "0.2.0",
+          "sha256": "23b590be16cca2f29aeda495af7f0cebe60bfe539b1fb55f5fb267ff41a1d714"
         },
         "preset_id": "software-studio",
         "structure_id": "lean-team",
@@ -1486,7 +1486,7 @@
       "selection": {
         "schema_version": 1,
         "catalog": {
-          "version": "0.1.0",
+          "version": "0.2.0",
           "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
         },
         "preset_id": "software-studio",
@@ -1578,8 +1578,8 @@
       "read_only": true,
       "applied": false,
       "catalog": {
-        "version": "0.1.0",
-        "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+        "version": "0.2.0",
+        "sha256": "23b590be16cca2f29aeda495af7f0cebe60bfe539b1fb55f5fb267ff41a1d714"
       },
       "selection_sha256": null,
       "diagnostics": [

@@ -32,6 +32,13 @@ separately authorized `author write`. Existing user files are never replaced.
 
 ## Composition and boundaries
 
+Catalog 0.2.0 adds an optional `tier` to entries: `essential` for the existing
+templates, `extension` for selectable research starters still in development.
+Legacy entries without a tier display under Essential. The 43 Extension families
+and 130 additional personas retain source provenance; Release Engineer is shared
+with Essential. Tier does not change availability, grant tool access or establish
+domain acceptance. See [maturity and counts](../research/COMPANY-CATALOG-MATURITY.md).
+
 Industry/preset, organization structure and business-model tags are independent
 choices. The first usable presets are software-studio and scientific-research,
 derived from the existing shipped blueprints. Their existing research-core and

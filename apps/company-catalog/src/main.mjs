@@ -24,6 +24,8 @@ let model,
   step = "configure",
   query = "",
   filter = "all",
+  collection = "all",
+  roleCollection = "selected",
   inspected = null,
   working = false;
 const notice = (text, kind = "") => {
@@ -71,8 +73,28 @@ function badge(entry) {
           ? "Template"
           : "Planned",
     ) +
-    "</span>"
+    "</span>" + (entry.tier
+      ? '<span class="badge">' + (entry.tier === "extension" ? "Extension · In development" : "Essential") + '</span>'
+      : "")
   );
+}
+function groupedOptions(entries, selectedId) {
+  return ["essential", "extension"].map((tier) => {
+    const group = entries.filter((e) => (e.tier ?? "essential") === tier);
+    return group.length ? '<optgroup label="' + (tier === "essential" ? "Essential" : "Extensions · In development") + '">' +
+      group.map((e) => option(e.id, e.label + (e.availability === "planned" ? " · Planned" : ""), selectedId === e.id)).join("") + '</optgroup>' : "";
+  }).join("");
+}
+function maturityNotice(entry) {
+  return entry?.tier === "extension"
+    ? '<p class="banner warning">Extension starter: still in development. Refine responsibilities and acceptance criteria with a qualified reviewer. Domain tools and task quality are unverified; export creates a draft.</p>'
+    : "";
+}
+function draftMaturityNotice() {
+  const d = model.draft;
+  return maturityNotice(model.entry("preset", d.preset_id)?.tier === "extension" ||
+    d.roles.some((role) => model.entry("role", role.role_id)?.tier === "extension")
+    ? { tier: "extension" } : null);
 }
 function option(id, label, selected) {
   return (
@@ -102,6 +124,7 @@ function picker() {
     matches = presets.filter(
       (e) =>
         (filter === "all" || e.availability === filter) &&
+        (collection === "all" || (e.tier ?? "essential") === collection) &&
         [e.id, e.label, e.description, ...e.tags]
           .join(" ")
           .toLocaleLowerCase()
@@ -111,22 +134,18 @@ function picker() {
   return (
     '<aside class="panel picker" aria-label="Company picker"><p class="eyebrow">01 / FIND A STARTING POINT</p><h2>Company templates</h2><label for="search">Search company types</label><input type="search" id="search" value="' +
     escape(query) +
-    '" placeholder="Name, ID or topic"><label for="availability">Catalog availability</label><select id="availability">' +
+    '" placeholder="Name, ID or topic"><label for="collection">Template collection</label><select id="collection">' +
+    option("all", "Essential + Extensions", collection === "all") +
+    option("essential", "Essential", collection === "essential") +
+    option("extension", "Extensions · In development", collection === "extension") +
+    '</select><label for="availability">Catalog availability</label><select id="availability">' +
     option("all", "All entries", filter === "all") +
     option("template", "Templates", filter === "template") +
     option("planned", "Planned", filter === "planned") +
     option("available", "Available source", filter === "available") +
     '</select><label for="preset">Choose a company</label><select id="preset">' +
     option("", "Select a starting point", !selected) +
-    matches
-      .map((e) =>
-        option(
-          e.id,
-          e.label + (e.availability === "planned" ? " · Planned" : ""),
-          selected?.id === e.id,
-        ),
-      )
-      .join("") +
+    groupedOptions(matches, selected?.id) +
     '</select><p id="result-count" class="count" role="status">' +
     matches.length +
     " matching " +
@@ -140,6 +159,7 @@ function picker() {
         escape(selected.label) +
         "</h3>" +
         badge(selected) +
+        maturityNotice(selected) +
         '<p class="help">' +
         escape(selected.description) +
         '</p><div class="tags">' +
@@ -342,7 +362,7 @@ function configuration() {
   return (
     '<p class="eyebrow">02 / SHAPE YOUR TEAM</p><h2 id="panel-heading" tabindex="-1">Configure ' +
     escape(model.entry("preset", d.preset_id)?.label ?? d.preset_id) +
-    '</h2><div class="fields">' +
+    '</h2>' + draftMaturityNotice() + '<div class="fields">' +
     field(
       "company-name",
       "Company name",
@@ -411,11 +431,17 @@ function configuration() {
     option("chatgpt", "ChatGPT", model.host === "chatgpt") +
     option("standalone", "Standalone", model.host === "standalone") +
     '</select><p class="help">Choosing a host does not verify a connection. Changing it invalidates the preview.</p></div><h3>Roles and personas</h3><p class="help">Add specialists, select guidance and make review relationships explicit.</p>' +
-    '<label for="role-picker">Configure role</label><select id="role-picker">' +
-    option("", "All roles", !roleFilter) +
-    model.entries("role").map((r) => option(r.id, r.label, roleFilter === r.id)).join("") +
+    '<label for="role-collection">Role collection</label><select id="role-collection">' +
+    option("selected", "Selected team roles", roleCollection === "selected") +
+    option("essential", "Essential", roleCollection === "essential") +
+    option("extension", "Extensions · In development", roleCollection === "extension") +
+    option("all", "All roles", roleCollection === "all") +
+    '</select><label for="role-picker">Configure role</label><select id="role-picker">' +
+    option("", "Browse role collection", !roleFilter) +
+    groupedOptions(model.entries("role"), roleFilter) +
     '</select>' +
-    model.entries("role").filter((r) => !roleFilter || r.id === roleFilter).map(roleCard).join("") +
+    model.entries("role").filter((r) => roleFilter ? r.id === roleFilter : roleCollection === "all" ||
+      (roleCollection === "selected" ? d.roles.some((selected) => selected.role_id === r.id) : (r.tier ?? "essential") === roleCollection)).map(roleCard).join("") +
     d.roles
       .filter((r) => !model.entry("role", r.role_id))
       .map(
@@ -463,6 +489,7 @@ function review() {
           .join("") +
         '</ul><button id="fix" class="secondary">Return to configuration</button></div>'
       : '<p class="banner">Portable draft validated. Installation, connection and native readiness remain separate.</p>') +
+    draftMaturityNotice() +
     '<div class="metrics"><div><strong>' +
     d.roles.length +
     "</strong><span>Selected roles</span></div><div><strong>" +
@@ -679,6 +706,10 @@ function bind() {
     filter = e.target.value;
     render("availability");
   };
+  $("collection").onchange = (e) => {
+    collection = e.target.value;
+    render("collection");
+  };
   $("preset").onchange = (e) => {
     inspected = e.target.value || null;
     render("preset");
@@ -686,6 +717,7 @@ function bind() {
   $("clear-search")?.addEventListener("click", () => {
     query = "";
     filter = "all";
+    collection = "all";
     render("search");
   });
   $("use-preset")?.addEventListener("click", () => {
@@ -696,6 +728,8 @@ function bind() {
       return;
     }
     step = "configure";
+    roleFilter = "";
+    roleCollection = "selected";
     notice(model.mode === "restructure"
       ? "Restructuring draft prepared. Existing company identity and roles retained; required roles added. Review all relationships and ownership before applying changes."
       : "Template selected. Review role and dependency choices.");
@@ -705,6 +739,11 @@ function bind() {
   $("role-picker")?.addEventListener("change", (e) => {
     roleFilter = e.target.value;
     render("role-picker");
+  });
+  $("role-collection")?.addEventListener("change", (e) => {
+    roleCollection = e.target.value;
+    roleFilter = "";
+    render("role-collection");
   });
   for (const el of document.querySelectorAll("[data-title]"))
     el.oninput = () => {

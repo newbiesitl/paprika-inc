@@ -32,6 +32,8 @@ export interface CatalogEntry {
   description: string;
   tags: string[];
   availability: 'template' | 'available' | 'planned';
+  /** Essential templates or selectable extensions still in development. Omitted in legacy catalogs. */
+  tier?: 'essential' | 'extension';
   requirements: string[];
   provenance: { path: string; sha256: string };
   evidence: string[];

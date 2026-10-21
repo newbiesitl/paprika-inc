@@ -13,7 +13,7 @@ const safe = (value) =>
 export function catalogSection() {
   const label = (kind, id) =>
     entries(kind).find((e) => e.id === id)?.label ?? id;
-  const presets = entries("preset").map((p) => {
+  const presetRows = (tier) => entries("preset").filter((p) => (p.tier ?? "essential") === tier).map((p) => {
     const defaults = p.data.defaults;
     return (
       "| " +
@@ -44,7 +44,7 @@ export function catalogSection() {
         .join(" | ") +
       " |",
   );
-  const roles = entries("role").map(
+  const roleRows = (tier) => entries("role").filter((e) => (e.tier ?? "essential") === tier).map(
     (e) =>
       "| " +
       [e.label, e.id, e.description, e.availability]
@@ -70,9 +70,20 @@ export function catalogSection() {
     "",
     "### Company types",
     "",
+    "**Essential:** " + presetRows("essential").length + " existing company presets and " + roleRows("essential").length + " role templates. **Extensions · In development:** " + presetRows("extension").length + " researched company families and " + roleRows("extension").length + " additional personas. The research maps 131 distinct role names; Release Engineer is shared with Essential. Extensions are selectable starters requiring refinement, qualified review and separate tool/task validation. See the [maturity assessment](docs/research/COMPANY-CATALOG-MATURITY.md).",
+    "",
     "| Starting template | Version | Catalog state | Default roles | Default structure |",
     "| --- | --- | --- | --- | --- |",
-    ...presets,
+    ...presetRows("essential"),
+    "",
+    "<details>",
+    "<summary>Extensions · In development — company types</summary>",
+    "",
+    "| Starting template | Version | Catalog state | Default roles | Default structure |",
+    "| --- | --- | --- | --- | --- |",
+    ...presetRows("extension"),
+    "",
+    "</details>",
     "",
     "### Organization structures",
     "",
@@ -86,7 +97,16 @@ export function catalogSection() {
     "",
     "| Role | Stable ID | Purpose | Catalog state |",
     "| --- | --- | --- | --- |",
-    ...roles,
+    ...roleRows("essential"),
+    "",
+    "<details>",
+    "<summary>Extensions · In development — role personas</summary>",
+    "",
+    "| Role | Stable ID | Purpose | Catalog state |",
+    "| --- | --- | --- | --- |",
+    ...roleRows("extension"),
+    "",
+    "</details>",
     "",
     "Role selection defines a draft roster; it does not create live chats or grant permissions.",
     "",

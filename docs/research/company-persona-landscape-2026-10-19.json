@@ -1,0 +1,493 @@
+{
+  "schema_version": 1,
+  "title": "Company and role landscape research",
+  "source_url": "https://github.com/newbiesitl/paprika-inc/issues/30",
+  "research_date": "2026-10-19",
+  "governing_definition": "9a6f3f775a33b5f7f2e686d18c3a3e08917b4f52",
+  "maturity": "Research starters: short role names, skill candidates and example workflows; no independent domain acceptance or tool entitlement.",
+  "families": [
+    {
+      "id": "F01",
+      "family": "Frontier AI research",
+      "roles": [
+        "Research Scientist",
+        "Research Engineer",
+        "Evaluation/Safety Researcher"
+      ],
+      "skill_candidates": "Literature appraisal, experiment design, benchmark construction, reproducibility",
+      "workflow": "Research question → experiment plan → run/evaluate → independent review → research report"
+    },
+    {
+      "id": "F02",
+      "family": "Applied ML / deep learning",
+      "roles": [
+        "Data Scientist",
+        "ML Engineer",
+        "MLOps Engineer"
+      ],
+      "skill_candidates": "Dataset validation, feature analysis, model evaluation, experiment tracking",
+      "workflow": "Business objective → dataset checks → baseline → comparison → deployment proposal"
+    },
+    {
+      "id": "F03",
+      "family": "AI-powered cross-domain R&D",
+      "roles": [
+        "Domain Scientist",
+        "Computational Researcher",
+        "Research Software Engineer"
+      ],
+      "skill_candidates": "Evidence synthesis, statistical analysis, simulation planning, domain validation",
+      "workflow": "Domain hypothesis → evidence map → computational experiment → expert review"
+    },
+    {
+      "id": "F04",
+      "family": "Venture capital / private equity",
+      "roles": [
+        "Investment Analyst",
+        "Due-Diligence Analyst",
+        "Portfolio Analyst"
+      ],
+      "skill_candidates": "Company research, diligence checklists, scenario models, investment memos",
+      "workflow": "Opportunity intake → diligence → model sensitivities → investment committee packet"
+    },
+    {
+      "id": "F05",
+      "family": "Asset management / quantitative research",
+      "roles": [
+        "Equity Researcher",
+        "Quant Researcher",
+        "Risk Analyst"
+      ],
+      "skill_candidates": "Financial-data checks, thesis tracking, backtest review, exposure analysis",
+      "workflow": "Research thesis → data validation → analysis/backtest → risk review → research memo"
+    },
+    {
+      "id": "F06",
+      "family": "Banking / fintech",
+      "roles": [
+        "Credit Analyst",
+        "Treasury Analyst",
+        "Compliance Analyst"
+      ],
+      "skill_candidates": "Cash-flow analysis, reconciliation, document completeness, policy evidence mapping",
+      "workflow": "Application/document intake → analysis → exceptions → human decision packet"
+    },
+    {
+      "id": "F07",
+      "family": "Accounting / audit",
+      "roles": [
+        "Accountant",
+        "Financial Planning Analyst",
+        "Audit Analyst"
+      ],
+      "skill_candidates": "Ledger reconciliation, variance analysis, close checklists, evidence traceability",
+      "workflow": "Import ledger → reconcile → investigate breaks → reviewer-approved close packet"
+    },
+    {
+      "id": "F08",
+      "family": "Insurance / actuarial",
+      "roles": [
+        "Actuarial Analyst",
+        "Claims Operations Analyst",
+        "Underwriting Analyst"
+      ],
+      "skill_candidates": "Scenario modeling, document extraction, loss-trend analysis, exception triage",
+      "workflow": "Claim or exposure intake → completeness checks → analysis → reviewer handoff"
+    },
+    {
+      "id": "F09",
+      "family": "Law firm / legal department",
+      "roles": [
+        "Legal Researcher",
+        "Contract Analyst",
+        "Litigation Support Analyst"
+      ],
+      "skill_candidates": "Case/evidence research, clause comparison, chronology, document review",
+      "workflow": "Matter intake → source collection → analysis/redline → qualified review → deliverable"
+    },
+    {
+      "id": "F10",
+      "family": "Pharmaceutical discovery",
+      "roles": [
+        "Medicinal Chemistry Researcher",
+        "Computational Chemist",
+        "Bioinformatics Analyst"
+      ],
+      "skill_candidates": "Molecular descriptors, target evidence, assay-data analysis, literature review",
+      "workflow": "Target hypothesis → compound/data assessment → experiment proposal → scientific review"
+    },
+    {
+      "id": "F11",
+      "family": "Pharmaceutical manufacturing",
+      "roles": [
+        "Process Analyst",
+        "Quality Assurance Analyst",
+        "Regulatory Documentation Specialist"
+      ],
+      "skill_candidates": "Batch-record analysis, deviation triage, change-control evidence, process trending",
+      "workflow": "Batch/deviation intake → evidence reconciliation → investigation draft → quality review"
+    },
+    {
+      "id": "F12",
+      "family": "Biotech / genomics",
+      "roles": [
+        "Bioinformatician",
+        "Computational Biologist",
+        "Lab Data Steward"
+      ],
+      "skill_candidates": "Sequence-data QC, reproducible pipeline planning, pathway analysis, provenance",
+      "workflow": "Study design → data QC → pipeline execution → interpretation → reviewed report"
+    },
+    {
+      "id": "F13",
+      "family": "Healthcare operations",
+      "roles": [
+        "Clinical Operations Analyst",
+        "Quality Improvement Analyst",
+        "Medical Literature Researcher"
+      ],
+      "skill_candidates": "Workflow mapping, capacity analysis, evidence synthesis, document quality checks",
+      "workflow": "Operational question → de-identified data review → improvement proposal → clinical/operations review"
+    },
+    {
+      "id": "F14",
+      "family": "Medical devices / diagnostics",
+      "roles": [
+        "Systems Engineer",
+        "Verification Engineer",
+        "Regulatory Documentation Specialist"
+      ],
+      "skill_candidates": "Requirements traceability, verification planning, failure analysis, evidence assembly",
+      "workflow": "Need → requirements → test plan → verification evidence → specialist review"
+    },
+    {
+      "id": "F15",
+      "family": "Advertising / marketing",
+      "roles": [
+        "Marketing Strategist",
+        "SEO Analyst",
+        "Copywriter",
+        "Growth Analyst"
+      ],
+      "skill_candidates": "Positioning, copywriting, SEO audits, campaign measurement, experiment design",
+      "workflow": "Brief → market/context analysis → content/experiment draft → review → results analysis"
+    },
+    {
+      "id": "F16",
+      "family": "Brand / design agency",
+      "roles": [
+        "Brand Strategist",
+        "UX Researcher",
+        "Product Designer"
+      ],
+      "skill_candidates": "Research synthesis, creative briefs, design critique, usability-study planning",
+      "workflow": "Client brief → research → concepts → critique → approved handoff"
+    },
+    {
+      "id": "F17",
+      "family": "General manufacturing",
+      "roles": [
+        "Production Planner",
+        "Industrial Engineer",
+        "Quality Analyst"
+      ],
+      "skill_candidates": "Capacity modeling, scheduling, defect analysis, inventory checks",
+      "workflow": "Demand → resource constraints → proposed production schedule → review → variance analysis"
+    },
+    {
+      "id": "F18",
+      "family": "Semiconductors / electronics",
+      "roles": [
+        "Hardware Engineer",
+        "Verification Engineer",
+        "Test Data Analyst"
+      ],
+      "skill_candidates": "Specification checks, test-vector planning, defect triage, yield analysis",
+      "workflow": "Design requirements → verification plan → test evidence → engineering review"
+    },
+    {
+      "id": "F19",
+      "family": "Robotics / automotive / aerospace",
+      "roles": [
+        "Systems Engineer",
+        "Simulation Engineer",
+        "Reliability Analyst"
+      ],
+      "skill_candidates": "Interface analysis, simulation design, failure-mode analysis, test traceability",
+      "workflow": "System requirements → simulation/test plan → results → safety/engineering review"
+    },
+    {
+      "id": "F20",
+      "family": "Procurement / supply chain",
+      "roles": [
+        "Procurement Analyst",
+        "Supplier Risk Analyst",
+        "Demand Planner"
+      ],
+      "skill_candidates": "Supplier comparison, spend analysis, demand forecasting, inventory optimization",
+      "workflow": "Need → supplier/evidence comparison → recommendation → authorized purchasing handoff"
+    },
+    {
+      "id": "F21",
+      "family": "Logistics / warehousing",
+      "roles": [
+        "Route Planner",
+        "Warehouse Analyst",
+        "Operations Coordinator"
+      ],
+      "skill_candidates": "Routing, capacity planning, shipment exception analysis, SLA reporting",
+      "workflow": "Orders → constraints → route/warehouse plan → dispatcher review → performance report"
+    },
+    {
+      "id": "F22",
+      "family": "Human resources",
+      "roles": [
+        "HR Operations Specialist",
+        "People Analyst",
+        "Learning Designer"
+      ],
+      "skill_candidates": "Policy drafting, onboarding checklists, competency frameworks, aggregate workforce analysis",
+      "workflow": "Role or employee event → required materials → reviewed plan → completion evidence"
+    },
+    {
+      "id": "F23",
+      "family": "Recruiting firm / talent acquisition",
+      "roles": [
+        "Recruiter",
+        "Talent Researcher",
+        "Interview Coordinator"
+      ],
+      "skill_candidates": "Job analysis, job-related evaluation rubrics, candidate-evidence organization, interview planning",
+      "workflow": "Hiring brief → sourcing plan → structured evidence → interview packet → human decision"
+    },
+    {
+      "id": "F24",
+      "family": "B2B software",
+      "roles": [
+        "Product Manager",
+        "Backend Engineer",
+        "Solutions Engineer",
+        "QA Engineer"
+      ],
+      "skill_candidates": "Requirements analysis, API design, integration testing, enterprise onboarding",
+      "workflow": "Customer problem → specification → implementation → verification → customer handoff"
+    },
+    {
+      "id": "F25",
+      "family": "B2C software / mobile",
+      "roles": [
+        "Product Manager",
+        "Frontend/Mobile Engineer",
+        "UX Researcher",
+        "Growth Analyst"
+      ],
+      "skill_candidates": "User research, prototyping, accessibility checks, release analysis",
+      "workflow": "User problem → prototype → test → release proposal → behavioral measurement"
+    },
+    {
+      "id": "F26",
+      "family": "SaaS / cloud platform",
+      "roles": [
+        "Platform Engineer",
+        "SRE",
+        "Billing Operations Analyst",
+        "Customer Success Analyst"
+      ],
+      "skill_candidates": "Tenant-isolation testing, observability, incident analysis, usage reconciliation",
+      "workflow": "Service requirement → implementation → reliability/security review → release → operations"
+    },
+    {
+      "id": "F27",
+      "family": "Open-source organization",
+      "roles": [
+        "Maintainer",
+        "Community Manager",
+        "Documentation Engineer",
+        "Release Engineer"
+      ],
+      "skill_candidates": "Issue triage, contribution review, documentation, compatibility and release checks",
+      "workflow": "Issue → proposal → contribution → independent review → approved release"
+    },
+    {
+      "id": "F28",
+      "family": "Cybersecurity",
+      "roles": [
+        "Security Analyst",
+        "Application Security Engineer",
+        "Incident Analyst"
+      ],
+      "skill_candidates": "Threat modeling, authorized differential review, vulnerability triage, incident timelines",
+      "workflow": "Authorized scope → evidence collection → findings → remediation → verification"
+    },
+    {
+      "id": "F29",
+      "family": "Consulting / professional services",
+      "roles": [
+        "Engagement Manager",
+        "Business Analyst",
+        "Domain Consultant"
+      ],
+      "skill_candidates": "Problem framing, process mapping, quantitative analysis, executive reporting",
+      "workflow": "Client question → discovery → analysis → options → reviewed recommendation"
+    },
+    {
+      "id": "F30",
+      "family": "Sales / customer success / support",
+      "roles": [
+        "Account Researcher",
+        "Sales Engineer",
+        "Customer Success Analyst",
+        "Support Analyst"
+      ],
+      "skill_candidates": "Account research, proposal drafting, ticket triage, knowledge-base synthesis",
+      "workflow": "Account/ticket intake → context retrieval → proposed response → authorized action → follow-up"
+    },
+    {
+      "id": "F31",
+      "family": "Retail / e-commerce",
+      "roles": [
+        "Merchandising Analyst",
+        "E-commerce Manager",
+        "Demand Analyst"
+      ],
+      "skill_candidates": "Catalog quality, product copy, pricing scenarios, conversion and inventory analysis",
+      "workflow": "Assortment question → data checks → content/forecast proposal → review → performance report"
+    },
+    {
+      "id": "F32",
+      "family": "Real estate / property management",
+      "roles": [
+        "Market Researcher",
+        "Property Analyst",
+        "Leasing Operations Coordinator"
+      ],
+      "skill_candidates": "Comparables analysis, document abstraction, maintenance triage, portfolio reporting",
+      "workflow": "Property inquiry → evidence collection → analysis → reviewed proposal or work-order draft"
+    },
+    {
+      "id": "F33",
+      "family": "Construction / infrastructure",
+      "roles": [
+        "Project Controls Analyst",
+        "Cost Estimator",
+        "BIM Coordinator"
+      ],
+      "skill_candidates": "Estimate comparison, schedule analysis, change tracking, document coordination",
+      "workflow": "Design package → quantity/cost/schedule review → change proposal → engineer approval"
+    },
+    {
+      "id": "F34",
+      "family": "Energy / utilities",
+      "roles": [
+        "Energy Analyst",
+        "Asset Reliability Analyst",
+        "Operations Planner"
+      ],
+      "skill_candidates": "Load forecasting, asset trends, scenario analysis, maintenance prioritization",
+      "workflow": "Operational data → validated model → scenario comparison → operator review"
+    },
+    {
+      "id": "F35",
+      "family": "Climate / environmental services",
+      "roles": [
+        "Climate Analyst",
+        "Sustainability Analyst",
+        "Geospatial Analyst"
+      ],
+      "skill_candidates": "Emissions-data reconciliation, scenario analysis, GIS analysis, evidence mapping",
+      "workflow": "Reporting question → source inventory → calculation/uncertainty → expert-reviewed report"
+    },
+    {
+      "id": "F36",
+      "family": "Agriculture / food production",
+      "roles": [
+        "Agronomy Researcher",
+        "Food Quality Analyst",
+        "Supply Planner"
+      ],
+      "skill_candidates": "Trial-data analysis, traceability checks, yield scenarios, production planning",
+      "workflow": "Field/batch data → quality checks → analysis → agronomist/quality review"
+    },
+    {
+      "id": "F37",
+      "family": "Telecommunications / network operations",
+      "roles": [
+        "Network Engineer",
+        "Capacity Analyst",
+        "Service Assurance Analyst"
+      ],
+      "skill_candidates": "Configuration review, capacity modeling, fault correlation, incident reporting",
+      "workflow": "Service issue → evidence correlation → proposed fix → authorized change → verification"
+    },
+    {
+      "id": "F38",
+      "family": "Education / edtech",
+      "roles": [
+        "Curriculum Designer",
+        "Learning Researcher",
+        "Assessment Designer"
+      ],
+      "skill_candidates": "Learning-objective mapping, lesson drafting, rubric design, learning-data analysis",
+      "workflow": "Learning goal → curriculum/assessment draft → educator review → pilot → revision"
+    },
+    {
+      "id": "F39",
+      "family": "Media / publishing / journalism",
+      "roles": [
+        "Research Editor",
+        "Writer",
+        "Fact Checker",
+        "Rights Coordinator"
+      ],
+      "skill_candidates": "Source verification, editorial drafting, citation management, rights metadata",
+      "workflow": "Pitch → research → draft → fact/rights review → editorial approval"
+    },
+    {
+      "id": "F40",
+      "family": "Gaming / entertainment",
+      "roles": [
+        "Game Designer",
+        "Gameplay Engineer",
+        "Technical Artist",
+        "Playtest Analyst"
+      ],
+      "skill_candidates": "Design documentation, asset briefs, build QA, playtest synthesis",
+      "workflow": "Concept → prototype → playtest → prioritization → production handoff"
+    },
+    {
+      "id": "F41",
+      "family": "Travel / hospitality / events",
+      "roles": [
+        "Revenue Analyst",
+        "Guest Operations Coordinator",
+        "Event Planner"
+      ],
+      "skill_candidates": "Demand scenarios, itinerary/event planning, service triage, resource scheduling",
+      "workflow": "Brief/demand → options → operational plan → approval → service evaluation"
+    },
+    {
+      "id": "F42",
+      "family": "Nonprofit / social enterprise",
+      "roles": [
+        "Program Manager",
+        "Grant Writer",
+        "Impact Analyst",
+        "Volunteer Coordinator"
+      ],
+      "skill_candidates": "Proposal drafting, budget scenarios, monitoring frameworks, impact reporting",
+      "workflow": "Community need → program/grant design → review → delivery evidence → impact report"
+    },
+    {
+      "id": "F43",
+      "family": "Public sector / civic technology",
+      "roles": [
+        "Policy Researcher",
+        "Procurement Analyst",
+        "Service Designer",
+        "Program Evaluator"
+      ],
+      "skill_candidates": "Policy evidence synthesis, accessible-service design, procurement comparison, evaluation",
+      "workflow": "Public problem → evidence/options → consultation/review → approved program → evaluation"
+    }
+  ]
+}
