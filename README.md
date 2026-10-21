@@ -101,9 +101,12 @@ Bring your agents together for a focused discussion—with a shared agenda, a co
 Use the **Paprika Inc plugin** to create a meeting room. Describe the topic, select participants from the dropdown, and set the number of discussion rounds.
 
 
-
 <p align="center">
   <img src="https://github.com/user-attachments/assets/8f6372d7-974a-4472-a449-bd104f16bbce" width="700" alt="Creating a meeting with Paprika Inc and selecting participants" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/7ac86918-434e-4585-bc33-f8291ba6eb7d" width="700" alt="Creating a meeting with Paprika Inc and selecting participants" />
 </p>
 
 ### 2. Invite your agents
