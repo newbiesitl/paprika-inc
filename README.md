@@ -9,20 +9,55 @@ An open-source virtual-company framework for repository-defined AI teams, built 
 **Status: first local MVP, with live installation/native-host acceptance pending.** Inc 0.3.1 adds conversational generic role/ownership authoring, protected Git checkout and a sequential supported-native-host project-chat bootstrap with private status/resume. The package remains independently installable; enforced singleton/race handling, transfer, background orchestration and automatic adoption are future hardening.
 
 
-## Plugin Features
-### Autonumous Agent Meetings
-Invite agent and create meetings, allow agent to exchange context and knowledge, brainstorm together, discuss progress, planning milestones and many others.
+## Agent meetings with Paprika Inc
 
-Step 1. Initiate meetings using Paprika Inc Plugin
-<img width="660" height="1434" alt="IMG_8440" src="https://github.com/user-attachments/assets/08364978-b044-45b5-9e5f-aa74d32dba4e" />
-Step 2. Meeting room will serve as coordinator to invite agent to join meetings, the meeting progress will work as a parallel thread, it won't interrupt agent's on going work, 
-<img width="660" height="1434" alt="IMG_8442" src="https://github.com/user-attachments/assets/c9ab1b0b-d007-4874-84b9-3a9ef9e60c81" />
-Step 3. Agent participate in round robin fashion, user can configure meeting budgets by allowing how many rounds are allowed for this meeting, coordinator will create meeting agenda based on the configured round budget.
-<img width="660" height="1434" alt="IMG_8443" src="https://github.com/user-attachments/assets/65c6b5df-f883-495c-8b80-e5c4282dd584" />
+Bring your agents together for a focused discussion—with a shared agenda, a configurable round budget, and meeting notes that capture the results.
 
-<img width="716" height="515" alt="image" src="https://github.com/user-attachments/assets/dbfced77-a8ad-49d9-a714-b31a053018ca" />
+### 1. Create a meeting
 
-<img width="700" height="649" alt="image" src="https://github.com/user-attachments/assets/2a001b1f-c238-4e05-a7c5-6bf52347602d" />
+Use the **Paprika Inc plugin** to create a meeting room. Describe the topic, select participants from the dropdown, and set the number of discussion rounds.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/08364978-b044-45b5-9e5f-aa74d32dba4e" width="330" alt="Creating a meeting with Paprika Inc and selecting participants" />
+</p>
+
+### 2. Invite your agents
+
+The meeting chat acts as the coordinator, inviting participants through Paprika Inc messaging. Agents join from their existing chats, while the meeting room keeps the shared discussion organized.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/c9ab1b0b-d007-4874-84b9-3a9ef9e60c81" width="330" alt="An agent receiving and accepting a meeting invitation" />
+</p>
+
+### 3. Discuss within a round budget
+
+Meetings follow a **round-based protocol**. Each participant reads the shared brief or previous round, then submits comments, questions, answers, or an explicit pass.
+
+Once everyone has submitted, the complete round is published and the next begins. Participants can address specific colleagues while keeping the discussion visible to the whole room.
+
+The coordinator uses the configured budget to frame the agenda and reminds participants when it is time to wrap up. The meeting closes automatically when all rounds are complete.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/65c6b5df-f883-495c-8b80-e5c4282dd584" width="330" alt="An agent contributing to a meeting within the configured round budget" />
+</p>
+
+### 4. Capture the discussion
+
+The private meeting board keeps published contributions together. The coordinator records conclusions, decisions, and unresolved questions in the meeting notes.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/dbfced77-a8ad-49d9-a714-b31a053018ca" width="700" alt="Meeting notes displayed on the private board" />
+</p>
+
+### 5. Leave with a clear outcome
+
+At the end of the meeting, the coordinator prepares a summary with conclusions, action items, and open questions, and notifies participants that the meeting has closed.
+
+Curated notes and summaries can be exported to the repository’s `meetings/` folder for future reference.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/2a001b1f-c238-4e05-a7c5-6bf52347602d" width="700" alt="Meeting summary showing conclusions, action items, and unresolved questions" />
+</p>
 
 
 ## What we are building
