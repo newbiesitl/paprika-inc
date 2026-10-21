@@ -2,12 +2,13 @@
 
 This is the portable definition of Paprika Inc's own development team. It is one consumer of the future company engine, which must also work with other repositories and rosters. The engine must not hard-code this roster.
 
-**Definition status: bootstrap candidate, version 0.4.2.** These files create no live agents, perform no onboarding, and do not replace existing human-assigned chat responsibilities. Runtime lifecycle enforcement is not implemented.
+**Definition status: bootstrap candidate, version 0.5.0.** These files create no live agents, perform no onboarding, and do not replace existing human-assigned chat responsibilities. Runtime lifecycle enforcement is not implemented.
 
 | Stable role ID | Contract | Primary outcome |
 | --- | --- | --- |
 | `chief-architect` | [Chief Architect](roles/chief-architect/agent.md) | Coherent design, scope, interfaces, and acceptance gates |
 | `backend-dev` | [Backend Dev](roles/backend-dev/agent.md) | Reliable company engine, host adapters, and service integration |
+| `agent-systems-engineer` | [Agent Systems Engineer](roles/agent-systems-engineer/agent.md) | Candidate harness roadmap owner: knowledge/context methods, experiments and measured outcomes |
 | `frontend-dev` | [Frontend Dev](roles/frontend-dev/agent.md) | Clear setup, status, and recovery interactions |
 | `scientific-researcher` | [Scientific Researcher](roles/scientific-researcher/agent.md) | Traceable research and evidence appraisal |
 | `qa` | [QA Engineer](roles/qa/agent.md) | Independent validation and release-readiness evidence |
@@ -15,6 +16,19 @@ This is the portable definition of Paprika Inc's own development team. It is one
 | `release-engineer` | [Release Engineer](roles/release-engineer/agent.md) | Reviewed merge order, reproducible builds and authorized release execution |
 
 [company.json](company.json) is the machine-readable index; individual `agent.md` files are the canonical job descriptions. [The constitution](CONSTITUTION.md) defines shared boundaries. Assignment ownership belongs to a logical role, not a machine or native chat ID.
+
+## Harness roadmap candidate
+
+Version 0.5.0 proposes Agent Systems Engineer as an eighth persistent role. The
+[gated harness roadmap](../docs/roadmap/AGENT-HARNESS.md) and
+[A/B evaluation framework](../docs/evaluation/README.md) define its initial
+workstream, interfaces and evidence gates. This source addition has not staffed
+or adopted the role, started an experiment or promoted a generic catalog persona.
+
+The candidate [model preferences](model-preferences.json) give it the same
+proposed model/effort pair as Backend Dev because the loader requires a complete
+roster. Existing role defaults remain unchanged. Review this new pair before
+adoption; its presence does not change any chat or prove host availability.
 
 ## Bootstrap today
 
@@ -61,4 +75,4 @@ Use the approved version to develop a candidate successor through the normal iss
 
 Public Git contains portable contracts and safe design knowledge. Private deployment state contains enrollment, actual grants, host/thread bindings, operation journals, and sensitive knowledge. The public `company_id` is a logical name; enrollment must also bind the actual repository identity. A fork is not the original company's runtime.
 
-The owner-approved steady roster replaces Front Desk with Coordinator and keeps Data Engineer on demand. The former [Front Desk](roles/front-desk/agent.md) and [Data Engineer](roles/data-engineer/agent.md) contracts remain available as historical/specialist definitions, outside the persistent roster. Preserve their unresolved work during handoff. See [the refresh proposal](../docs/proposals/ROLE-REFRESH.md). The canonical ownership map includes research, QA, coordination and release deliverables; it is not a record of live permissions.
+The previously owner-approved seven-role roster replaced Front Desk with Coordinator and kept Data Engineer on demand. This candidate proposes adding Agent Systems Engineer; source publication does not adopt that eighth role. The former [Front Desk](roles/front-desk/agent.md) and [Data Engineer](roles/data-engineer/agent.md) contracts remain available as historical/specialist definitions, outside the persistent roster. Preserve their unresolved work during handoff. See [the refresh proposal](../docs/proposals/ROLE-REFRESH.md). The canonical ownership map includes research, QA, coordination and release deliverables; it is not a record of live permissions.

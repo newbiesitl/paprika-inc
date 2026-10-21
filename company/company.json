@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "definition_version": "0.4.2",
+  "definition_version": "0.5.0",
   "status": "bootstrap_candidate",
   "company_id": "paprika-inc-development",
   "repository": "newbiesitl/paprika-inc",
@@ -21,6 +21,14 @@
       "id": "backend-dev",
       "version": "0.2.0",
       "definition": "company/roles/backend-dev/agent.md",
+      "skill_sets": [
+        "engineering-core"
+      ]
+    },
+    {
+      "id": "agent-systems-engineer",
+      "version": "0.1.0",
+      "definition": "company/roles/agent-systems-engineer/agent.md",
       "skill_sets": [
         "engineering-core"
       ]

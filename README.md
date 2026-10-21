@@ -542,6 +542,7 @@ The preparation command reports the generated archive path. Validate that archiv
 | [Integration registry](docs/architecture/INTEGRATION-REGISTRY.md) | Compatibility declarations and future integration boundaries |
 | [Governance](company/CONSTITUTION.md) and [self-development](docs/architecture/SELF-DEVELOPMENT.md) | Review, authority and adoption procedures |
 | [Original proposal](docs/proposals/PAPRIKA-VIRTUAL-COMPANY.md) and [provenance](docs/proposals/MIGRATION.md) | Earlier design material and its migration history |
+| [Agent harness roadmap](docs/roadmap/AGENT-HARNESS.md) and [A/B framework](docs/evaluation/README.md) | Proposed knowledge/context, routing and evaluation work with explicit evidence gates |
 | [Development tracking](docs/DEVELOPMENT.md) | Features, tasks, milestones and evidence |
 | [Brand assets](assets/README.md) | The approved logo and its generation prompt |
 
