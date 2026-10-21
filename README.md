@@ -86,10 +86,6 @@ Create a meeting with a topic, participants and a round budget. Existing agent c
 **Choose participants and invite their existing chats.**
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/7ac86918-434e-4585-bc33-f8291ba6eb7d" width="700" alt="Selecting participants for a Paprika Inc meeting" />
-</p>
-
-<p align="center">
   <img src="https://github.com/user-attachments/assets/9986cbfc-fe41-4f8e-bc55-40d9b319e66a" width="700" alt="An agent receiving and accepting a meeting invitation" />
 </p>
 
