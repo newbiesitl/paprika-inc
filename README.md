@@ -119,7 +119,39 @@ Meetings require a compatible private Paprika service. See the [meeting pilot an
 
 The first target is a saved **local Codex project on one selected machine**.
 
-1. **Install the Paprika Inc kit** through your host's supported plugin installation flow. Follow the [installation workflow](plugins/paprika-inc/skills/setup-paprika-inc/references/mvp-workflow.md#installation-and-existing-service-binding); developers can [prepare the kit from source](#work-from-source).
+1. **Install the Paprika Inc kit.** Use your host’s supported plugin installation flow and follow the [installation workflow](https://github.com/newbiesitl/paprika-inc/blob/main/plugins/paprika-inc/skills/setup-paprika-inc/references/mvp-workflow.md#installation-and-existing-service-binding); developers can [prepare the kit from source](https://github.com/newbiesitl/paprika-inc#work-from-source).
+
+   **Alternatively, install through a Codex conversation.** Open a session with Plugin Creator available and paste the prompt below. Paprika Inc and Paprika Messenger do not need to be installed beforehand.
+
+   ```text
+   Install Paprika Inc from https://github.com/newbiesitl/paprika-inc
+   as one private personal account plugin for ChatGPT Work, mobile
+   and my other devices.
+
+   Read its setup instructions directly from the repository and prepare
+   the current standalone kit. Record the source revision and version.
+
+   Check my existing plugins and private Paprika services:
+   - Messenger installed: preserve it and reuse its verified compatible
+     Paprika Service/App binding, OAuth and data.
+   - Messenger absent, service present: reuse that service directly.
+     Installing the Messenger plugin is not required.
+   - Neither present: follow the documented service setup workflow at
+     https://github.com/newbiesitl/paprika-messenger to provision one
+     private service and bind Inc, without installing Messenger solely
+     as a dependency.
+
+   Resolve unavailable discovery before creating another service.
+
+   Merge the verified App binding into one standalone Inc ZIP and save
+   it through Plugin Creator. Preserve both Inc skills and its navy logo
+   and composer icon. Update an existing personal Inc plugin rather
+   than creating a duplicate.
+
+   Return the plugin link and verify version, personal account scope,
+   installation and authenticated tools. Report untested clients and
+   unavailable capabilities as pending.
+   ```
 2. **Open your repository as a local Codex project** and choose an existing chat for setup. Start with:
 
    > $setup-paprika-inc — Help me define a team for this project. Suggest roles, responsibilities, reviewers and relevant skill packs, then show me the proposed configuration.
