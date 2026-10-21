@@ -1,4 +1,4 @@
-#Paprika Inc
+# Paprika Inc
 
 <p align="center">
   <img src="assets/paprika-inc-logo-navy-v1.png" alt="Paprika Inc — Paprika in a navy office suit" width="360" />
