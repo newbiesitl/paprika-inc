@@ -138,12 +138,14 @@ Native onboarding can use the host's own tools without a separate Messenger plug
 Paprika Inc builds on **Paprika Messenger**, adds reusable role and collaboration workflows, and brings in selected external skills. The host provides the agents and their execution tools.
 
 ```mermaid
-flowchart TD
-    Human["You: goals and decisions"] --> Inc["Paprika Inc<br/>Roles, ownership, onboarding and collaboration"]
-    Inc --> Host["Codex host<br/>Agent chats and available tools"]
-    Inc --> Messenger["Paprika Messenger<br/>Messages, receipts and meeting state"]
-    Host --> Skills["Selected skills<br/>Research, engineering and other workflows"]
-    Host --> Knowledge["Project knowledge<br/>Code, documents, decisions and evidence"]
+flowchart LR
+    accTitle: Paprika Inc architecture
+    accDescr: Human goals guide Paprika Inc roles and collaboration. Inc uses the Codex host for agent chats and tools, and Paprika Messenger for communication. Agents draw on selected skills and project knowledge.
+    Human["You<br/>Goals and decisions"] --> Inc["Paprika Inc<br/>Roles and collaboration"]
+    Inc --> Host["Codex host<br/>Chats and tools"]
+    Inc --> Messenger["Paprika Messenger<br/>Communication"]
+    Host --> Skills["Selected skills<br/>Research and engineering"]
+    Host --> Knowledge["Project knowledge<br/>Code, docs and evidence"]
 ```
 
 | Component | What it contributes |
