@@ -8,6 +8,23 @@ An open-source virtual-company framework for repository-defined AI teams, built 
 
 **Status: first local MVP, with live installation/native-host acceptance pending.** Inc 0.3.1 adds conversational generic role/ownership authoring, protected Git checkout and a sequential supported-native-host project-chat bootstrap with private status/resume. The package remains independently installable; enforced singleton/race handling, transfer, background orchestration and automatic adoption are future hardening.
 
+
+## Plugin Features
+### Autonumous Agent Meetings
+Invite agent and create meetings, allow agent to exchange context and knowledge, brainstorm together, discuss progress, planning milestones and many others.
+
+Step 1. Initiate meetings using Paprika Inc Plugin
+<img width="660" height="1434" alt="IMG_8440" src="https://github.com/user-attachments/assets/08364978-b044-45b5-9e5f-aa74d32dba4e" />
+Step 2. Meeting room will serve as coordinator to invite agent to join meetings, the meeting progress will work as a parallel thread, it won't interrupt agent's on going work, 
+<img width="660" height="1434" alt="IMG_8442" src="https://github.com/user-attachments/assets/c9ab1b0b-d007-4874-84b9-3a9ef9e60c81" />
+Step 3. Agent participate in round robin fashion, user can configure meeting budgets by allowing how many rounds are allowed for this meeting, coordinator will create meeting agenda based on the configured round budget.
+<img width="660" height="1434" alt="IMG_8443" src="https://github.com/user-attachments/assets/65c6b5df-f883-495c-8b80-e5c4282dd584" />
+
+<img width="716" height="515" alt="image" src="https://github.com/user-attachments/assets/dbfced77-a8ad-49d9-a714-b31a053018ca" />
+
+<img width="700" height="649" alt="image" src="https://github.com/user-attachments/assets/2a001b1f-c238-4e05-a7c5-6bf52347602d" />
+
+
 ## What we are building
 
 Paprika Inc will reconstruct a company from reviewed role definitions, assignments, and compact working knowledge. Its first target is persistent local Codex chats on one selected machine, with separately verified macOS and Windows support. Roles own work by stable logical ID; native chat identities stay in private runtime state.
