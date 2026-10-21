@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "definition_version": "0.4.2",
+  "definition_version": "0.4.3",
   "status": "bootstrap_candidate",
   "company_id": "paprika-inc-development",
   "repository": "newbiesitl/paprika-inc",
@@ -39,6 +39,14 @@
       "definition": "company/roles/scientific-researcher/agent.md",
       "skill_sets": [
         "research-core",
+        "engineering-core"
+      ]
+    },
+    {
+      "id": "agent-systems-engineer",
+      "version": "0.1.0",
+      "definition": "company/roles/agent-systems-engineer/agent.md",
+      "skill_sets": [
         "engineering-core"
       ]
     },

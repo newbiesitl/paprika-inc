@@ -61,6 +61,15 @@
         "backend-dev",
         "qa"
       ]
+    },
+    {
+      "path": "docs/harness/",
+      "owner_role": "agent-systems-engineer",
+      "reviewer_roles": [
+        "chief-architect",
+        "scientific-researcher",
+        "qa"
+      ]
     }
   ]
 }

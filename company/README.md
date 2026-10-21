@@ -2,7 +2,7 @@
 
 This is the portable definition of Paprika Inc's own development team. It is one consumer of the future company engine, which must also work with other repositories and rosters. The engine must not hard-code this roster.
 
-**Definition status: bootstrap candidate, version 0.4.2.** These files create no live agents, perform no onboarding, and do not replace existing human-assigned chat responsibilities. Runtime lifecycle enforcement is not implemented.
+**Definition status: bootstrap candidate, version 0.4.3.** These files create no live agents, perform no onboarding, and do not replace existing human-assigned chat responsibilities. Runtime lifecycle enforcement is not implemented.
 
 | Stable role ID | Contract | Primary outcome |
 | --- | --- | --- |
@@ -10,6 +10,7 @@ This is the portable definition of Paprika Inc's own development team. It is one
 | `backend-dev` | [Backend Dev](roles/backend-dev/agent.md) | Reliable company engine, host adapters, and service integration |
 | `frontend-dev` | [Frontend Dev](roles/frontend-dev/agent.md) | Clear setup, status, and recovery interactions |
 | `scientific-researcher` | [Scientific Researcher](roles/scientific-researcher/agent.md) | Traceable research and evidence appraisal |
+| `agent-systems-engineer` | [Agent Systems Engineer](roles/agent-systems-engineer/agent.md) | Executable harness roadmap, shared knowledge/context methods and measured experiments |
 | `qa` | [QA Engineer](roles/qa/agent.md) | Independent validation and release-readiness evidence |
 | `coordinator` | [Coordinator](roles/coordinator/agent.md) | Human intake, owner selection and complete handoffs |
 | `release-engineer` | [Release Engineer](roles/release-engineer/agent.md) | Reviewed merge order, reproducible builds and authorized release execution |
