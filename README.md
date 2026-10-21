@@ -23,6 +23,20 @@ The Paprika inc will investigate your repository, and suggest company type and r
   <img src="https://github.com/user-attachments/assets/836a4cc3-e24b-44cc-ae79-e79adec042e3" width="700" alt="Company initialization" />
 </p>
 
+### Intelligent Role suggestions and Automated Onboarding
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0d283edf-96b2-4013-b107-4ad7e8e02ee2" width="700" alt="Role creation window" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/5b5e4c9d-70da-4572-9036-13fe236599b3" width="700" alt="Coordinator onboarding screen" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/92dd9316-075a-4d05-a73d-27d48dd3c14f" width="700" alt="Coordinator onboarding finish screen" />
+</p>
+
 ## What we are building
 
 Paprika Inc will reconstruct a company from reviewed role definitions, assignments, and compact working knowledge. Its first target is persistent local Codex chats on one selected machine, with separately verified macOS and Windows support. Roles own work by stable logical ID; native chat identities stay in private runtime state.
