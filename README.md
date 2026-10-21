@@ -1,4 +1,3 @@
-<img width="748" height="730" alt="image" src="https://github.com/user-attachments/assets/744b436d-28e6-435e-8bb6-e6ff0e7c660a" /># Paprika Inc
 
 <p align="center">
   <img src="assets/paprika-inc-logo-navy-v1.png" alt="Paprika Inc — Paprika in a navy office suit" width="360" />
