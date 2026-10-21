@@ -132,7 +132,6 @@ Curated notes and summaries can be exported to the repository’s `meetings/` fo
   <img src="https://github.com/user-attachments/assets/2a001b1f-c238-4e05-a7c5-6bf52347602d" width="700" alt="Meeting summary showing conclusions, action items, and unresolved questions" />
 </p>
 
-
 ## Try the implemented commands
 
 The [meeting room pilot](docs/MEETING-PILOT.md) adds Inc delivery helpers and notes export for the round-based private-board service candidate. Follow the [meeting procedure](plugins/paprika-inc/skills/paprika-inc/references/meetings.md) for its tools and commands.
