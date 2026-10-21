@@ -176,21 +176,23 @@ We want Paprika Inc to become an **optimized agent harness framework**, with eac
 The following illustration describes the **planned operating cycle**, building on today's roles, skill packs, handoffs and checkpoints.
 
 ```mermaid
-flowchart TD
-    Task["1. Understand the task<br/>Goal, constraints and success criteria"]
-    Route["2. Select a specialist<br/>Match responsibilities, knowledge and skills"]
-    Context["3. Load focused context<br/>Relevant sources and skill instructions"]
-    Execute["4. Execute<br/>Use the selected skills and available tools"]
-    Validate["5. Validate<br/>Check evidence, tests or independent review"]
-    Preserve["6. Preserve reusable knowledge<br/>Record validated findings and source links"]
-    Knowledge[("Role-owned knowledge and skill index")]
+flowchart LR
+    accTitle: Planned task-routing cycle
+    accDescr: Understand the task, select a specialist, load focused context, execute, validate and preserve reusable knowledge. Validation can send work back for more context. Preserved knowledge improves future routing and retrieval.
+    Task["1. Understand<br/>the task"]
+    Route["2. Select a<br/>specialist"]
+    Context["3. Load focused<br/>context"]
+    Execute["4. Execute"]
+    Validate["5. Validate"]
+    Preserve["6. Preserve reusable<br/>knowledge"]
+    Knowledge[("Role knowledge<br/>and skill index")]
 
     Task --> Route --> Context --> Execute --> Validate
-    Validate -->|"Validated findings"| Preserve
-    Validate -->|"Needs more work"| Context
+    Validate -->|"Pass"| Preserve
+    Validate -->|"Rework"| Context
     Preserve --> Knowledge
-    Knowledge -.->|"Guide future task routing"| Route
-    Knowledge -.->|"Retrieve relevant context"| Context
+    Knowledge -.->|"Route future tasks"| Route
+    Knowledge -.->|"Retrieve"| Context
 ```
 
 For example, a repository task could be routed to a specialist whose knowledge index points to the relevant subsystem, decisions and tests. That agent would read the needed sources and use an appropriate skill, then preserve any validated finding for the next task.
