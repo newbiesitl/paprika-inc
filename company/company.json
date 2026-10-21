@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "definition_version": "0.4.3",
+  "definition_version": "0.5.0",
   "status": "bootstrap_candidate",
   "company_id": "paprika-inc-development",
   "repository": "newbiesitl/paprika-inc",
@@ -26,6 +26,14 @@
       ]
     },
     {
+      "id": "agent-systems-engineer",
+      "version": "0.1.0",
+      "definition": "company/roles/agent-systems-engineer/agent.md",
+      "skill_sets": [
+        "engineering-core"
+      ]
+    },
+    {
       "id": "frontend-dev",
       "version": "0.2.0",
       "definition": "company/roles/frontend-dev/agent.md",
@@ -39,14 +47,6 @@
       "definition": "company/roles/scientific-researcher/agent.md",
       "skill_sets": [
         "research-core",
-        "engineering-core"
-      ]
-    },
-    {
-      "id": "agent-systems-engineer",
-      "version": "0.1.0",
-      "definition": "company/roles/agent-systems-engineer/agent.md",
-      "skill_sets": [
         "engineering-core"
       ]
     },
