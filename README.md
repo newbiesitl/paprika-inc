@@ -1,3 +1,4 @@
+#Paprika Inc
 
 <p align="center">
   <img src="assets/paprika-inc-logo-navy-v1.png" alt="Paprika Inc — Paprika in a navy office suit" width="360" />
@@ -11,7 +12,7 @@ An open-source virtual-company framework for repository-defined AI teams, built 
 ## Quick Overview
 
 ### Smart initialization
-The Paprika inc will investigate your repository, and suggest company type and roles using agent skills and knowledge. 
+The Paprika inc will investigate your repository, and suggest company type and roles using agent skills and knowledge.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/429f3d42-35fe-4241-8e7d-24ae98aabd3e" width="700" alt="Company initialization" />
