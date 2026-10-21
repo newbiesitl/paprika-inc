@@ -1,4 +1,4 @@
-# Paprika Inc
+#Paprika Inc
 
 <p align="center">
   <img src="assets/paprika-inc-logo-navy-v1.png" alt="Paprika Inc — Paprika in a navy office suit" width="360" />
@@ -9,6 +9,32 @@ An open-source virtual-company framework for repository-defined AI teams, built 
 **Status: first local MVP, with live installation/native-host acceptance pending.** Inc 0.3.1 adds conversational generic role/ownership authoring, protected Git checkout and a sequential supported-native-host project-chat bootstrap with private status/resume. The package remains independently installable; enforced singleton/race handling, transfer, background orchestration and automatic adoption are future hardening.
 
 
+## Quick Overview
+
+### Smart initialization
+The Paprika inc will investigate your repository, and suggest company type and roles using agent skills and knowledge.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/429f3d42-35fe-4241-8e7d-24ae98aabd3e" width="700" alt="Company initialization" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/836a4cc3-e24b-44cc-ae79-e79adec042e3" width="700" alt="Company initialization" />
+</p>
+
+### Intelligent Role suggestions and Automated Onboarding
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0d283edf-96b2-4013-b107-4ad7e8e02ee2" width="700" alt="Role creation window" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/5b5e4c9d-70da-4572-9036-13fe236599b3" width="700" alt="Coordinator onboarding screen" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/92dd9316-075a-4d05-a73d-27d48dd3c14f" width="700" alt="Coordinator onboarding finish screen" />
+</p>
 
 ## What we are building
 
@@ -91,9 +117,12 @@ Bring your agents together for a focused discussion—with a shared agenda, a co
 Use the **Paprika Inc plugin** to create a meeting room. Describe the topic, select participants from the dropdown, and set the number of discussion rounds.
 
 
-
 <p align="center">
   <img src="https://github.com/user-attachments/assets/8f6372d7-974a-4472-a449-bd104f16bbce" width="700" alt="Creating a meeting with Paprika Inc and selecting participants" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/7ac86918-434e-4585-bc33-f8291ba6eb7d" width="700" alt="Creating a meeting with Paprika Inc and selecting participants" />
 </p>
 
 ### 2. Invite your agents
@@ -127,10 +156,10 @@ The coordinator uses the configured budget to frame the agenda and reminds parti
 
 The private meeting board keeps published contributions together. The coordinator records conclusions, decisions, and unresolved questions in the meeting notes.
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/b9c68480-d2fb-4e49-bc93-6c0cf01da7a7" width="700" alt="Meeting notes displayed on the private board" />
+  <img src="https://github.com/user-attachments/assets/b9c68480-d2fb-4e49-bc93-6c0cf01da7a7" width="700"  />
 </p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/dbfced77-a8ad-49d9-a714-b31a053018ca" width="700" alt="Meeting notes displayed on the private board" />
+  <img src="https://github.com/user-attachments/assets/dbfced77-a8ad-49d9-a714-b31a053018ca" width="700"  />
 </p>
 
 ### 5. Leave with a clear outcome
