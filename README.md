@@ -106,9 +106,7 @@ The meeting chat acts as the coordinator, inviting participants through Paprika 
 </p>
 
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/83f232b3-cfba-4e65-9777-537394aed73f" width="700" alt="An agent receiving and accepting a meeting invitation" />
-</p>
+
 
 ### 3. Discuss within a round budget
 
@@ -119,18 +117,18 @@ Once everyone has submitted, the complete round is published and the next begins
 The coordinator uses the configured budget to frame the agenda and reminds participants when it is time to wrap up. The meeting closes automatically when all rounds are complete.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/ae47b3a1-0e95-4f55-b011-bf1181ccbe2" width="700" alt="An agent contributing to a meeting within the configured round budget" />
+  <img src="https://github.com/user-attachments/assets/83f232b3-cfba-4e65-9777-537394aed73f" width="700" alt="An agent contributing to a meeting within the configured round budget" />
 </p>
 
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/927ef1ed-62cd-4ca5-912a-e5b8564d7168" width="700" alt="An agent contributing to a meeting within the configured round budget" />
-</p>
+
 
 ### 4. Capture the discussion
 
 The private meeting board keeps published contributions together. The coordinator records conclusions, decisions, and unresolved questions in the meeting notes.
-
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/b9c68480-d2fb-4e49-bc93-6c0cf01da7a7" width="700" alt="Meeting notes displayed on the private board" />
+</p>
 <p align="center">
   <img src="https://github.com/user-attachments/assets/dbfced77-a8ad-49d9-a714-b31a053018ca" width="700" alt="Meeting notes displayed on the private board" />
 </p>
