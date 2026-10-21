@@ -29,6 +29,22 @@ The owner has now requested a smaller **local MVP** in [work item #4](https://gi
 
 M1–M5 are proposed future work, not activated assignments or completed functionality. Start with feasibility before committing to a lifecycle architecture that the host cannot support.
 
+## Agent harness roadmap
+
+The [agent harness roadmap](roadmap/AGENT-HARNESS.md) records the October 21, 2026
+agreement: shared knowledge/context methods, focused routing and measured
+outcomes, beginning with a bounded repository bug-fix workflow. Its 30/60/90-day
+windows start after staffing/scope approval and use evidence gates. M1–M5 above
+remain separate lifecycle proposals.
+
+The candidate [Agent Systems Engineer](../company/roles/agent-systems-engineer/agent.md)
+owns the roadmap and evaluation package. Backend Dev retains separately assigned
+runner/telemetry and shared-runtime implementation. The [A/B framework](evaluation/README.md),
+[E001 planning record](evaluation/E001.json) and [report template](evaluation/REPORT-TEMPLATE.md)
+make the first exploratory comparison reviewable; they are not an implemented
+runner, funded study, adopted role or measured optimization. Use existing issues
+and PRs for scoped implementation assignments and independent acceptance.
+
 ## Ownership and reporting
 
 Chief Architect decomposes approved outcomes and resolves interfaces. Backend Dev owns runtime delivery, Frontend Dev owns interactions, Data Engineer owns state semantics, and Coordinator handles attributed intake and authorized status reporting. Cross-role review follows their [contracts](../company/README.md).

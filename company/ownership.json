@@ -61,6 +61,23 @@
         "backend-dev",
         "qa"
       ]
+    },
+    {
+      "path": "docs/roadmap/",
+      "owner_role": "agent-systems-engineer",
+      "reviewer_roles": [
+        "chief-architect",
+        "scientific-researcher"
+      ]
+    },
+    {
+      "path": "docs/evaluation/",
+      "owner_role": "agent-systems-engineer",
+      "reviewer_roles": [
+        "scientific-researcher",
+        "chief-architect",
+        "qa"
+      ]
     }
   ]
 }
