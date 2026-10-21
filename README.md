@@ -180,7 +180,7 @@ A virtual company is a configurable operating model and our first evaluation env
 | Current foundation | Planned capability to build and evaluate |
 | --- | --- |
 | Role contracts, ownership and selected project-local skill packs | Task-aware selection of specialists, knowledge and skills |
-| Repository documents, evidence and resumable work checkpoints | Role-owned knowledge indexes, structured distillation and freshness checks |
+| Repository documents, evidence and resumable work checkpoints | Repository scanning, source-linked knowledge indexes, structured distillation and freshness checks |
 | Native handoffs and private meeting workflows | Managed collaboration across more tools and agent environments |
 | Validation procedures and recorded task evidence | Reproducible A/B comparisons of total token use, task performance and quality |
 
@@ -218,15 +218,23 @@ Start with a curated source and skill index and focused context packages. A tree
 
 Domain specialists would own their knowledge and skills. The shared harness would provide common navigation, provenance, context packaging and recovery methods. Focused routing should complement the host's existing skill-discovery behavior and reduce repeated exploration and irrelevant context.
 
+### Index an existing repository for agent use
+
+We want you to be able to **point Paprika Inc at an existing repository and build an agent knowledge index**, without reorganizing its source. A planned scanner would map modules, entry points, documentation, tests and configuration, then link that map to relevant specialist roles and skills.
+
+The workflow would be **scan → build a reviewable index → retrieve focused context → refresh as sources change**. Agents could navigate from a task or concept to the relevant source locations, tests and skill instructions, reducing repeated repository exploration. Index entries would retain source revisions, ownership and freshness; original sources would remain available for verification.
+
+Start with a bounded scan and a simple module/source index. Add richer symbol and dependency relationships as needed, then incremental updates for changed, renamed or deleted sources. Measure scan, index construction, retrieval and maintenance costs alongside task outcomes. Track the proposed capability and acceptance criteria in [repository scanning and indexing](https://github.com/newbiesitl/paprika-inc/issues/47).
+
 ## Planned roadmap
 
 These are planning windows beginning **after staffing and pilot scope are approved**. Progress depends on the exit evidence, rather than the calendar; they are not promised release dates.
 
 | Phase | Planned work | Evidence needed to proceed |
 | --- | --- | --- |
-| **Days 0–30: establish a baseline** | Define task, context, knowledge and trace formats; curate a source/skill index; verify usage measurement; prepare the pilot protocol and baseline. Include budget, stop and uncertain-action handling from the first workflow. | A task can be interrupted and resumed without losing unresolved work or duplicating an action. Independent review covers the task set, grading criteria, telemetry coverage and experiment protocol. |
-| **Days 31–60: test focused routing and context** | Compare simple capability-based role routing and focused context with the frozen baseline on held-out tasks. Keep model settings fixed and account for all-agent overhead. | A reproducible exploratory report covering quality, tokens, cost, latency and rework. Size a separate confirmatory study if the pilot warrants it. |
-| **Days 61–90: harden a portable pilot** | Test stale or conflicting knowledge, cancellation, partial failure, duplicate or uncertain delivery, and recovery. Demonstrate a second portable company configuration. | Independent acceptance and a recommendation for limited rollout or further work, with recovery and rollback criteria. |
+| **Days 0–30: establish a baseline** | Define task, context, knowledge and trace formats; prototype a bounded repository scan and reviewable source/skill index; verify usage measurement and prepare the pilot protocol. Include budget, stop and uncertain-action handling. | A task can be interrupted and resumed without losing unresolved work or duplicating an action. Independent review covers scan scope, source references, the task set, grading criteria, telemetry coverage and protocol. |
+| **Days 31–60: test focused routing and context** | Compare index-guided context retrieval and simple capability-based role routing with the frozen baseline on held-out tasks. Keep model settings fixed; count scanning, indexing, retrieval and all-agent overhead. | A reproducible exploratory report covering retrieval relevance, task quality, tokens, cost, latency and rework. Size a separate confirmatory study if the pilot warrants it. |
+| **Days 61–90: harden a portable pilot** | Validate incremental refresh for changed, renamed or deleted sources. Test stale/conflicting knowledge, cancellation, partial failure, duplicate or uncertain delivery, and recovery. Demonstrate a second repository/company configuration. | Independent acceptance of index freshness, recovery and portability, plus a recommendation for limited rollout or further work with rollback criteria. |
 
 Later expansion to more domains, hosts, integrations, adaptive model routing or richer knowledge graphs would follow demonstrated benefits and regression checks.
 
@@ -243,7 +251,7 @@ Follow [development tracking](docs/DEVELOPMENT.md) and the [industry and integra
 | **A — baseline** | The workflow with the new knowledge-management and routing optimizations disabled. |
 | **B — optimized candidate** | The same workflow with role-owned knowledge management, focused context and task routing enabled. |
 
-Compare pinned commits or release builds from a common base and audit the differences. Hold task sources, role definitions, model/version/effort, tools, host, budgets and grading criteria constant. B may derive an index from the same approved sources, with its construction counted in the cost. If unrelated changes remain between branches, report a **comparison of those releases**, rather than attributing the result to the optimization alone.
+Compare pinned commits or release builds from a common base and audit the differences. Hold task sources, role definitions, model/version/effort, tools, host, budgets and grading criteria constant. B may derive an index from the same approved sources, with scanning, index construction and upkeep counted in the cost. If unrelated changes remain between branches, report a **comparison of those releases**, rather than attributing the result to the optimization alone.
 
 Use separate chats, workspaces and knowledge stores for each arm. Freeze the candidate and pre-test knowledge after development, reset independent trials, keep held-out solutions out of the index, and randomize or counterbalance A/B order. Grade results independently, blind to the arm where practical.
 
@@ -252,7 +260,7 @@ Use separate chats, workspaces and knowledge stores for each arm. Freeze the can
 Judge the result on three dimensions:
 
 - **Quality:** independently accepted tasks, correctness, defects, rework and recovery behavior.
-- **Efficiency:** total tokens and cost per accepted task, including every participating agent, setup, index upkeep, routing, retrieval, reviews, retries, recovery and failed or cancelled attempts.
+- **Efficiency:** total tokens and cost per accepted task, including every participating agent, setup, repository scanning, index construction/upkeep, routing, retrieval, reviews, retries, recovery and failed or cancelled attempts.
 - **Experience:** task latency and completion within the same resource limits.
 
 Complete, supported usage measurement is a prerequisite for a **total-token savings claim**. Native-host coverage must be verified; missing usage stays unknown. If coverage is incomplete, report quality, latency and the measurement gap. An instrumented API experiment would need separate approval and would represent a different execution environment.
