@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "catalog": {
-    "version": "0.1.0",
-    "sha256": "5d82d3355155a6e3e15dfc5d697fea18878a8270da35f616f25c6ee52eaf46a0"
+    "version": "0.2.0",
+    "sha256": "23b590be16cca2f29aeda495af7f0cebe60bfe539b1fb55f5fb267ff41a1d714"
   },
   "preset_id": "software-studio",
   "structure_id": "lean-team",

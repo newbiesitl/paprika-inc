@@ -19,6 +19,7 @@ const software = JSON.parse(
   ),
 );
 const catalog = { ...raw, catalog: software.catalog };
+catalog.entries.push({ kind: "preset", id: "planned-company-fixture", label: "Planned fixture company", availability: "planned", data: {} });
 const setup = async (call) => {
   const model = new CatalogModel({
     call: call ?? (async () => clone(catalog)),
@@ -45,7 +46,7 @@ test("restructuring preserves identity, existing roles, edits and stale evidence
   assert.equal(m.stale, true);
   assert.equal(m.preview, null);
   const next = clone(m.draft);
-  assert.equal(m.choose("marketing-agency"), false);
+  assert.equal(m.choose("planned-company-fixture"), false);
   assert.deepEqual(m.draft, next);
   m.draft = null;
   assert.throws(() => m.choose("software-studio"), /Open the existing company's saved draft/);
@@ -63,7 +64,7 @@ test("both presets initialize from the single backend inventory and retain per-p
   );
   m.choose("software-studio");
   assert.equal(m.draft.company.name, "Customized");
-  assert.equal(m.choose("marketing-agency"), false);
+  assert.equal(m.choose("planned-company-fixture"), false);
   assert.equal(m.draft.company.name, "Customized");
 });
 test("refresh preserves old identity and all choices until explicit revalidation", async () => {
@@ -102,12 +103,12 @@ test("late catalog response cannot replace a newer refresh", async () => {
   const first = m.load(),
     second = m.load();
   const latest = clone(catalog);
-  latest.catalog.version = "0.2.0";
+  latest.catalog.version = "9.0.0";
   queue[1](latest);
   await second;
   queue[0](catalog);
   await first;
-  assert.equal(m.catalog.catalog.version, "0.2.0");
+  assert.equal(m.catalog.catalog.version, "9.0.0");
 });
 test("failed refresh leaves the draft and read-only evidence available", async () => {
   let fail = false;

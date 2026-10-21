@@ -1,5 +1,13 @@
 # Company catalog UI candidate
 
+The setup picker groups **Essential** templates and **Extensions · In development**.
+Essential retains 2 presets and 7 personas; Extensions adds the 43 researched
+company families and 130 additional personas (Release Engineer is shared).
+Use Template collection to narrow company types, and Role collection to browse
+selected, Essential or Extension personas. All can be configured/exported as
+drafts. Extension contracts need refinement and qualified review; domain tool
+access and task quality remain unverified. See [maturity](../../docs/research/COMPANY-CATALOG-MATURITY.md).
+
 CAT-FE-01 for [#30](https://github.com/newbiesitl/paprika-inc/issues/30), connected to the shared Backend catalog in draft #31 and the foundation in draft #29. Governing definition: ae6080186ceb83cbdfd1b23bbfe532f8c0a678f4.
 
 This is the catalog/configuration slice of [the standalone GUI](https://github.com/newbiesitl/paprika-inc/issues/15). It does not implement agent hosting. One component and one backend inventory serve the standalone route and native MCP App resource. Existing plugin identity, credentials, service, hosting and installed configuration remain unchanged.

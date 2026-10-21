@@ -11,7 +11,7 @@ import { inspectDefinition } from "../../../plugins/paprika-inc/runtime/paprika-
 import { refinementBrief } from "../src/refinement.mjs";
 
 test("repository ZIP contains canonical files for every configured role and reopens its selection", async () => {
-  for (const id of ["software-studio", "scientific-research"]) {
+  for (const id of ["software-studio", "scientific-research", "law-firm", "marketing-agency"]) {
     const { default_selection: selection } = await invoke("read", { kind: "preset", id });
     selection.roles[1].title = "Configured Specialist";
     const result = await invoke("export", { selection });

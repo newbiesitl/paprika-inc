@@ -30,8 +30,9 @@ class CompanyCatalogPackageTests(unittest.TestCase):
                 return json.loads(result.stdout)
 
             listing = invoke('catalog', 'list', '--catalog-kind', 'preset')
-            self.assertEqual(len(listing['entries']), 3)
-            for preset, roles in [('software-studio', 5), ('scientific-research', 4)]:
+            self.assertEqual(len(listing['entries']), 45)
+            self.assertEqual(sum(e['tier'] == 'extension' for e in listing['entries']), 43)
+            for preset, roles in [('software-studio', 5), ('scientific-research', 4), ('law-firm', 4), ('marketing-agency', 5)]:
                 selection = invoke('catalog', 'read', '--catalog-kind', 'preset', '--catalog-id', preset)['default_selection']
                 draft = root / (preset + '.json')
                 draft.write_text(json.dumps(selection), encoding='utf-8')

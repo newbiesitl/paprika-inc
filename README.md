@@ -65,11 +65,63 @@ Browse and configure a portable company draft in the [shared catalog UI](apps/co
 
 ### Company types
 
+**Essential:** 2 existing company presets and 7 role templates. **Extensions · In development:** 43 researched company families and 130 additional personas. The research maps 131 distinct role names; Release Engineer is shared with Essential. Extensions are selectable starters requiring refinement, qualified review and separate tool/task validation. See the [maturity assessment](docs/research/COMPANY-CATALOG-MATURITY.md).
+
 | Starting template | Version | Catalog state | Default roles | Default structure |
 | --- | --- | --- | --- | --- |
 | Software studio | 0.1.0 | template | Coordinator, Architect, Developer, QA, Release Engineer | Lean team |
 | Scientific research | 0.1.0 | template | Coordinator, Researcher, Scientific Reviewer, Release Engineer | Research lab |
-| Marketing agency | 0.1.0 | planned | — | — |
+
+<details>
+<summary>Extensions · In development — company types</summary>
+
+| Starting template | Version | Catalog state | Default roles | Default structure |
+| --- | --- | --- | --- | --- |
+| Frontier AI research | 0.1.0 | template | Coordinator, Research Scientist, Research Engineer, Evaluation/Safety Researcher | Lean team |
+| Applied ML / deep learning | 0.1.0 | template | Coordinator, Data Scientist, ML Engineer, MLOps Engineer | Lean team |
+| AI-powered cross-domain R&D | 0.1.0 | template | Coordinator, Domain Scientist, Computational Researcher, Research Software Engineer | Lean team |
+| Venture capital / private equity | 0.1.0 | template | Coordinator, Investment Analyst, Due-Diligence Analyst, Portfolio Analyst | Lean team |
+| Asset management / quantitative research | 0.1.0 | template | Coordinator, Equity Researcher, Quant Researcher, Risk Analyst | Lean team |
+| Banking / fintech | 0.1.0 | template | Coordinator, Credit Analyst, Treasury Analyst, Compliance Analyst | Lean team |
+| Accounting / audit | 0.1.0 | template | Coordinator, Accountant, Financial Planning Analyst, Audit Analyst | Lean team |
+| Insurance / actuarial | 0.1.0 | template | Coordinator, Actuarial Analyst, Claims Operations Analyst, Underwriting Analyst | Lean team |
+| Law firm / legal department | 0.1.0 | template | Coordinator, Legal Researcher, Contract Analyst, Litigation Support Analyst | Lean team |
+| Pharmaceutical discovery | 0.1.0 | template | Coordinator, Medicinal Chemistry Researcher, Computational Chemist, Bioinformatics Analyst | Lean team |
+| Pharmaceutical manufacturing | 0.1.0 | template | Coordinator, Process Analyst, Quality Assurance Analyst, Regulatory Documentation Specialist | Lean team |
+| Biotech / genomics | 0.1.0 | template | Coordinator, Bioinformatician, Computational Biologist, Lab Data Steward | Lean team |
+| Healthcare operations | 0.1.0 | template | Coordinator, Clinical Operations Analyst, Quality Improvement Analyst, Medical Literature Researcher | Lean team |
+| Medical devices / diagnostics | 0.1.0 | template | Coordinator, Systems Engineer, Verification Engineer, Regulatory Documentation Specialist | Lean team |
+| Advertising / marketing | 0.1.0 | template | Coordinator, Marketing Strategist, SEO Analyst, Copywriter, Growth Analyst | Lean team |
+| Brand / design agency | 0.1.0 | template | Coordinator, Brand Strategist, UX Researcher, Product Designer | Lean team |
+| General manufacturing | 0.1.0 | template | Coordinator, Production Planner, Industrial Engineer, Quality Analyst | Lean team |
+| Semiconductors / electronics | 0.1.0 | template | Coordinator, Hardware Engineer, Verification Engineer, Test Data Analyst | Lean team |
+| Robotics / automotive / aerospace | 0.1.0 | template | Coordinator, Systems Engineer, Simulation Engineer, Reliability Analyst | Lean team |
+| Procurement / supply chain | 0.1.0 | template | Coordinator, Procurement Analyst, Supplier Risk Analyst, Demand Planner | Lean team |
+| Logistics / warehousing | 0.1.0 | template | Coordinator, Route Planner, Warehouse Analyst, Operations Coordinator | Lean team |
+| Human resources | 0.1.0 | template | Coordinator, HR Operations Specialist, People Analyst, Learning Designer | Lean team |
+| Recruiting firm / talent acquisition | 0.1.0 | template | Coordinator, Recruiter, Talent Researcher, Interview Coordinator | Lean team |
+| B2B software | 0.1.0 | template | Coordinator, Product Manager, Backend Engineer, Solutions Engineer, QA Engineer | Lean team |
+| B2C software / mobile | 0.1.0 | template | Coordinator, Product Manager, Frontend/Mobile Engineer, UX Researcher, Growth Analyst | Lean team |
+| SaaS / cloud platform | 0.1.0 | template | Coordinator, Platform Engineer, SRE, Billing Operations Analyst, Customer Success Analyst | Lean team |
+| Open-source organization | 0.1.0 | template | Coordinator, Maintainer, Community Manager, Documentation Engineer, Release Engineer | Lean team |
+| Cybersecurity | 0.1.0 | template | Coordinator, Security Analyst, Application Security Engineer, Incident Analyst | Lean team |
+| Consulting / professional services | 0.1.0 | template | Coordinator, Engagement Manager, Business Analyst, Domain Consultant | Lean team |
+| Sales / customer success / support | 0.1.0 | template | Coordinator, Account Researcher, Sales Engineer, Customer Success Analyst, Support Analyst | Lean team |
+| Retail / e-commerce | 0.1.0 | template | Coordinator, Merchandising Analyst, E-commerce Manager, Demand Analyst | Lean team |
+| Real estate / property management | 0.1.0 | template | Coordinator, Market Researcher, Property Analyst, Leasing Operations Coordinator | Lean team |
+| Construction / infrastructure | 0.1.0 | template | Coordinator, Project Controls Analyst, Cost Estimator, BIM Coordinator | Lean team |
+| Energy / utilities | 0.1.0 | template | Coordinator, Energy Analyst, Asset Reliability Analyst, Operations Planner | Lean team |
+| Climate / environmental services | 0.1.0 | template | Coordinator, Climate Analyst, Sustainability Analyst, Geospatial Analyst | Lean team |
+| Agriculture / food production | 0.1.0 | template | Coordinator, Agronomy Researcher, Food Quality Analyst, Supply Planner | Lean team |
+| Telecommunications / network operations | 0.1.0 | template | Coordinator, Network Engineer, Capacity Analyst, Service Assurance Analyst | Lean team |
+| Education / edtech | 0.1.0 | template | Coordinator, Curriculum Designer, Learning Researcher, Assessment Designer | Lean team |
+| Media / publishing / journalism | 0.1.0 | template | Coordinator, Research Editor, Writer, Fact Checker, Rights Coordinator | Lean team |
+| Gaming / entertainment | 0.1.0 | template | Coordinator, Game Designer, Gameplay Engineer, Technical Artist, Playtest Analyst | Lean team |
+| Travel / hospitality / events | 0.1.0 | template | Coordinator, Revenue Analyst, Guest Operations Coordinator, Event Planner | Lean team |
+| Nonprofit / social enterprise | 0.1.0 | template | Coordinator, Program Manager, Grant Writer, Impact Analyst, Volunteer Coordinator | Lean team |
+| Public sector / civic technology | 0.1.0 | template | Coordinator, Policy Researcher, Procurement Analyst, Service Designer, Program Evaluator | Lean team |
+
+</details>
 
 ### Organization structures
 
@@ -93,6 +145,144 @@ Structures are independent of company type and business-model tags. Review relat
 | Researcher | researcher | Investigate scoped questions and synthesize evidence. | template |
 | Scientific Reviewer | scientific-reviewer | Independently appraise claims, methods and evidence. | template |
 
+<details>
+<summary>Extensions · In development — role personas</summary>
+
+| Role | Stable ID | Purpose | Catalog state |
+| --- | --- | --- | --- |
+| Research Scientist | research-scientist | Research starter: formulate research hypotheses and design experiments with explicit falsification criteria. Requires role-specific refinement and domain review. | template |
+| Research Engineer | research-engineer | Research starter: implement reproducible experimental code and document execution conditions. Requires role-specific refinement and domain review. | template |
+| Evaluation/Safety Researcher | evaluation-safety-researcher | Research starter: design bounded evaluations and analyze failure modes and benchmark limitations. Requires role-specific refinement and domain review. | template |
+| Data Scientist | data-scientist | Research starter: analyze validated datasets and compare statistical models with uncertainty estimates. Requires role-specific refinement and domain review. | template |
+| ML Engineer | ml-engineer | Research starter: build and evaluate model pipelines with reproducible data and model versions. Requires role-specific refinement and domain review. | template |
+| MLOps Engineer | mlops-engineer | Research starter: design experiment tracking and model lifecycle procedures with rollback evidence. Requires role-specific refinement and domain review. | template |
+| Domain Scientist | domain-scientist | Research starter: frame domain hypotheses and appraise their scientific evidence. Requires role-specific refinement and domain review. | template |
+| Computational Researcher | computational-researcher | Research starter: plan computational experiments and test sensitivity to modeling assumptions. Requires role-specific refinement and domain review. | template |
+| Research Software Engineer | research-software-engineer | Research starter: build reproducible research tools with documented methods and tests. Requires role-specific refinement and domain review. | template |
+| Investment Analyst | investment-analyst | Research starter: compare opportunities using sourced financial assumptions and scenario analysis. Requires role-specific refinement and domain review. | template |
+| Due-Diligence Analyst | due-diligence-analyst | Research starter: organize diligence evidence, missing documents and material exceptions. Requires role-specific refinement and domain review. | template |
+| Portfolio Analyst | portfolio-analyst | Research starter: analyze portfolio exposures and performance against explicit benchmarks. Requires role-specific refinement and domain review. | template |
+| Equity Researcher | equity-researcher | Research starter: develop sourced company research and track thesis assumptions. Requires role-specific refinement and domain review. | template |
+| Quant Researcher | quant-researcher | Research starter: evaluate quantitative hypotheses with leakage checks and backtest limitations. Requires role-specific refinement and domain review. | template |
+| Risk Analyst | risk-analyst | Research starter: analyze exposures and stress scenarios with documented model limitations. Requires role-specific refinement and domain review. | template |
+| Credit Analyst | credit-analyst | Research starter: assess documented cash flows and credit assumptions for human review. Requires role-specific refinement and domain review. | template |
+| Treasury Analyst | treasury-analyst | Research starter: reconcile liquidity inputs and compare cash-management scenarios. Requires role-specific refinement and domain review. | template |
+| Compliance Analyst | compliance-analyst | Research starter: map evidence and exceptions to the applicable supplied policies. Requires role-specific refinement and domain review. | template |
+| Accountant | accountant | Research starter: reconcile transactions and prepare traceable accounting workpapers. Requires role-specific refinement and domain review. | template |
+| Financial Planning Analyst | financial-planning-analyst | Research starter: build budget and forecast scenarios and explain variances. Requires role-specific refinement and domain review. | template |
+| Audit Analyst | audit-analyst | Research starter: trace assertions to evidence and document exceptions for independent review. Requires role-specific refinement and domain review. | template |
+| Actuarial Analyst | actuarial-analyst | Research starter: analyze exposure and loss assumptions with sensitivity estimates. Requires role-specific refinement and domain review. | template |
+| Claims Operations Analyst | claims-operations-analyst | Research starter: check claim documentation and organize exceptions for authorized review. Requires role-specific refinement and domain review. | template |
+| Underwriting Analyst | underwriting-analyst | Research starter: compare application evidence against supplied underwriting criteria. Requires role-specific refinement and domain review. | template |
+| Legal Researcher | legal-researcher | Research starter: research supplied legal questions with jurisdiction, dates and source traceability. Requires role-specific refinement and domain review. | template |
+| Contract Analyst | contract-analyst | Research starter: compare clauses and document obligations, deviations and proposed redlines. Requires role-specific refinement and domain review. | template |
+| Litigation Support Analyst | litigation-support-analyst | Research starter: build evidence chronologies and document indexes for qualified review. Requires role-specific refinement and domain review. | template |
+| Medicinal Chemistry Researcher | medicinal-chemistry-researcher | Research starter: appraise compound and target evidence for proposed discovery experiments. Requires role-specific refinement and domain review. | template |
+| Computational Chemist | computational-chemist | Research starter: plan reproducible molecular calculations and explain model limitations. Requires role-specific refinement and domain review. | template |
+| Bioinformatics Analyst | bioinformatics-analyst | Research starter: analyze biological datasets with explicit quality and provenance checks. Requires role-specific refinement and domain review. | template |
+| Process Analyst | process-analyst | Research starter: analyze process trends and deviations against documented operating assumptions. Requires role-specific refinement and domain review. | template |
+| Quality Assurance Analyst | quality-assurance-analyst | Research starter: trace quality requirements to records and identify evidence gaps. Requires role-specific refinement and domain review. | template |
+| Regulatory Documentation Specialist | regulatory-documentation-specialist | Research starter: assemble traceable documentation against supplied regulatory requirements. Requires role-specific refinement and domain review. | template |
+| Bioinformatician | bioinformatician | Research starter: plan reproducible sequence-analysis pipelines with quality controls. Requires role-specific refinement and domain review. | template |
+| Computational Biologist | computational-biologist | Research starter: interpret computational biological results within study-design limits. Requires role-specific refinement and domain review. | template |
+| Lab Data Steward | lab-data-steward | Research starter: maintain sample and dataset provenance and resolve metadata inconsistencies. Requires role-specific refinement and domain review. | template |
+| Clinical Operations Analyst | clinical-operations-analyst | Research starter: map clinical operational processes using approved de-identified inputs. Requires role-specific refinement and domain review. | template |
+| Quality Improvement Analyst | quality-improvement-analyst | Research starter: compare operational improvement options using measurable outcomes. Requires role-specific refinement and domain review. | template |
+| Medical Literature Researcher | medical-literature-researcher | Research starter: appraise medical literature and retain applicability and evidence limitations. Requires role-specific refinement and domain review. | template |
+| Systems Engineer | systems-engineer | Research starter: define system requirements, interfaces and traceable acceptance criteria. Requires role-specific refinement and domain review. | template |
+| Verification Engineer | verification-engineer | Research starter: design verification plans and trace results to requirements. Requires role-specific refinement and domain review. | template |
+| Marketing Strategist | marketing-strategist | Research starter: develop positioning and campaign hypotheses from supplied market evidence. Requires role-specific refinement and domain review. | template |
+| SEO Analyst | seo-analyst | Research starter: assess search visibility and prioritize measurable content and technical improvements. Requires role-specific refinement and domain review. | template |
+| Copywriter | copywriter | Research starter: draft audience-specific copy with substantiated claims and reviewable alternatives. Requires role-specific refinement and domain review. | template |
+| Growth Analyst | growth-analyst | Research starter: analyze acquisition and retention experiments with explicit measurement assumptions. Requires role-specific refinement and domain review. | template |
+| Brand Strategist | brand-strategist | Research starter: translate audience research into brand positioning and creative briefs. Requires role-specific refinement and domain review. | template |
+| UX Researcher | ux-researcher | Research starter: plan user studies and synthesize findings with sampling limitations. Requires role-specific refinement and domain review. | template |
+| Product Designer | product-designer | Research starter: develop product concepts and interaction specifications for usability review. Requires role-specific refinement and domain review. | template |
+| Production Planner | production-planner | Research starter: compare production schedules under explicit demand and capacity constraints. Requires role-specific refinement and domain review. | template |
+| Industrial Engineer | industrial-engineer | Research starter: analyze process capacity and propose measurable operational improvements. Requires role-specific refinement and domain review. | template |
+| Quality Analyst | quality-analyst | Research starter: analyze defects and trace proposed quality actions to supporting evidence. Requires role-specific refinement and domain review. | template |
+| Hardware Engineer | hardware-engineer | Research starter: analyze hardware specifications and document interface and design tradeoffs. Requires role-specific refinement and domain review. | template |
+| Test Data Analyst | test-data-analyst | Research starter: analyze test outcomes and identify yield trends and anomalous results. Requires role-specific refinement and domain review. | template |
+| Simulation Engineer | simulation-engineer | Research starter: design simulation studies and validate assumptions against available evidence. Requires role-specific refinement and domain review. | template |
+| Reliability Analyst | reliability-analyst | Research starter: analyze failure modes and reliability estimates with uncertainty. Requires role-specific refinement and domain review. | template |
+| Procurement Analyst | procurement-analyst | Research starter: compare supplier proposals and spending against documented requirements. Requires role-specific refinement and domain review. | template |
+| Supplier Risk Analyst | supplier-risk-analyst | Research starter: evaluate supplier evidence and identify continuity and compliance gaps. Requires role-specific refinement and domain review. | template |
+| Demand Planner | demand-planner | Research starter: compare demand forecasts and inventory scenarios with error estimates. Requires role-specific refinement and domain review. | template |
+| Route Planner | route-planner | Research starter: propose routes subject to supplied capacity and service constraints. Requires role-specific refinement and domain review. | template |
+| Warehouse Analyst | warehouse-analyst | Research starter: analyze warehouse capacity, inventory flows and operational exceptions. Requires role-specific refinement and domain review. | template |
+| Operations Coordinator | operations-coordinator | Research starter: organize operational handoffs and track dependencies and exceptions. Requires role-specific refinement and domain review. | template |
+| HR Operations Specialist | hr-operations-specialist | Research starter: prepare reviewed employee-process documentation and completion checklists. Requires role-specific refinement and domain review. | template |
+| People Analyst | people-analyst | Research starter: analyze approved aggregate workforce data with privacy and bias checks. Requires role-specific refinement and domain review. | template |
+| Learning Designer | learning-designer | Research starter: map competencies to learning activities and evaluation criteria. Requires role-specific refinement and domain review. | template |
+| Recruiter | recruiter | Research starter: translate hiring requirements into job-related sourcing and evaluation plans. Requires role-specific refinement and domain review. | template |
+| Talent Researcher | talent-researcher | Research starter: organize candidate evidence against authorized job-related criteria. Requires role-specific refinement and domain review. | template |
+| Interview Coordinator | interview-coordinator | Research starter: prepare structured interview materials and coordinate authorized scheduling. Requires role-specific refinement and domain review. | template |
+| Product Manager | product-manager | Research starter: translate customer evidence into scoped requirements and acceptance criteria. Requires role-specific refinement and domain review. | template |
+| Backend Engineer | backend-engineer | Research starter: implement service behavior with documented interfaces and regression evidence. Requires role-specific refinement and domain review. | template |
+| Solutions Engineer | solutions-engineer | Research starter: map customer integration needs to verifiable technical solution proposals. Requires role-specific refinement and domain review. | template |
+| QA Engineer | qa-engineer | Research starter: independently validate behavior against acceptance criteria and report uncovered scope. Requires role-specific refinement and domain review. | template |
+| Frontend/Mobile Engineer | frontend-mobile-engineer | Research starter: build accessible client interactions and verify platform behavior. Requires role-specific refinement and domain review. | template |
+| Platform Engineer | platform-engineer | Research starter: design platform capabilities with isolation and operational acceptance criteria. Requires role-specific refinement and domain review. | template |
+| SRE | sre | Research starter: analyze reliability objectives, incidents and recovery procedures. Requires role-specific refinement and domain review. | template |
+| Billing Operations Analyst | billing-operations-analyst | Research starter: reconcile usage and billing records and document discrepancies. Requires role-specific refinement and domain review. | template |
+| Customer Success Analyst | customer-success-analyst | Research starter: analyze customer outcomes and propose evidence-based adoption improvements. Requires role-specific refinement and domain review. | template |
+| Maintainer | maintainer | Research starter: triage contributions and preserve project compatibility and review requirements. Requires role-specific refinement and domain review. | template |
+| Community Manager | community-manager | Research starter: prepare community guidance and organize feedback within moderation policy. Requires role-specific refinement and domain review. | template |
+| Documentation Engineer | documentation-engineer | Research starter: produce tested technical instructions and resolve documentation gaps. Requires role-specific refinement and domain review. | template |
+| Security Analyst | security-analyst | Research starter: analyze security evidence within an explicitly authorized scope. Requires role-specific refinement and domain review. | template |
+| Application Security Engineer | application-security-engineer | Research starter: review application threats and validate proposed mitigations within scope. Requires role-specific refinement and domain review. | template |
+| Incident Analyst | incident-analyst | Research starter: correlate incident evidence and build a sourced event timeline. Requires role-specific refinement and domain review. | template |
+| Engagement Manager | engagement-manager | Research starter: frame client deliverables and manage explicit scope and review dependencies. Requires role-specific refinement and domain review. | template |
+| Business Analyst | business-analyst | Research starter: map business processes and compare requirements and improvement options. Requires role-specific refinement and domain review. | template |
+| Domain Consultant | domain-consultant | Research starter: develop domain recommendations with documented assumptions and expert review points. Requires role-specific refinement and domain review. | template |
+| Account Researcher | account-researcher | Research starter: compile sourced account context and identify relevant evidence gaps. Requires role-specific refinement and domain review. | template |
+| Sales Engineer | sales-engineer | Research starter: draft technical proposals and verify claims against available capabilities. Requires role-specific refinement and domain review. | template |
+| Support Analyst | support-analyst | Research starter: triage support evidence and draft responses and escalation recommendations. Requires role-specific refinement and domain review. | template |
+| Merchandising Analyst | merchandising-analyst | Research starter: analyze assortment performance and compare merchandising scenarios. Requires role-specific refinement and domain review. | template |
+| E-commerce Manager | e-commerce-manager | Research starter: prepare reviewed catalog and conversion improvements with measurable criteria. Requires role-specific refinement and domain review. | template |
+| Demand Analyst | demand-analyst | Research starter: analyze demand patterns and compare forecast assumptions. Requires role-specific refinement and domain review. | template |
+| Market Researcher | market-researcher | Research starter: compare sourced market evidence and explain sampling and comparability limits. Requires role-specific refinement and domain review. | template |
+| Property Analyst | property-analyst | Research starter: analyze property comparables and portfolio documents for qualified review. Requires role-specific refinement and domain review. | template |
+| Leasing Operations Coordinator | leasing-operations-coordinator | Research starter: organize leasing documentation and maintenance handoffs. Requires role-specific refinement and domain review. | template |
+| Project Controls Analyst | project-controls-analyst | Research starter: analyze project schedule, cost and change evidence against baselines. Requires role-specific refinement and domain review. | template |
+| Cost Estimator | cost-estimator | Research starter: prepare traceable quantity and cost estimates with explicit assumptions. Requires role-specific refinement and domain review. | template |
+| BIM Coordinator | bim-coordinator | Research starter: coordinate model information and document design-package inconsistencies. Requires role-specific refinement and domain review. | template |
+| Energy Analyst | energy-analyst | Research starter: compare energy demand and supply scenarios using validated inputs. Requires role-specific refinement and domain review. | template |
+| Asset Reliability Analyst | asset-reliability-analyst | Research starter: analyze asset-condition trends and maintenance priorities. Requires role-specific refinement and domain review. | template |
+| Operations Planner | operations-planner | Research starter: prepare operational plans under explicit resource and service constraints. Requires role-specific refinement and domain review. | template |
+| Climate Analyst | climate-analyst | Research starter: compare climate scenarios and document model and source uncertainty. Requires role-specific refinement and domain review. | template |
+| Sustainability Analyst | sustainability-analyst | Research starter: reconcile sustainability metrics and substantiate reporting assumptions. Requires role-specific refinement and domain review. | template |
+| Geospatial Analyst | geospatial-analyst | Research starter: analyze spatial datasets with coordinate, resolution and provenance checks. Requires role-specific refinement and domain review. | template |
+| Agronomy Researcher | agronomy-researcher | Research starter: appraise field trials and agronomic hypotheses with study limitations. Requires role-specific refinement and domain review. | template |
+| Food Quality Analyst | food-quality-analyst | Research starter: trace food-quality observations to batch records and review criteria. Requires role-specific refinement and domain review. | template |
+| Supply Planner | supply-planner | Research starter: compare supply plans against demand, lead-time and capacity constraints. Requires role-specific refinement and domain review. | template |
+| Network Engineer | network-engineer | Research starter: analyze network configurations and propose scoped changes for review. Requires role-specific refinement and domain review. | template |
+| Capacity Analyst | capacity-analyst | Research starter: model capacity demand and identify resource bottlenecks. Requires role-specific refinement and domain review. | template |
+| Service Assurance Analyst | service-assurance-analyst | Research starter: correlate service faults and report performance against supplied objectives. Requires role-specific refinement and domain review. | template |
+| Curriculum Designer | curriculum-designer | Research starter: map learning objectives to sequenced content and assessment evidence. Requires role-specific refinement and domain review. | template |
+| Learning Researcher | learning-researcher | Research starter: evaluate learning studies and explain applicability and uncertainty. Requires role-specific refinement and domain review. | template |
+| Assessment Designer | assessment-designer | Research starter: design assessments aligned to learning objectives and validity criteria. Requires role-specific refinement and domain review. | template |
+| Research Editor | research-editor | Research starter: organize source research and identify unsupported editorial claims. Requires role-specific refinement and domain review. | template |
+| Writer | writer | Research starter: draft sourced content tailored to the agreed audience and editorial brief. Requires role-specific refinement and domain review. | template |
+| Fact Checker | fact-checker | Research starter: verify material claims and record source conflicts and unresolved evidence. Requires role-specific refinement and domain review. | template |
+| Rights Coordinator | rights-coordinator | Research starter: organize permissions and attribution records for authorized rights review. Requires role-specific refinement and domain review. | template |
+| Game Designer | game-designer | Research starter: specify gameplay hypotheses and measurable playtest criteria. Requires role-specific refinement and domain review. | template |
+| Gameplay Engineer | gameplay-engineer | Research starter: implement gameplay behavior with reproducible test evidence. Requires role-specific refinement and domain review. | template |
+| Technical Artist | technical-artist | Research starter: prepare technical art workflows and verify asset integration constraints. Requires role-specific refinement and domain review. | template |
+| Playtest Analyst | playtest-analyst | Research starter: analyze playtest observations and explain sample and measurement limitations. Requires role-specific refinement and domain review. | template |
+| Revenue Analyst | revenue-analyst | Research starter: compare revenue and capacity scenarios with explicit pricing assumptions. Requires role-specific refinement and domain review. | template |
+| Guest Operations Coordinator | guest-operations-coordinator | Research starter: organize guest-service handoffs and document operational exceptions. Requires role-specific refinement and domain review. | template |
+| Event Planner | event-planner | Research starter: prepare event schedules and resource plans with explicit dependencies. Requires role-specific refinement and domain review. | template |
+| Program Manager | program-manager | Research starter: track program outcomes, delivery dependencies and review evidence. Requires role-specific refinement and domain review. | template |
+| Grant Writer | grant-writer | Research starter: draft evidence-backed grant materials against supplied funder criteria. Requires role-specific refinement and domain review. | template |
+| Impact Analyst | impact-analyst | Research starter: evaluate impact claims against measurable outcomes and attribution limits. Requires role-specific refinement and domain review. | template |
+| Volunteer Coordinator | volunteer-coordinator | Research starter: prepare volunteer plans and track authorized onboarding requirements. Requires role-specific refinement and domain review. | template |
+| Policy Researcher | policy-researcher | Research starter: compare policy evidence and explain assumptions and stakeholder impacts. Requires role-specific refinement and domain review. | template |
+| Service Designer | service-designer | Research starter: map service journeys and develop testable improvement proposals. Requires role-specific refinement and domain review. | template |
+| Program Evaluator | program-evaluator | Research starter: evaluate program outcomes against explicit criteria and study limitations. Requires role-specific refinement and domain review. | template |
+
+</details>
+
 Role selection defines a draft roster; it does not create live chats or grant permissions.
 
 | Available pack source | Version | Included guidance |
@@ -104,7 +294,7 @@ Pack source availability does not establish local installation, authentication, 
 
 **Other planned catalog entries:** Marketing core. The broader [industry and integration roadmap](https://github.com/newbiesitl/paprika-inc/issues/30) is tracked separately.
 
-Generated from the version 0.1.0 [backend catalog](plugins/paprika-inc/runtime/company-catalog/catalog.json); check with npm --prefix apps/company-catalog run readme:check.
+Generated from the version 0.2.0 [backend catalog](plugins/paprika-inc/runtime/company-catalog/catalog.json); check with npm --prefix apps/company-catalog run readme:check.
 <!-- company-catalog:end -->
 
 

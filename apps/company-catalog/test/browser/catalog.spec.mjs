@@ -48,7 +48,7 @@ test("search, empty results, keyboard picker, planned entry and retained selecti
   await page.keyboard.press("Home");
   await page.keyboard.press("ArrowDown");
   await page.keyboard.press("Enter");
-  await page.getByLabel("Choose a company").selectOption("marketing-agency");
+  await page.getByLabel("Choose a company").selectOption("planned-company-fixture");
   await expect(
     page.getByText("This preset is planned.", { exact: false }),
   ).toBeVisible();

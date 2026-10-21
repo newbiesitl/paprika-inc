@@ -7,7 +7,7 @@ test("production provider validates, previews and exports both catalog presets",
   const model = new CatalogModel({ call: invoke });
   await model.load();
   assert(model.catalog.integrations.length > 0);
-  for (const id of ["software-studio", "scientific-research"]) {
+  for (const id of ["software-studio", "scientific-research", "law-firm", "marketing-agency"]) {
     model.choose(id);
     const review = await model.review();
     assert.equal(review.ok, true, JSON.stringify(review.diagnostics));

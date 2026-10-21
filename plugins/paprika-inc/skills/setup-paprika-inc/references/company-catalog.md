@@ -33,6 +33,13 @@ returns the exact template and a complete `default_selection` with its catalog
 version/digest. Save that selection privately while configuring the draft.
 
 The six entry kinds are preset, structure, role, pack, workflow and requirement.
+The UI separates Essential (the existing 2 presets and 7 role templates) from
+Extensions · In development (43 researched families and 130 additional personas).
+Release Engineer is shared, covering all 131 distinct role names in the research.
+Extensions are selectable/exportable starters, not domain-validated roles. Their
+defaults require human review and select no domain packs or integrations. Refine
+contracts, qualified review and actual tools before adoption. Collection tier is
+independent of availability; a planned entry still cannot be exported.
 Software and scientific-research templates are usable drafts. Planned entries
 remain visible but cannot become an exported usable configuration. Industry,
 structure and business-model tags are independent. Reporting parents and peer
