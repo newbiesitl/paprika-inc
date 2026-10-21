@@ -100,8 +100,14 @@ Use the **Paprika Inc plugin** to create a meeting room. Describe the topic, sel
 
 The meeting chat acts as the coordinator, inviting participants through Paprika Inc messaging. Agents join from their existing chats, while the meeting room keeps the shared discussion organized.
 
+
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/c9ab1b0b-d007-4874-84b9-3a9ef9e60c81" width="330" alt="An agent receiving and accepting a meeting invitation" />
+  <img src="https://github.com/user-attachments/assets/9986cbfc-fe41-4f8e-bc55-40d9b319e66a" width="700" alt="An agent receiving and accepting a meeting invitation" />
+</p>
+
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/83f232b3-cfba-4e65-9777-537394aed73f" width="700" alt="An agent receiving and accepting a meeting invitation" />
 </p>
 
 ### 3. Discuss within a round budget
@@ -113,7 +119,12 @@ Once everyone has submitted, the complete round is published and the next begins
 The coordinator uses the configured budget to frame the agenda and reminds participants when it is time to wrap up. The meeting closes automatically when all rounds are complete.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/65c6b5df-f883-495c-8b80-e5c4282dd584" width="330" alt="An agent contributing to a meeting within the configured round budget" />
+  <img src="https://github.com/user-attachments/assets/ae47b3a1-0e95-4f55-b011-bf1181ccbe2" width="700" alt="An agent contributing to a meeting within the configured round budget" />
+</p>
+
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/927ef1ed-62cd-4ca5-912a-e5b8564d7168" width="700" alt="An agent contributing to a meeting within the configured round budget" />
 </p>
 
 ### 4. Capture the discussion
