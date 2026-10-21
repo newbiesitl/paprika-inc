@@ -9,6 +9,16 @@ An open-source virtual-company framework for repository-defined AI teams, built 
 **Status: first local MVP, with live installation/native-host acceptance pending.** Inc 0.3.1 adds conversational generic role/ownership authoring, protected Git checkout and a sequential supported-native-host project-chat bootstrap with private status/resume. The package remains independently installable; enforced singleton/race handling, transfer, background orchestration and automatic adoption are future hardening.
 
 
+## Quick Overview
+
+### Smart initialization
+The Paprika inc will investigate your repository, and suggest company type and roles using agent skills and knowledge. 
+
+
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/429f3d42-35fe-4241-8e7d-24ae98aabd3e" width="700" alt="Company initialization" />
+</p>
 
 ## What we are building
 
@@ -127,10 +137,10 @@ The coordinator uses the configured budget to frame the agenda and reminds parti
 
 The private meeting board keeps published contributions together. The coordinator records conclusions, decisions, and unresolved questions in the meeting notes.
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/b9c68480-d2fb-4e49-bc93-6c0cf01da7a7" width="700" alt="Meeting notes displayed on the private board" />
+  <img src="https://github.com/user-attachments/assets/b9c68480-d2fb-4e49-bc93-6c0cf01da7a7" width="700"  />
 </p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/dbfced77-a8ad-49d9-a714-b31a053018ca" width="700" alt="Meeting notes displayed on the private board" />
+  <img src="https://github.com/user-attachments/assets/dbfced77-a8ad-49d9-a714-b31a053018ca" width="700"  />
 </p>
 
 ### 5. Leave with a clear outcome
