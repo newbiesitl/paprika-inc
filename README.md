@@ -13,8 +13,6 @@ An open-source virtual-company framework for repository-defined AI teams, built 
 ### Smart initialization
 The Paprika inc will investigate your repository, and suggest company type and roles using agent skills and knowledge. 
 
-
-
 <p align="center">
   <img src="https://github.com/user-attachments/assets/429f3d42-35fe-4241-8e7d-24ae98aabd3e" width="700" alt="Company initialization" />
 </p>
