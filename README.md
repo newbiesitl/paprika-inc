@@ -4,59 +4,232 @@
   <img src="assets/paprika-inc-logo-navy-v1.png" alt="Paprika Inc — Paprika in a navy office suit" width="360" />
 </p>
 
-An open-source virtual-company framework for repository-defined AI teams, built on [Paprika Messenger](https://github.com/newbiesitl/paprika-messenger).
+**Give every agent the knowledge and skills its task needs.**
 
-**Status: first local MVP, with live installation/native-host acceptance pending.** Inc 0.3.1 adds conversational generic role/ownership authoring, protected Git checkout and a sequential supported-native-host project-chat bootstrap with private status/resume. The package remains independently installable; enforced singleton/race handling, transfer, background orchestration and automatic adoption are future hardening.
+Paprika Inc is an open-source framework for organizing specialized AI agents around project roles, skills and shared work. It helps you define responsibilities, onboard agents into persistent Codex chats, coordinate handoffs and run focused discussions.
 
+Our long-term vision is an **optimized agent harness framework**: a system that routes work to the right specialist, brings in relevant knowledge and skills, and preserves validated findings for future tasks. The goals are **lower total token spending** and **better task performance and quality**.
 
-## Quick Overview
+**Current stage: local MVP.** Role setup, onboarding helpers, selected skill packs and collaboration workflows form the current foundation. Automated knowledge routing and measured token optimization are future work. Live availability depends on the installed host and connected service; see [scope and acceptance](docs/MVP.md).
 
-### Smart initialization
-The Paprika inc will investigate your repository, and suggest company type and roles using agent skills and knowledge.
+[Features](#see-it-in-action) · [Get started](#get-started) · [Architecture](#how-paprika-inc-works) · [Vision](#where-we-are-going) · [Reference](#reference-and-development)
+
+## What is it for?
+
+Use Paprika Inc when a project benefits from specialists with clear responsibilities and a shared way to work:
+
+- **Build software:** define architecture, implementation, review and release responsibilities, then hand work between the relevant agents.
+- **Conduct research:** equip a researcher with selected literature, citation and critical-appraisal workflows, with separate review where needed.
+- **Make decisions together:** bring existing agent chats into a meeting with a shared agenda, bounded rounds and recorded outcomes.
+
+A virtual company is one way to configure these roles. The broader aim is a reusable foundation for focused, knowledgeable agents across different kinds of work.
+
+## See it in action
+
+These screenshots illustrate the setup and meeting workflows. The catalog, native host and connected service each have their own availability requirements.
+
+### 1. Shape the team around your project
+
+Discuss your repository and goals with an initial agent. Choose a starting template, refine the suggested roles, and review responsibilities, ownership and reviewers before creating the company definitions.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/429f3d42-35fe-4241-8e7d-24ae98aabd3e" width="700" alt="Company initialization" />
+  <img src="https://github.com/user-attachments/assets/429f3d42-35fe-4241-8e7d-24ae98aabd3e" width="700" alt="Discussing a repository and its initial company configuration" />
+</p>
+
+<details>
+<summary>See the company configuration example</summary>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/836a4cc3-e24b-44cc-ae79-e79adec042e3" width="700" alt="Reviewing the proposed company configuration" />
+</p>
+
+</details>
+
+The [company catalog](apps/company-catalog/README.md) provides Essential software and research presets, plus an **Extensions · In development** collection of additional company and role starters. The standalone picker can export a starter repository and a brief for further refinement. Native panel rendering remains a separate acceptance step.
+
+### 2. Give each agent a role and a starting context
+
+Review the role contracts, select any optional skill packs, and ask Inc to onboard the agreed roster into a saved local Codex project. The sequential bootstrap records progress so you can inspect its status and deliberately resume interrupted work.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0d283edf-96b2-4013-b107-4ad7e8e02ee2" width="700" alt="Creating agent roles for the selected company" />
+</p>
+
+<details>
+<summary>See the onboarding sequence</summary>
+
+The new chat reads its assigned role and reports what it understood before taking on later work.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/5b5e4c9d-70da-4572-9036-13fe236599b3" width="700" alt="A coordinator chat reading its onboarding instructions" />
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/836a4cc3-e24b-44cc-ae79-e79adec042e3" width="700" alt="Company initialization" />
+  <img src="https://github.com/user-attachments/assets/92dd9316-075a-4d05-a73d-27d48dd3c14f" width="700" alt="The coordinator reporting completion of onboarding" />
 </p>
 
-### Intelligent Role suggestions and Automated Onboarding
+</details>
+
+Role definitions describe responsibilities. Creating files alone does not create chats or give agents additional permissions. See the [onboarding workflow](plugins/paprika-inc/skills/setup-paprika-inc/references/mvp-workflow.md).
+
+### 3. Bring specialists together for a focused discussion
+
+Create a meeting with a topic, participants and a round budget. Existing agent chats receive invitations through Inc messaging. Each participant contributes or explicitly passes; a completed round is published together before the next begins.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/0d283edf-96b2-4013-b107-4ad7e8e02ee2" width="700" alt="Role creation window" />
+  <img src="https://github.com/user-attachments/assets/8f6372d7-974a-4472-a449-bd104f16bbce" width="700" alt="Creating an agent meeting with a topic, participants and discussion rounds" />
+</p>
+
+<details>
+<summary>Follow a meeting from invitations to notes</summary>
+
+**Choose participants and invite their existing chats.**
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/7ac86918-434e-4585-bc33-f8291ba6eb7d" width="700" alt="Selecting participants for a Paprika Inc meeting" />
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/5b5e4c9d-70da-4572-9036-13fe236599b3" width="700" alt="Coordinator onboarding screen" />
+  <img src="https://github.com/user-attachments/assets/9986cbfc-fe41-4f8e-bc55-40d9b319e66a" width="700" alt="An agent receiving and accepting a meeting invitation" />
+</p>
+
+**Contribute within the agreed round budget.**
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/83f232b3-cfba-4e65-9777-537394aed73f" width="700" alt="An agent contributing to a meeting round" />
+</p>
+
+**Keep published contributions and curated notes together.**
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/b9c68480-d2fb-4e49-bc93-6c0cf01da7a7" width="700" alt="The private meeting board collecting published contributions" />
 </p>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/92dd9316-075a-4d05-a73d-27d48dd3c14f" width="700" alt="Coordinator onboarding finish screen" />
+  <img src="https://github.com/user-attachments/assets/dbfced77-a8ad-49d9-a714-b31a053018ca" width="700" alt="Meeting notes recording the discussion and its outcomes" />
 </p>
 
-## What we are building
+</details>
 
-Paprika Inc will reconstruct a company from reviewed role definitions, assignments, and compact working knowledge. Its first target is persistent local Codex chats on one selected machine, with separately verified macOS and Windows support. Roles own work by stable logical ID; native chat identities stay in private runtime state.
+The room closes when the configured rounds are complete. The coordinator prepares conclusions, action items and unresolved questions; curated notes and summaries can be exported to the repository's `meetings/` folder.
 
-Messenger remains an independent project. The current kit includes a pinned service-selection component and its license; its read-only commands need no separate Messenger plugin installation. Future service integration must inspect and reuse the owner's compatible private service before considering provisioning. Live service binding, lifecycle integration and coexistence remain acceptance gates.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/2a001b1f-c238-4e05-a7c5-6bf52347602d" width="700" alt="A final meeting summary with conclusions, action items and open questions" />
+</p>
 
-## The company developing Paprika Inc
+Meetings require a compatible private Paprika service. See the [meeting pilot and acceptance boundaries](docs/MEETING-PILOT.md) and [meeting procedure](plugins/paprika-inc/skills/paprika-inc/references/meetings.md).
 
-Our own [development company](company/README.md) is a single-host, local Codex
-bootstrap candidate. Its manifest names the Coordinator as the coordinating role;
-the contracts below define responsibilities, not live agents or permissions.
+## Get started
 
-| Role | Stable ID | Main responsibility |
+The first target is a saved **local Codex project on one selected machine**.
+
+1. **Install the Paprika Inc kit** through your host's supported plugin installation flow. Follow the [installation workflow](plugins/paprika-inc/skills/setup-paprika-inc/references/mvp-workflow.md#installation-and-existing-service-binding); developers can [prepare the kit from source](#work-from-source).
+2. **Open your repository as a local Codex project** and choose an existing chat for setup. Start with:
+
+   > $setup-paprika-inc — Help me define a team for this project. Suggest roles, responsibilities, reviewers and relevant skill packs, then show me the proposed configuration.
+
+3. **Review and save the definitions.** Ask Inc to write the agreed configuration. Select and request installation of any project-local skill packs. Once the definitions are committed and available at the selected Git revision, ask Inc to bootstrap that roster into the chosen local project.
+4. **Assign work and collaborate.** Use `$paprika-inc help` to explore the workflow. Ask for a scoped handoff or a meeting when useful. Service-backed messages and meetings need a verified compatible Paprika service connection.
+
+Native onboarding can use the host's own tools without a separate Messenger plugin installation. If you already have a Paprika service, setup should inspect and reuse it. For status, recovery and host-specific requirements, follow the [concrete MVP workflow](plugins/paprika-inc/skills/setup-paprika-inc/references/mvp-workflow.md).
+
+## How Paprika Inc works
+
+Paprika Inc builds on **Paprika Messenger**, adds reusable role and collaboration workflows, and brings in selected external skills. The host provides the agents and their execution tools.
+
+```mermaid
+flowchart LR
+    accTitle: Paprika Inc architecture
+    accDescr: Human goals guide Paprika Inc roles and collaboration. Inc uses the Codex host for agent chats and tools, and Paprika Messenger for communication. Agents draw on selected skills and project knowledge.
+    Human["You<br/>Goals and decisions"] --> Inc["Paprika Inc<br/>Roles and collaboration"]
+    Inc --> Host["Codex host<br/>Chats and tools"]
+    Inc --> Messenger["Paprika Messenger<br/>Communication"]
+    Host --> Skills["Selected skills<br/>Research and engineering"]
+    Host --> Knowledge["Project knowledge<br/>Code, docs and evidence"]
+```
+
+| Component | What it contributes |
+| --- | --- |
+| **Paprika Inc** | Portable role contracts, ownership and review relationships, setup helpers, handoffs and meeting procedures. |
+| **Paprika Messenger** | The underlying communication layer for durable messages and private meeting state. It remains an [independent project](https://github.com/newbiesitl/paprika-messenger). |
+| **Codex host** | Persistent chats, model execution and access to tools allowed in the current environment. Inc prepares and records supported native actions; the agent invokes them. |
+| **Skills and integrations** | Selected instructions and resources for specialist work. Tool availability, credentials and host permissions determine which actions can actually run. |
+| **Project knowledge** | The repository's source, documents, decisions, evidence and work checkpoints that agents can read and maintain within their assignments. |
+
+A specialist can use external tools available in its own host environment and return results through a managed handoff. Inc currently supplies collaboration procedures and [integration compatibility metadata](docs/architecture/INTEGRATION-REGISTRY.md); a general-purpose external-tool execution service is future work.
+
+### Optional specialist skills
+
+| Pack | Included workflows | Setup |
 | --- | --- | --- |
-| [Chief Architect](company/roles/chief-architect/agent.md) | `chief-architect` | Design, interfaces, and acceptance gates |
-| [Backend Dev](company/roles/backend-dev/agent.md) | `backend-dev` | Company engine, host adapters, and integrations |
-| [Frontend Dev](company/roles/frontend-dev/agent.md) | `frontend-dev` | Setup, status, and recovery interactions |
-| [Scientific Researcher](company/roles/scientific-researcher/agent.md) | `scientific-researcher` | Research and evidence appraisal |
-| [QA Engineer](company/roles/qa/agent.md) | `qa` | Independent validation and acceptance evidence |
-| [Coordinator](company/roles/coordinator/agent.md) | `coordinator` | Human intake and task handoffs |
-| [Release Engineer](company/roles/release-engineer/agent.md) | `release-engineer` | Reviewed merge order and reproducible releases |
+| `research-core` | Paper lookup, literature review, citation management and scientific critical thinking, from a pinned subset of Scientific Agent Skills. | [Research setup and capability boundaries](plugins/paprika-inc/skills/setup-paprika-inc/references/research-core.md) |
+| `engineering-core` | The `paprika-code-review` skill, with selected engineering and review guidance. | [Engineering setup and provenance](plugins/paprika-inc/skills/setup-paprika-inc/references/engineering-core.md) |
+
+Packs are explicitly selected and installed into the project. Installing Inc alone does not activate them or install entire upstream plugins. Role assignments guide skill use; project-local discovery can expose the same skills to other chats in that project. Setup reports installation integrity and local dependencies separately from external-service readiness.
+
+Explore the [scientific research example](examples/scientific-research/README.md) and [third-party notices](THIRD_PARTY_NOTICES.md).
+
+## Where we are going
+
+We want Paprika Inc to become an **optimized agent harness framework**, with each specialist responsible for its own knowledge and skills. A coordinator should be able to identify the right specialist and narrow the search space before that agent gathers detailed context.
+
+### The target task-routing cycle
+
+The following illustration describes the **planned operating cycle**, building on today's roles, skill packs, handoffs and checkpoints.
+
+```mermaid
+flowchart LR
+    accTitle: Planned task-routing cycle
+    accDescr: Understand the task, select a specialist, load focused context, execute, validate and preserve reusable knowledge. Validation can send work back for more context. Preserved knowledge improves future routing and retrieval.
+    Task["1. Understand<br/>the task"]
+    Route["2. Select a<br/>specialist"]
+    Context["3. Load focused<br/>context"]
+    Execute["4. Execute"]
+    Validate["5. Validate"]
+    Preserve["6. Preserve reusable<br/>knowledge"]
+    Knowledge[("Role knowledge<br/>and skill index")]
+
+    Task --> Route --> Context --> Execute --> Validate
+    Validate -->|"Pass"| Preserve
+    Validate -->|"Rework"| Context
+    Preserve --> Knowledge
+    Knowledge -.->|"Route future tasks"| Route
+    Knowledge -.->|"Retrieve"| Context
+```
+
+For example, a repository task could be routed to a specialist whose knowledge index points to the relevant subsystem, decisions and tests. That agent would read the needed sources and use an appropriate skill, then preserve any validated finding for the next task.
+
+### Knowledge distillation and navigation
+
+Here, **knowledge distillation means organizing knowledge, not training a smaller model**. We envision concise, source-linked entries arranged in a tree or graph so an agent can navigate from a concept to the relevant code, documents, evidence and skills.
+
+A lightweight ontology could give concepts and relationships consistent names. Entries should retain their owners, source revisions and freshness, along with uncertainty, contradictions and unresolved questions. Summaries help locate evidence; the underlying sources remain available for verification.
+
+Role ownership would make specialists accountable for maintaining their knowledge and skill indexes, while shared references would connect related domains. The goal is to retrieve a useful slice of knowledge for each task.
+
+### Token optimization and task quality
+
+Focused routing could reduce repeated repository exploration, irrelevant context and duplicated specialist work. It should complement the host's existing skill-discovery and context-loading behavior.
+
+We will need to evaluate **total tokens and cost per accepted task**, including routing, retrieval, knowledge maintenance and retries, alongside task success, quality, latency and rework. Lower context size by itself does not prove a better result. **No measured token savings or quality gains are claimed yet.**
+
+| Foundation in the current implementation | Direction to develop and evaluate |
+| --- | --- |
+| Role contracts, ownership and selected skill packs | Task-aware selection of specialists, knowledge and skills |
+| Repository documents, evidence and resumable work checkpoints | Structured knowledge distillation, navigation and freshness checks |
+| Native handoffs and private meeting workflows | Managed collaboration across more tools and agent environments |
+| Validation procedures and recorded task evidence | Reproducible comparisons of total token use, task performance and quality |
+
+These are product directions, not a release schedule. Follow [development tracking](docs/DEVELOPMENT.md) and the [industry and integration roadmap](https://github.com/newbiesitl/paprika-inc/issues/30) for scoped work and acceptance evidence.
+
+## Reference and development
+
+### Browse the full catalog
+
+The generated reference below lists the current templates and skill-pack sources. Extension entries are starting points for refinement and domain review; their presence does not certify task performance or connected tools.
+
+<details>
+<summary>Expand company types, organization structures, role templates and packs</summary>
 
 <!-- company-catalog:start -->
 ## Company catalog preview
@@ -297,76 +470,27 @@ Pack source availability does not establish local installation, authentication, 
 Generated from the version 0.2.0 [backend catalog](plugins/paprika-inc/runtime/company-catalog/catalog.json); check with npm --prefix apps/company-catalog run readme:check.
 <!-- company-catalog:end -->
 
+</details>
 
-## Agent meetings with Paprika Inc
+### Work from source
 
-Bring your agents together for a focused discussion—with a shared agenda, a configurable round budget, and meeting notes that capture the results.
+Use Git, Python 3.10 or newer, and Node.js 24 or newer.
 
-### 1. Create a meeting
+```sh
+git clone --recurse-submodules https://github.com/newbiesitl/paprika-inc.git
+cd paprika-inc
+```
 
-Use the **Paprika Inc plugin** to create a meeting room. Describe the topic, select participants from the dropdown, and set the number of discussion rounds.
+For an existing checkout, initialize its pinned dependencies:
 
+```sh
+git submodule sync --recursive
+git submodule update --init --recursive
+```
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/8f6372d7-974a-4472-a449-bd104f16bbce" width="700" alt="Creating a meeting with Paprika Inc and selecting participants" />
-</p>
+Submodules are pinned to reviewed commits. A GitHub source ZIP alone does not populate them; see [dependency adoption](docs/DEPENDENCIES.md).
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/7ac86918-434e-4585-bc33-f8291ba6eb7d" width="700" alt="Creating a meeting with Paprika Inc and selecting participants" />
-</p>
-
-### 2. Invite your agents
-
-The meeting chat acts as the coordinator, inviting participants through Paprika Inc messaging. Agents join from their existing chats, while the meeting room keeps the shared discussion organized.
-
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/9986cbfc-fe41-4f8e-bc55-40d9b319e66a" width="700" alt="An agent receiving and accepting a meeting invitation" />
-</p>
-
-
-
-
-### 3. Discuss within a round budget
-
-Meetings follow a **round-based protocol**. Each participant reads the shared brief or previous round, then submits comments, questions, answers, or an explicit pass.
-
-Once everyone has submitted, the complete round is published and the next begins. Participants can address specific colleagues while keeping the discussion visible to the whole room.
-
-The coordinator uses the configured budget to frame the agenda and reminds participants when it is time to wrap up. The meeting closes automatically when all rounds are complete.
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/83f232b3-cfba-4e65-9777-537394aed73f" width="700" alt="An agent contributing to a meeting within the configured round budget" />
-</p>
-
-
-
-
-### 4. Capture the discussion
-
-The private meeting board keeps published contributions together. The coordinator records conclusions, decisions, and unresolved questions in the meeting notes.
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/b9c68480-d2fb-4e49-bc93-6c0cf01da7a7" width="700"  />
-</p>
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/dbfced77-a8ad-49d9-a714-b31a053018ca" width="700"  />
-</p>
-
-### 5. Leave with a clear outcome
-
-At the end of the meeting, the coordinator prepares a summary with conclusions, action items, and open questions, and notifies participants that the meeting has closed.
-
-Curated notes and summaries can be exported to the repository’s `meetings/` folder for future reference.
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/2a001b1f-c238-4e05-a7c5-6bf52347602d" width="700" alt="Meeting summary showing conclusions, action items, and unresolved questions" />
-</p>
-
-## Try the implemented commands
-
-The [meeting room pilot](docs/MEETING-PILOT.md) adds Inc delivery helpers and notes export for the round-based private-board service candidate. Follow the [meeting procedure](plugins/paprika-inc/skills/paprika-inc/references/meetings.md) for its tools and commands.
-
-Node.js 24 or newer runs the contained helper without additional npm dependencies:
+Inspect the company and prepare a self-contained plugin kit:
 
 ```sh
 node plugins/paprika-inc/skills/paprika-inc/scripts/inc.mjs help
@@ -374,65 +498,27 @@ node plugins/paprika-inc/skills/paprika-inc/scripts/inc.mjs validate --repo .
 node plugins/paprika-inc/skills/paprika-inc/scripts/inc.mjs plan --repo .
 node plugins/paprika-inc/skills/paprika-inc/scripts/inc.mjs status --repo .
 node plugins/paprika-inc/skills/paprika-inc/scripts/inc.mjs roles --repo .
-```
-
-Use the chosen existing first-staff chat to discuss the company. The skills support `$paprika-inc help`, author plan/write, protected checkout and bootstrap start/next/record/status. Default setup/init still prepares a plan. Actual user-requested bootstrap uses native saved-project creation tools and separate identity/read-report evidence; file generation alone creates no chats or permissions. See [MVP scope and acceptance](docs/MVP.md), [the concrete workflow](plugins/paprika-inc/skills/setup-paprika-inc/references/mvp-workflow.md), and [generic resulting files](examples/workshop/company/company.json).
-
-Prepare a self-contained source kit with Python 3.10 or newer:
-
-```sh
 python3 scripts/prepare-plugin.py
-python3 scripts/validate-plugin.py artifacts/plugin-skeleton/paprika-inc-0.3.1.zip
 ```
 
-The deterministic archive is a local MVP skill kit; preparation performs no installation/publication/deployment. An optional private export can reference one existing Paprika Service App without registering another product/service. Native on-demand bootstrap requires no separate Messenger product. See [MVP scope and acceptance](docs/MVP.md) and [the original skeleton/package boundary](docs/PLUGIN-SKELETON.md).
+The preparation command reports the generated archive path. Validate that archive with `python3 scripts/validate-plugin.py <archive-path>`. Building the kit does not install or publish it. See the [package boundary](docs/PLUGIN-SKELETON.md) and [catalog UI development guide](apps/company-catalog/README.md).
 
-## Get the source
+### Explore the project
 
-```sh
-git clone --recurse-submodules https://github.com/newbiesitl/paprika-inc.git
-cd paprika-inc
-```
-
-For an existing checkout:
-
-```sh
-git submodule sync --recursive
-git submodule update --init --recursive
-```
-
-The submodule is pinned by commit, not a floating branch. See [dependency adoption](docs/DEPENDENCIES.md) for its version and update process. Downloading the GitHub source ZIP alone does not populate submodules. These are developer checkout instructions, not plugin installation commands.
-
-## Explore
-
-| Location | Purpose |
+| Guide | What you will find |
 | --- | --- |
-| [Company definition](company/README.md) | The team using this repository to develop Paprika Inc |
-| [Governance](company/CONSTITUTION.md) | Authority, review, and adoption rules |
-| [Self-development design](docs/architecture/SELF-DEVELOPMENT.md) | How version N develops version N+1 |
-| [Migrated proposal](docs/proposals/PAPRIKA-VIRTUAL-COMPANY.md) | Portable roles, knowledge, and lifecycle design |
-| [Proposal provenance](docs/proposals/MIGRATION.md) | Original source and migration corrections |
-| [Development tracking](docs/DEVELOPMENT.md) | Features, improvements, tasks, milestones, and evidence |
-| [Local MVP](docs/MVP.md) | First-staff authoring, protected clone, sequential native bootstrap and live acceptance |
-| [Plugin skeleton](docs/PLUGIN-SKELETON.md) | Original packaging boundary and future hardening |
-| [Assets](assets/README.md) | Approved logo and its exact generation prompt |
-| `vendor/paprika-messenger/` | Independently maintained messaging dependency |
+| [Development company](company/README.md) | The roles and contracts of the team developing Paprika Inc |
+| [Local MVP](docs/MVP.md) | Implemented setup and onboarding scope, with separate live acceptance gates |
+| [Meeting pilot](docs/MEETING-PILOT.md) | Round-based meetings, delivery helpers and notes export |
+| [Work checkpoints](docs/work/README.md) | Task evidence and resumable handoff records |
+| [Integration registry](docs/architecture/INTEGRATION-REGISTRY.md) | Compatibility declarations and future integration boundaries |
+| [Governance](company/CONSTITUTION.md) and [self-development](docs/architecture/SELF-DEVELOPMENT.md) | Review, authority and adoption procedures |
+| [Original proposal](docs/proposals/PAPRIKA-VIRTUAL-COMPANY.md) and [provenance](docs/proposals/MIGRATION.md) | Earlier design material and its migration history |
+| [Development tracking](docs/DEVELOPMENT.md) | Features, tasks, milestones and evidence |
+| [Brand assets](assets/README.md) | The approved logo and its generation prompt |
 
-## Contribute
+### Contribute
 
-Read [Contributing](CONTRIBUTING.md), [Support](SUPPORT.md), [Security](SECURITY.md), the [Code of Conduct](CODE_OF_CONDUCT.md), and [Maintaining](docs/MAINTAINING.md). Repository definitions describe roles; they do not create chats, grant permissions, or start autonomous work.
+Read [Contributing](CONTRIBUTING.md), [Support](SUPPORT.md), [Security](SECURITY.md), the [Code of Conduct](CODE_OF_CONDUCT.md) and [Maintaining](docs/MAINTAINING.md).
 
-Paprika Inc is distributed under the [MIT license](LICENSE). See [third-party notices](THIRD_PARTY_NOTICES.md) for Messenger and imported documentation.
-
-## Optional scientific research workflows
-
-Inc 0.3.1 adds an explicitly selected `research-core` set for project-local
-installation: paper lookup, literature review, citation management and critical
-appraisal. Source is pinned as a second unchanged submodule; only four selected
-skills and their resources are bundled internally. Installing Inc does not install
-the upstream plugin or activate research skills globally. See
-[setup and capability boundaries](plugins/paprika-inc/skills/setup-paprika-inc/references/research-core.md),
-[the fictional researcher and public pilot](examples/scientific-research/README.md),
-and [the governing proposal](docs/proposals/SCIENTIFIC-RESEARCH-SKILLS.md).
-
-Inc 0.3.1 adds [native product/sender presentation](plugins/paprika-inc/skills/setup-paprika-inc/references/native-message-presentation.md) for newly prepared onboarding prompts. Actual native observations select a plugin mention and sender title; missing metadata uses plain text. Pending writes retain frozen payloads.
+Paprika Inc is distributed under the [MIT license](LICENSE). See [third-party notices](THIRD_PARTY_NOTICES.md) for dependency licenses and imported material.
