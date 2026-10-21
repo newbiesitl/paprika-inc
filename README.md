@@ -1,4 +1,4 @@
-# Paprika Inc
+<img width="748" height="730" alt="image" src="https://github.com/user-attachments/assets/744b436d-28e6-435e-8bb6-e6ff0e7c660a" /># Paprika Inc
 
 <p align="center">
   <img src="assets/paprika-inc-logo-navy-v1.png" alt="Paprika Inc — Paprika in a navy office suit" width="360" />
@@ -18,6 +18,10 @@ The Paprika inc will investigate your repository, and suggest company type and r
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/429f3d42-35fe-4241-8e7d-24ae98aabd3e" width="700" alt="Company initialization" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/836a4cc3-e24b-44cc-ae79-e79adec042e3" width="700" alt="Company initialization" />
 </p>
 
 ## What we are building
