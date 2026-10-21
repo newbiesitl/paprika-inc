@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "protocol_version": "0.1.0",
+  "experiment_id": "E001",
+  "status": "draft_not_executable",
+  "work_item": null,
+  "owner_role": "agent-systems-engineer",
+  "reviewer_roles": [
+    "chief-architect",
+    "scientific-researcher",
+    "qa"
+  ],
+  "specialist_review": [
+    "data-engineer"
+  ],
+  "hypothesis": "Knowledge/context management plus routing reduces all-agent tokens per independently accepted repository task while preserving quality and operational guardrails.",
+  "study_kind": "exploratory_feasibility_and_variance",
+  "treatment": {
+    "A": "Optimization bundle disabled",
+    "B": "Knowledge/context management and routing enabled",
+    "common_base_commit": null,
+    "treatment_diff_audit": null
+  },
+  "arms": {
+    "A": {
+      "source_commit": null,
+      "artifact_sha256": null,
+      "config_sha256": null,
+      "dependencies_sha256": null,
+      "definition_sha256": null,
+      "prompts_sha256": null,
+      "knowledge_sha256": null
+    },
+    "B": {
+      "source_commit": null,
+      "artifact_sha256": null,
+      "config_sha256": null,
+      "dependencies_sha256": null,
+      "definition_sha256": null,
+      "prompts_sha256": null,
+      "knowledge_sha256": null
+    }
+  },
+  "task_plan": {
+    "distinct_issues": 12,
+    "development_issues": 4,
+    "held_out_issues": 8,
+    "paired_repeats_per_held_out_issue": 3,
+    "scored_pairs": 24,
+    "scored_task_runs": 48,
+    "independent_task_clusters": 8,
+    "development_fixtures": [],
+    "held_out_fixture_manifest_sha256": null,
+    "required_coverage": [
+      "ordinary_fix",
+      "source_discovery",
+      "multifile_diagnosis_and_regression",
+      "stale_or_conflicting_evidence",
+      "interruption_and_resume"
+    ],
+    "paired_order_schedule_sha256": null,
+    "supported_seed_policy": null
+  },
+  "conditions": {
+    "host_and_runtime": null,
+    "model_revision_and_effort": null,
+    "tools_and_permissions_sha256": null,
+    "grader_and_rubric_sha256": null,
+    "isolated_reset_procedure": null,
+    "pretest_knowledge_policy": "frozen; no held-out answer leakage or cross-arm history",
+    "setup_accounting_scope": null,
+    "provider_cache_controls_and_observability": null
+  },
+  "telemetry": {
+    "supported_usage_source": null,
+    "all_agent_coverage_evidence": null,
+    "deduplication_and_subset_semantics": null,
+    "cost_rate_and_currency_snapshot": null,
+    "missing_usage_policy": "unknown; incomplete coverage blocks complete total-savings claims"
+  },
+  "analysis": {
+    "primary_metric": "acceptance_normalized_token_savings_percent",
+    "unit": "paired task; repeats nested within task",
+    "estimator_and_interval_plan": null,
+    "exclusions_and_adjudication": null,
+    "quality_noninferiority_margin": null,
+    "minimum_useful_savings_percent": null,
+    "latency_guardrail": null,
+    "confirmatory_study": "separate preregistered study sized after this exploratory pilot"
+  },
+  "resources": {
+    "currency": null,
+    "total_money_cap_including_overhead": null,
+    "total_model_token_cap_including_overhead": null,
+    "total_wall_time_cap_minutes": null,
+    "per_task_attempt_cap": null,
+    "per_task_resource_limits": null,
+    "development_and_setup_allowance": null,
+    "operational_vs_study_overhead_allocation": null
+  },
+  "stop_rules": [
+    "declared resource cap reached",
+    "critical permission or data-integrity failure",
+    "lost unresolved work or duplicate external action",
+    "unknown external outcome: quarantine and reconcile before retry"
+  ],
+  "prerequisites": {
+    "role_and_scope_approved": false,
+    "telemetry_verified": false,
+    "arms_tasks_host_pinned": false,
+    "resources_rubric_analysis_approved": false,
+    "development_calibration_complete": false,
+    "protocol_frozen": false
+  },
+  "frozen_protocol_sha256": null,
+  "notes": [
+    "Planning record only; nulls and empty fixture lists are unresolved, not defaults.",
+    "No runner consumes this file. A future runner must reject incomplete/unfrozen records and verify actual authority separately.",
+    "48 scored runs exclude development/calibration and setup; approve and disclose the whole study budget.",
+    "Hashes and fixture references must not expose held-out answers, private conversations or native identities.",
+    "Do not store the digest of this file inside itself; frozen_protocol_sha256 identifies a separate immutable protocol bundle.",
+    "The owner reviews source; merging this record does not staff the role, start experiments, spend resources or adopt a release."
+  ]
+}

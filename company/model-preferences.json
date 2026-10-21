@@ -30,14 +30,19 @@
     "release-engineer": {
       "model": "gpt-6.1-sol",
       "thinking": "xhigh"
+    },
+    "agent-systems-engineer": {
+      "model": "gpt-6.1-sol",
+      "thinking": "xhigh"
     }
   },
   "notes": [
-    "Role defaults match the current saved chat overrides selected by the human on October 20, 2026.",
+    "The existing seven role defaults match the saved chat overrides selected by the human on October 20, 2026.",
     "An explicit chat override takes precedence during a Paprika model-reset plan; otherwise use this exact role default.",
     "Bootstrap freezes configured defaults and passes explicit model/thinking parameters for newly requested native role chats after checking host capabilities.",
     "Unavailable models/efforts are reported without substituting a global default. These files do not change existing chats or the host app reset button.",
-    "Actual native bindings and settings observations remain private."
+    "Actual native bindings and settings observations remain private.",
+    "Agent Systems Engineer has a proposed source default matching Backend Dev (gpt-6.1-sol / xhigh) to keep the candidate roster complete. It has not been approved for or applied to a live chat; review it before adoption and verify current host availability."
   ],
   "legacy_role_preferences": {
     "front-desk": {

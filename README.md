@@ -86,10 +86,6 @@ Create a meeting with a topic, participants and a round budget. Existing agent c
 **Choose participants and invite their existing chats.**
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/7ac86918-434e-4585-bc33-f8291ba6eb7d" width="700" alt="Selecting participants for a Paprika Inc meeting" />
-</p>
-
-<p align="center">
   <img src="https://github.com/user-attachments/assets/9986cbfc-fe41-4f8e-bc55-40d9b319e66a" width="700" alt="An agent receiving and accepting a meeting invitation" />
 </p>
 
@@ -123,7 +119,39 @@ Meetings require a compatible private Paprika service. See the [meeting pilot an
 
 The first target is a saved **local Codex project on one selected machine**.
 
-1. **Install the Paprika Inc kit** through your host's supported plugin installation flow. Follow the [installation workflow](plugins/paprika-inc/skills/setup-paprika-inc/references/mvp-workflow.md#installation-and-existing-service-binding); developers can [prepare the kit from source](#work-from-source).
+1. **Install the Paprika Inc kit.** Use your host’s supported plugin installation flow and follow the [installation workflow](https://github.com/newbiesitl/paprika-inc/blob/main/plugins/paprika-inc/skills/setup-paprika-inc/references/mvp-workflow.md#installation-and-existing-service-binding); developers can [prepare the kit from source](https://github.com/newbiesitl/paprika-inc#work-from-source).
+
+   **Alternatively, install through a Codex conversation.** Open a session with Plugin Creator available and paste the prompt below. Paprika Inc and Paprika Messenger do not need to be installed beforehand.
+
+   ```text
+   Install Paprika Inc from https://github.com/newbiesitl/paprika-inc
+   as one private personal account plugin for ChatGPT Work, mobile
+   and my other devices.
+
+   Read its setup instructions directly from the repository and prepare
+   the current standalone kit. Record the source revision and version.
+
+   Check my existing plugins and private Paprika services:
+   - Messenger installed: preserve it and reuse its verified compatible
+     Paprika Service/App binding, OAuth and data.
+   - Messenger absent, service present: reuse that service directly.
+     Installing the Messenger plugin is not required.
+   - Neither present: follow the documented service setup workflow at
+     https://github.com/newbiesitl/paprika-messenger to provision one
+     private service and bind Inc, without installing Messenger solely
+     as a dependency.
+
+   Resolve unavailable discovery before creating another service.
+
+   Merge the verified App binding into one standalone Inc ZIP and save
+   it through Plugin Creator. Preserve both Inc skills and its navy logo
+   and composer icon. Update an existing personal Inc plugin rather
+   than creating a duplicate.
+
+   Return the plugin link and verify version, personal account scope,
+   installation and authenticated tools. Report untested clients and
+   unavailable capabilities as pending.
+   ```
 2. **Open your repository as a local Codex project** and choose an existing chat for setup. Start with:
 
    > $setup-paprika-inc — Help me define a team for this project. Suggest roles, responsibilities, reviewers and relevant skill packs, then show me the proposed configuration.
@@ -584,6 +612,7 @@ The preparation command reports the generated archive path. Validate that archiv
 | [Integration registry](docs/architecture/INTEGRATION-REGISTRY.md) | Compatibility declarations and future integration boundaries |
 | [Governance](company/CONSTITUTION.md) and [self-development](docs/architecture/SELF-DEVELOPMENT.md) | Review, authority and adoption procedures |
 | [Original proposal](docs/proposals/PAPRIKA-VIRTUAL-COMPANY.md) and [provenance](docs/proposals/MIGRATION.md) | Earlier design material and its migration history |
+| [Agent harness roadmap](docs/roadmap/AGENT-HARNESS.md) and [A/B framework](docs/evaluation/README.md) | Proposed knowledge/context, routing and evaluation work with explicit evidence gates |
 | [Development tracking](docs/DEVELOPMENT.md) | Features, tasks, milestones and evidence |
 | [Brand assets](assets/README.md) | The approved logo and its generation prompt |
 
