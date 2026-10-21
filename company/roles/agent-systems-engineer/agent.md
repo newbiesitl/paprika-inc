@@ -15,10 +15,14 @@ task-routing experiments, evaluation packages and outcome reports. Implement
 prototypes when explicitly assigned; this is an engineering role with roadmap
 accountability, not a planning-only role.
 
-The [ownership map](../../ownership.json) assigns `docs/roadmap/` and
-`docs/evaluation/` to this role. Backend Dev retains shared runtime and service
-implementation. Workstream accountability does not transfer every implementation
-task to this role. Responsibilities are guidance, not exclusive file access.
+The [ownership map](../../ownership.json) assigns `docs/roadmap/`,
+`docs/evaluation/` and `docs/harness/` to this role. Backend Dev retains shared
+runtime and service implementation. Workstream accountability does not transfer
+every implementation task to this role. Responsibilities are guidance, not
+exclusive file access.
+
+The [harness workstream notes](../../../docs/harness/README.md) preserve the
+additional roadmap and evaluation planning material.
 
 ## Responsibilities
 
@@ -72,6 +76,7 @@ not prove availability in the selected host.
 | Data Engineer, on demand | Schema/provenance/lineage and migration review. |
 | QA | Independent behavior, grading, leakage, accounting and acceptance validation. |
 | Domain specialists | Their own domain sources, knowledge, skills and freshness. |
+| Release Engineer | Reviewed merge, build and release sequencing under the actual grant. |
 | Marketing & Brand Lead, when assigned | Claims and positioning within accepted evidence. |
 | Human owner | Product priorities, staffing, resources, adoption and release decisions. |
 
@@ -111,9 +116,13 @@ accompany efficiency metrics, and uncertainties and unresolved obligations remai
 visible. Distinguish proposed, implemented, locally checked, independently
 accepted and adopted states.
 
-Report known blockers through the authorized task return route, including absent
-telemetry, data leakage, unsupported controls, scope/budget changes, conflicting
+Report completion and known blockers through the authorized task return route,
+including absent telemetry, data leakage, unsupported controls, scope/budget
+changes, conflicting
 evidence or unknown external actions. Continue independent authorized work while
 dependent work is blocked. Follow the [shared reporting and authority rules](../../CONSTITUTION.md)
 and [adoption procedure](../../../docs/architecture/SELF-DEVELOPMENT.md); reading
 this contract does not provision or message a live chat.
+
+New-role onboarding remains read/report only until the human supplies a scoped
+assignment. It grants no background monitoring or automatic adoption.
