@@ -12,7 +12,7 @@ Our long-term vision is an **optimized agent harness framework**: a system that 
 
 **Current stage: local MVP.** Role setup, onboarding helpers, selected skill packs and collaboration workflows form the current foundation. Automated knowledge routing and measured token optimization are future work. Live availability depends on the installed host and connected service; see [scope and acceptance](docs/MVP.md).
 
-[Features](#see-it-in-action) · [Get started](#get-started) · [Architecture](#how-paprika-inc-works) · [Vision](#where-we-are-going) · [Reference](#reference-and-development)
+[Current features](#see-it-in-action) · [Get started](#get-started) · [Architecture](#how-paprika-inc-works) · [Vision](#where-we-are-going) · [Roadmap](#planned-roadmap) · [Evaluation](#how-we-will-evaluate-improvements) · [Reference](#reference-and-development)
 
 ## What is it for?
 
@@ -199,7 +199,18 @@ Explore the [scientific research example](examples/scientific-research/README.md
 
 ## Where we are going
 
-We want Paprika Inc to become an **optimized agent harness framework**, with each specialist responsible for its own knowledge and skills. A coordinator should be able to identify the right specialist and narrow the search space before that agent gathers detailed context.
+We are building toward an **optimized agent harness framework**, with each specialist responsible for maintaining its own domain knowledge and skills. The shared harness would select a suitable specialist, narrow the search space and supply relevant context before execution. The intended outcomes are **lower total token spending** and **better task performance and quality**.
+
+A virtual company is a configurable operating model and our first evaluation environment. The reusable product is the framework for routing, context, collaboration and validated knowledge reuse.
+
+**The rest of this section and the roadmap below describe future work.** Today's foundation and the capabilities we want to test are distinct:
+
+| Current foundation | Planned capability to build and evaluate |
+| --- | --- |
+| Role contracts, ownership and selected project-local skill packs | Task-aware selection of specialists, knowledge and skills |
+| Repository documents, evidence and resumable work checkpoints | Repository scanning, source-linked knowledge indexes, structured distillation and freshness checks |
+| Native handoffs and private meeting workflows | Managed collaboration across more tools and agent environments |
+| Validation procedures and recorded task evidence | Reproducible A/B comparisons of total token use, task performance and quality |
 
 ### The target task-routing cycle
 
@@ -225,30 +236,89 @@ flowchart LR
     Knowledge -.->|"Retrieve"| Context
 ```
 
-For example, a repository task could be routed to a specialist whose knowledge index points to the relevant subsystem, decisions and tests. That agent would read the needed sources and use an appropriate skill, then preserve any validated finding for the next task.
+The first proposed pilot focuses on a repository maintainer coordinating specialist chats: take a bounded issue through source-backed diagnosis, a small patch and regression test, a deliberate checkpoint and resume, independent acceptance, and a reviewed knowledge update. Existing issue and checkpoint identifiers would connect the work and its evidence.
 
-### Knowledge distillation and navigation
+### Role-owned knowledge and skills
 
-Here, **knowledge distillation means organizing knowledge, not training a smaller model**. We envision concise, source-linked entries arranged in a tree or graph so an agent can navigate from a concept to the relevant code, documents, evidence and skills.
+Here, **knowledge distillation means organizing knowledge, not training a smaller model**. Each specialist would maintain concise, source-linked entries pointing to relevant code, documents, decisions, evidence and skills. The coordinator could choose the right role and knowledge scope before loading detailed instructions and sources.
 
-A lightweight ontology could give concepts and relationships consistent names. Entries should retain their owners, source revisions and freshness, along with uncertainty, contradictions and unresolved questions. Summaries help locate evidence; the underlying sources remain available for verification.
+Start with a curated source and skill index and focused context packages. A tree, graph or lightweight ontology could add navigation across concepts and domains when evidence justifies the complexity. Entries should retain owners, source revisions, freshness, uncertainty, contradictions and unresolved questions; summaries should lead back to verifiable sources.
 
-Role ownership would make specialists accountable for maintaining their knowledge and skill indexes, while shared references would connect related domains. The goal is to retrieve a useful slice of knowledge for each task.
+Domain specialists would own their knowledge and skills. The shared harness would provide common navigation, provenance, context packaging and recovery methods. Focused routing should complement the host's existing skill-discovery behavior and reduce repeated exploration and irrelevant context.
 
-### Token optimization and task quality
+### Index an existing repository for agent use
 
-Focused routing could reduce repeated repository exploration, irrelevant context and duplicated specialist work. It should complement the host's existing skill-discovery and context-loading behavior.
+We want you to be able to **point Paprika Inc at an existing repository and build an agent knowledge index**, without reorganizing its source. A planned scanner would map modules, entry points, documentation, tests and configuration, then link that map to relevant specialist roles and skills.
 
-We will need to evaluate **total tokens and cost per accepted task**, including routing, retrieval, knowledge maintenance and retries, alongside task success, quality, latency and rework. Lower context size by itself does not prove a better result. **No measured token savings or quality gains are claimed yet.**
+The workflow would be **scan → build a reviewable index → retrieve focused context → refresh as sources change**. Agents could navigate from a task or concept to the relevant source locations, tests and skill instructions, reducing repeated repository exploration. Index entries would retain source revisions, ownership and freshness; original sources would remain available for verification.
 
-| Foundation in the current implementation | Direction to develop and evaluate |
+Start with a bounded scan and a simple module/source index. Add richer symbol and dependency relationships as needed, then incremental updates for changed, renamed or deleted sources. Measure scan, index construction, retrieval and maintenance costs alongside task outcomes. Track the proposed capability and acceptance criteria in [repository scanning and indexing](https://github.com/newbiesitl/paprika-inc/issues/47).
+
+## Planned roadmap
+
+These are planning windows beginning **after staffing and pilot scope are approved**. Progress depends on the exit evidence, rather than the calendar; they are not promised release dates.
+
+| Phase | Planned work | Evidence needed to proceed |
+| --- | --- | --- |
+| **Days 0–30: establish a baseline** | Define task, context, knowledge and trace formats; prototype a bounded repository scan and reviewable source/skill index; verify usage measurement and prepare the pilot protocol. Include budget, stop and uncertain-action handling. | A task can be interrupted and resumed without losing unresolved work or duplicating an action. Independent review covers scan scope, source references, the task set, grading criteria, telemetry coverage and protocol. |
+| **Days 31–60: test focused routing and context** | Compare index-guided context retrieval and simple capability-based role routing with the frozen baseline on held-out tasks. Keep model settings fixed; count scanning, indexing, retrieval and all-agent overhead. | A reproducible exploratory report covering retrieval relevance, task quality, tokens, cost, latency and rework. Size a separate confirmatory study if the pilot warrants it. |
+| **Days 61–90: harden a portable pilot** | Validate incremental refresh for changed, renamed or deleted sources. Test stale/conflicting knowledge, cancellation, partial failure, duplicate or uncertain delivery, and recovery. Demonstrate a second repository/company configuration. | Independent acceptance of index freshness, recovery and portability, plus a recommendation for limited rollout or further work with rollback criteria. |
+
+Later expansion to more domains, hosts, integrations, adaptive model routing or richer knowledge graphs would follow demonstrated benefits and regression checks.
+
+**Proposed workstream owner: Agent Systems Engineer.** This role would maintain the harness roadmap, shared context and knowledge methods, experiment packages and outcome reports. Runtime integration would remain a separately assigned engineering responsibility, with independent architecture, research-method, data-lineage and QA review. The role is a proposal; staffing, adoption, resources and releases remain human decisions.
+
+Follow [development tracking](docs/DEVELOPMENT.md) and the [industry and integration roadmap](https://github.com/newbiesitl/paprika-inc/issues/30) for scoped work and acceptance evidence.
+
+## How we will evaluate improvements
+
+**This is a proposed evaluation framework. No measured token savings or quality gains are claimed yet.** The question is whether focused knowledge and routing reduce total tokens per independently accepted task while preserving quality and reliable operation.
+
+| Comparison | Configuration |
 | --- | --- |
-| Role contracts, ownership and selected skill packs | Task-aware selection of specialists, knowledge and skills |
-| Repository documents, evidence and resumable work checkpoints | Structured knowledge distillation, navigation and freshness checks |
-| Native handoffs and private meeting workflows | Managed collaboration across more tools and agent environments |
-| Validation procedures and recorded task evidence | Reproducible comparisons of total token use, task performance and quality |
+| **A — baseline** | The workflow with the new knowledge-management and routing optimizations disabled. |
+| **B — optimized candidate** | The same workflow with role-owned knowledge management, focused context and task routing enabled. |
 
-These are product directions, not a release schedule. Follow [development tracking](docs/DEVELOPMENT.md) and the [industry and integration roadmap](https://github.com/newbiesitl/paprika-inc/issues/30) for scoped work and acceptance evidence.
+Compare pinned commits or release builds from a common base and audit the differences. Hold task sources, role definitions, model/version/effort, tools, host, budgets and grading criteria constant. B may derive an index from the same approved sources, with scanning, index construction and upkeep counted in the cost. If unrelated changes remain between branches, report a **comparison of those releases**, rather than attributing the result to the optimization alone.
+
+Use separate chats, workspaces and knowledge stores for each arm. Freeze the candidate and pre-test knowledge after development, reset independent trials, keep held-out solutions out of the index, and randomize or counterbalance A/B order. Grade results independently, blind to the arm where practical.
+
+**First experiment, E001: an exploratory pilot.** Use **12 distinct issues: 4 for development and calibration, plus 8 held out for evaluation**. Three paired repetitions of each held-out issue produce **24 A/B pairs, or 48 scored task-runs**. Setup and calibration are additional resources. Cover source discovery, multi-file diagnosis and repair, stale or conflicting evidence, and interruption/resume. This estimates feasibility and variation; eight distinct issues do not establish a broad savings claim. A separate confirmatory study would be sized from the pilot evidence.
+
+Judge the result on three dimensions:
+
+- **Quality:** independently accepted tasks, correctness, defects, rework and recovery behavior.
+- **Efficiency:** total tokens and cost per accepted task, including every participating agent, setup, repository scanning, index construction/upkeep, routing, retrieval, reviews, retries, recovery and failed or cancelled attempts.
+- **Experience:** task latency and completion within the same resource limits.
+
+Complete, supported usage measurement is a prerequisite for a **total-token savings claim**. Native-host coverage must be verified; missing usage stays unknown. If coverage is incomplete, report quality, latency and the measurement gap. An instrumented API experiment would need separate approval and would represent a different execution environment.
+
+<details>
+<summary>A/B accounting, reproducibility and decision gates</summary>
+
+**Count savings over the same attempted workload.** For arm `x`, let `T_x` be total tokens, `C_x` monetary cost and `K_x` independently accepted task-runs. Include failed and cancelled attempts in the totals.
+
+| Measure | Calculation |
+| --- | --- |
+| Raw tokens saved | `T_A - T_B` |
+| Raw savings (%) | `100 * (T_A - T_B) / T_A` |
+| Tokens per accepted task | `U_x = T_x / K_x` |
+| Cost per accepted task | `C_x / K_x` |
+| Acceptance-normalized savings (%) | `100 * (1 - U_B / U_A)` |
+
+Publish raw totals, attempted and accepted counts, acceptance rates, quality and latency alongside these ratios. Negative savings remain visible; zero or nonfinite denominators make a ratio undefined. Acceptance normalization does not replace the quality rubric. Keep actual charges, rate-based estimates, tool/compute fees and human curation time distinct. Report experiment development, calibration and analysis overhead separately, with a grand total for the study.
+
+**Separate cold start from reuse.** For a declared schedule of `N` tasks, use `T_x(N) = setup_x + maintenance_x(N) + sum(run_tokens_x[1..N])`, with disjoint entries and setup counted once. Report actual reuse, rather than amortizing over hypothetical volume. E001 uses independent trials and frozen knowledge; a later reuse study would predeclare ordered tasks, update rules and resets between sequences. A fresh chat or knowledge store does not prove a cold provider cache: record cache observations and disclose what cannot be controlled or measured.
+
+**Make the comparison reproducible.** Keep a versioned, issue-linked protocol with commit, artifact, configuration, dependency, task, knowledge and evaluator identities; an isolated paired runner; an append-only usage and outcome ledger; independent grading artifacts; and reproducible analysis. Preserve call identity, usage source, coverage and failures. Reconcile cumulative versus per-call totals and count cached-input or reasoning-output subsets only once under the source's definitions. Keep sensitive traces private and publish sanitized evidence, including failed and inconclusive experiments. Protocol amendments receive new versions.
+
+**Require quality before claiming benefit.** Analyze paired tasks with repetitions kept within each task group; evolving reuse studies need independent sequence groups. Pilot uncertainty is exploratory. Before a confirmatory study, register its sample size, analysis, quality margin, minimum useful savings, latency limits and stopping rules. A benefit claim requires complete telemetry, the frozen correctness rubric, a lower 95% confidence bound for the acceptance-rate change at or above the allowed quality-loss boundary, and a lower 95% bound for acceptance-normalized savings meeting the minimum useful benefit. It also requires resource/latency limits and zero critical authority or data-integrity faults, duplicate external actions or lost unresolved work.
+
+Stop at the resource cap or a critical fault, and resolve uncertain external actions before retrying. Do not stop opportunistically when results first look favorable. Undefined or inconclusive results cannot support a win; a positive pilot supports confirmation rather than automatic release. Later comparisons with knowledge and routing enabled separately could identify which component helps and how they interact.
+
+</details>
+
+The next step is to confirm the pilot owner and scope, verify measurement coverage, select the exact versions and tasks, and approve the resource cap and evaluation criteria. Framework implementation and experiment execution remain future work.
 
 ## Reference and development
 
