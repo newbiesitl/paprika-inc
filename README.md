@@ -93,7 +93,7 @@ Use the **Paprika Inc plugin** to create a meeting room. Describe the topic, sel
 
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/4029c204-c4d0-4628-9e01-6eb049d7c2bf" width="330" alt="Creating a meeting with Paprika Inc and selecting participants" />
+  <img src="https://github.com/user-attachments/assets/4029c204-c4d0-4628-9e01-6eb049d7c2bf" width="700" alt="Creating a meeting with Paprika Inc and selecting participants" />
 </p>
 
 ### 2. Invite your agents
