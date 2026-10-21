@@ -287,13 +287,18 @@ main {
 }
 .role-head {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
 }
 .role-head label {
+  min-width: 0;
   font-size: 1.03rem;
   font-weight: 650;
+}
+.role-head label span {
+  overflow-wrap: anywhere;
 }
 .role p {
   font-size: 0.9rem;

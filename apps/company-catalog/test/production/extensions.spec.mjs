@@ -57,9 +57,14 @@ test('Extension filtering retains Essential edits and stays accessible on a narr
   await page.getByRole('button', { name: 'Configure this template' }).click();
   await expect(page.locator('#role-marketing-strategist')).toBeChecked();
   await expect(page.locator('#role-seo-analyst')).toBeChecked();
+  // Font metrics vary between Windows and Linux; headers must wrap with wider text too.
+  await page.addStyleTag({ content: '.role-head { font-family: monospace; font-size: 17px; }' });
   const audit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   expect(audit.violations).toEqual([]);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  const overflow = await page.evaluate(() => ({ width: innerWidth, scroll: document.documentElement.scrollWidth,
+    elements: [...document.querySelectorAll('.role-head, .role-head > *')]
+      .filter(el => el.getBoundingClientRect().right > innerWidth).map(el => el.className) }));
+  expect(overflow.scroll, JSON.stringify(overflow)).toBeLessThanOrEqual(overflow.width + 1);
   await page.getByLabel('Template collection', { exact: true }).selectOption('essential');
   await page.getByLabel('Choose a company').selectOption('software-studio');
   await page.getByRole('button', { name: 'Configure this template' }).click();
