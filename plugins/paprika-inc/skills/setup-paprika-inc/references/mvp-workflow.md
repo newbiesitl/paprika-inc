@@ -136,7 +136,7 @@ Binding alone is not readiness: independent project/cwd and matching receipt che
 
 ## Installation and existing-service binding
 
-The prepared MVP ZIP contains one Inc directory, its navy identity, two Inc skills, helper code and pinned Messenger component/license. When installation is requested, inspect the host's supported local plugin/Plugin Creator tooling and install that directory. If a supported local marketplace is required, it points only at Inc's explicit directory and is outside the artifact. Never register the repository/vendor tree as a marketplace. Building/validating a ZIP does not install it or verify picker behavior.
+The prepared MVP ZIP contains one Inc directory, its navy identity, three Inc skills, helper code and pinned Messenger component/license. When installation is requested, inspect the host's supported local plugin/Plugin Creator tooling and install that directory. If a supported local marketplace is required, it points only at Inc's explicit directory and is outside the artifact. Never register the repository/vendor tree as a marketplace. Building/validating a ZIP does not install it or verify picker behavior.
 
 Native on-demand bootstrap requires no separate Messenger product or service startup. For an optional existing-service-bound kit, obtain the actual App ID, owner/private identity, runtime API/configuration and capabilities from supported authenticated native metadata. Reuse the same Paprika Service App/OAuth/database/history and authoritative delivery/receiver state, preserving service type and paused/off configuration. Never invent an ID/endpoint, copy another owner's binding, create a second Messenger product, or downgrade a newer deployment.
 

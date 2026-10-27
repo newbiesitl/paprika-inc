@@ -1,7 +1,7 @@
 ---
 id: human-ai-communication
 title: Clear explanations for human-AI collaboration
-version: 0.1.0
+version: 0.2.0
 status: candidate
 last_reviewed: "2026-10-28"
 tags: [communication, explanations, human-oversight, technical-writing]
@@ -87,6 +87,15 @@ of a paid narration API is not a requirement for this workflow. Tool availabilit
 publication and paid-service use follow the actual task scope and permissions.
 
 ## Reusable prompts
+
+The [Paprika Explain skill](../../../plugins/paprika-inc/skills/paprika-explain/SKILL.md)
+now packages this workflow as a source candidate. Explicit invocation without a
+format, or a request to choose a format, shows a host-supported choice menu.
+An already specified format skips that question. Implicit explanation requests
+select a suitable format from context. Presets also include ELI5, worked
+examples, comparisons, guided lessons and explanations from intuition to detail;
+these are Paprika additions. Formats and teaching styles can be combined.
+Installed picker behaviour and comprehension benefits remain unverified.
 
 These are Paprika examples, not quotations or installed commands.
 

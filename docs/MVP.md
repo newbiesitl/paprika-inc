@@ -4,7 +4,7 @@ Work item: [#4](https://github.com/newbiesitl/paprika-inc/issues/4), stacked on 
 
 ## User outcome
 
-1. Install the Inc kit using a supported host installation flow. Inc has its own navy identity and two Inc-namespaced skills; it does not install/register a second Messenger product.
+1. Install the Inc kit using a supported host installation flow. Inc has its own navy identity and three Inc-namespaced skills; it does not install/register a second Messenger product.
 2. Discuss the company with a user-chosen initial staff chat. Draft a generic roster, responsibilities, boundaries, inputs/outputs, reviewers and one canonical ownership map. On an explicit write request, preview focused diffs and create the company files without replacing AGENTS.md or unrelated user files. Authoring alone creates no chats or new permissions.
 3. Ask Inc to bootstrap the specified roster from a selected Git repository/revision into an explicit local destination. Clone only into an empty destination or reuse an independently validated matching checkout. Require committed definition inputs and reject a mismatch with the discussed draft digest. Do not silently use stale/unpublished definitions.
 4. Discover the exact saved local Codex project, create persistent project chats through supported native tools, and onboard them to read/report only. Verify exact project membership, host and cwd separately from the role response. Save a small private sequential record for status and deliberate resume.
@@ -31,7 +31,7 @@ The installable local kit needs no separate Messenger product for native on-dema
 
 | Area | Implementation acceptance | Live acceptance, separately recorded |
 | --- | --- | --- |
-| Package | Exact allowlist, navy Inc identity, two Inc skills, dependency licenses/provenance and no duplicate Messenger discovery | Supported installation; fresh chat shows one Inc and one existing Messenger product entry; Paprika Service may appear separately |
+| Package | Exact allowlist, navy Inc identity, three Inc skills, dependency licenses/provenance and no duplicate Messenger discovery | Supported installation; fresh chat shows one Inc and one existing Messenger product entry; Paprika Service may appear separately |
 | Authoring | Generic example conversation/files; roster/ownership validation; focused diff; idempotence and user-file protection | User selects/discusses the actual company and asks to write |
 | Git | Empty-destination clone; origin/revision/input validation; matching-checkout reuse; dirty/unpublished/stale definitions and unrelated destination rejection | Actual selected remote/authentication/destination |
 | Native flow | Contract fixtures exercise exact project creation arguments, membership/cwd read-back, onboarding, partial failure, known-binding reuse and explicit resume | Persistent app-visible chats under the selected saved project, correct cwd, reopening and actual read/report responses |

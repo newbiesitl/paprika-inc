@@ -144,7 +144,7 @@ The first target is a saved **local Codex project on one selected machine**.
    Resolve unavailable discovery before creating another service.
 
    Merge the verified App binding into one standalone Inc ZIP and save
-   it through Plugin Creator. Preserve both Inc skills and its navy logo
+   it through Plugin Creator. Preserve all bundled Inc skills and its navy logo
    and composer icon. Update an existing personal Inc plugin rather
    than creating a duplicate.
 
@@ -324,7 +324,13 @@ The next step is to confirm the pilot owner and scope, verify measurement covera
 
 Browse the [reusable knowledge index](docs/research/knowledge/README.md) for
 source-linked practices, starting with [clear human-AI communication](docs/research/knowledge/HUMAN-AI-COMMUNICATION.md).
-These are reviewable references; automatic knowledge loading remains future work.
+The new [Paprika Explain skill](plugins/paprika-inc/skills/paprika-explain/SKILL.md)
+is a source candidate for choosing an explanation format: STE-inspired English,
+ELI5, diagrams, worked examples, comparisons, interactive webpages, video or
+guided learning. Explicit invocation without a format requests a host-supported
+picker; a specified format proceeds directly. Installation and native picker
+acceptance remain separate; see the [host acceptance cases](docs/qa/EXPLANATION-SKILL-PILOT.md).
+General automatic knowledge loading is future work.
 
 ### Browse the full catalog
 

@@ -35,7 +35,7 @@ attachments, native identifiers and bindings in the existing private store.
 | Layer | Purpose | Recommendation for this material |
 | --- | --- | --- |
 | Markdown knowledge | Preserve the explanation, sources, uncertainty and revisions. | Canonical record now, with this small index for discovery. |
-| Skill | Apply a repeatable explanation workflow when the task calls for it. | A useful next step after trying the practice; keep the instructions short and load the relevant reference on demand. |
+| Skill | Apply a repeatable explanation workflow when the task calls for it. | [Paprika Explain](../../../plugins/paprika-inc/skills/paprika-explain/SKILL.md) is now a packaged source candidate, with on-demand format guidance and host-supported selection. Installation and live acceptance remain separate. |
 | MCP service | Expose live data and controlled operations to connected agents. | Consider when shared remote search, access control or concurrent updates require a service. A static note does not require one. |
 
 These layers can complement each other. OpenAI documents skills as reusable
@@ -44,10 +44,11 @@ controlled actions; skills can operate without MCP. See the
 [official skills documentation](https://developers.openai.com/plugins/concepts/skills)
 (checked 2026-10-28).
 
-Today, ask an agent to read the selected entry by repository path or link. Adding
-these files does not automatically load them into every chat. Keep the index
-small and retrieve only the relevant note instead of copying the whole collection
-into each role prompt. A later packaged skill should carry a pinned reference
-with its source ID/revision; it must not assume the repository is present in the
-installed plugin. Any future MCP interface would serve the same versioned
-knowledge rather than become a competing source of truth.
+Today, ask an agent to read the selected entry by repository path or link.
+Paprika Explain packages its own focused format guidance, so it can work without
+this repository after installation. Its references identify this knowledge
+entry and travel with the versioned package; the evidence appraisal stays here.
+Adding source files does not install the skill or automatically load the whole
+collection into every chat. Keep the index small and retrieve only the relevant
+note. Any future MCP interface would serve the same versioned knowledge rather
+than become a competing source of truth.

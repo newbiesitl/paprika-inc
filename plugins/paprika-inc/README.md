@@ -1,8 +1,8 @@
 # Paprika Inc — local MVP kit
 
-Version 0.3.1. Includes [Paprika Inc](skills/paprika-inc/SKILL.md) and [setup](skills/setup-paprika-inc/SKILL.md), a contained Node.js 24+ helper, the navy Paprika icon and pinned Messenger component/license. The MVP discusses/authors generic company files, protects Git checkout destinations and drives a sequential supported-native-host project-chat bootstrap. Git is needed for checkout; no additional npm dependencies or separate Messenger product is required.
+See [the manifest](plugin.json) for the source kit version. Includes [Paprika Inc](skills/paprika-inc/SKILL.md), [setup](skills/setup-paprika-inc/SKILL.md) and [Paprika Explain](skills/paprika-explain/SKILL.md), a contained Node.js 24+ helper, the navy Paprika icon and pinned Messenger component/license. The MVP discusses/authors generic company files, protects Git checkout destinations and drives a sequential supported-native-host project-chat bootstrap. Git is needed for checkout; no additional npm dependencies or separate Messenger product is required.
 
-Inc adds only its own product identity and two Inc-namespaced skills. It does not install another Messenger product, icon or command. For Inc-only or Messenger-already-installed onboarding, version distinctions, shared-service preservation and the pending fresh-chat UI acceptance check, see [coexistence](skills/setup-paprika-inc/references/coexistence.md). A required backend App may separately appear as Paprika Service; this kit declares none.
+Inc adds only its own product identity and three Inc-namespaced skills. It does not install another Messenger product, icon or command. For Inc-only or Messenger-already-installed onboarding, version distinctions, shared-service preservation and the pending fresh-chat UI acceptance check, see [coexistence](skills/setup-paprika-inc/references/coexistence.md). A required backend App may separately appear as Paprika Service; this kit declares none.
 
 Ask `$paprika-inc help`, “show company status”, “list role definitions”, or `$setup-paprika-inc`. With an explicitly selected local repository, the helper reads its manifest/contracts and prepares a plan. See [command reference](skills/paprika-inc/references/commands.md) and [definition profile](skills/paprika-inc/references/definition-profile.md).
 
@@ -15,7 +15,24 @@ supports `skills plan/install/status` and manifest skill_sets references. Its fo
 selected skills are internal resources until explicitly installed into a chosen
 Git project's .agents/skills/. Integrity, local dependencies and unverified access
 are separate. Optional paid/PDF/figure/Scholar features are disabled by default.
-Only the two Inc entry skills are public plugin exports; no upstream plugin is
+Only the three Inc entry skills are public plugin exports; no upstream plugin is
 registered.
 
 Automatic task/report and large onboarding delivery now uses the 1500-code-point policy. See [the delivery workflow](skills/setup-paprika-inc/references/adaptive-delivery.md). Storage, native submission and recipient retrieval are separate evidence states.
+
+## Explanation format selection
+
+[Paprika Explain](skills/paprika-explain/SKILL.md) is a source candidate for the
+next reviewed package. After installation, explicitly invoke `$paprika-explain`
+or ask Paprika Inc to explain a topic and choose the format. An explicit request
+without a format opens the host's general-purpose choice UI when available;
+otherwise the skill presents a numbered chat menu. Requests already naming a
+format go directly to the explanation. Implicit phrases such as "explain better"
+use the context without automatically opening the picker.
+
+The presets include STE-inspired English, ELI5, diagrams, worked examples,
+comparisons, interactive HTML, video, guided lessons and layered explanations,
+plus Best fit. Video has a style choice when unspecified. These instructions
+use available host tools, do not add a new MCP server, and cannot guarantee a
+particular popup presentation or install a video renderer. Package validation
+does not certify installed skill selection or native picker rendering.

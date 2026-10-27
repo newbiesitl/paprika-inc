@@ -52,7 +52,7 @@ class PluginPackageTests(unittest.TestCase):
         self.assertEqual(result['discovery'], {
             'plugin_name': 'paprika-inc', 'display_name': 'Paprika Inc',
             'manifest_paths': ['.codex-plugin/plugin.json', 'plugin.json'],
-            'public_skills': ['paprika-inc', 'setup-paprika-inc'], 'live_picker_verified': False,
+            'public_skills': ['paprika-explain', 'paprika-inc', 'setup-paprika-inc'], 'live_picker_verified': False,
         })
         self.assertEqual({entry['path'] for entry in result['files']}, package.expected_package_files(ROOT / package.PLUGIN))
 
@@ -227,7 +227,7 @@ class PluginPackageTests(unittest.TestCase):
                 for path in root.glob('skills/*/SKILL.md')
             }
         self.assertEqual(products, {'paprika-inc': 'Paprika Inc', 'paprika-messenger-private': 'Paprika Messenger'})
-        self.assertEqual(public_skills['paprika-inc'], {'paprika-inc', 'setup-paprika-inc'})
+        self.assertEqual(public_skills['paprika-inc'], {'paprika-explain', 'paprika-inc', 'setup-paprika-inc'})
         self.assertEqual(public_skills['paprika-messenger-private'], {'paprika-messenger', 'setup-paprika'})
         self.assertFalse(public_skills['paprika-inc'] & public_skills['paprika-messenger-private'])
         self.assertFalse(report['discovery']['live_picker_verified'])
@@ -276,7 +276,7 @@ class PluginPackageTests(unittest.TestCase):
         self.assertTrue(report['references_existing_service_app'])
         self.assertFalse(report['service_authentication_verified_by_builder'])
         self.assertFalse(report['installed']); self.assertFalse(report['deployed'])
-        self.assertEqual(verified['discovery']['public_skills'], ['paprika-inc', 'setup-paprika-inc'])
+        self.assertEqual(verified['discovery']['public_skills'], ['paprika-explain', 'paprika-inc', 'setup-paprika-inc'])
         with zipfile.ZipFile(report['archive']) as archive:
             apps = json.loads(archive.read('paprika-inc/.app.json'))
             self.assertEqual(apps, {'apps': {'paprika-service': {'id': binding['app_id']}}})
