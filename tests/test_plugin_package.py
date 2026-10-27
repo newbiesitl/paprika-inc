@@ -325,6 +325,13 @@ class PluginPackageTests(unittest.TestCase):
         self.assertEqual(json.loads(result.stdout)['command'], 'help')
         result = subprocess.run(['node', str(helper), 'validate', '--repo', str(ROOT)], cwd=self.base, capture_output=True, text=True, check=True)
         self.assertTrue(json.loads(result.stdout)['definition_valid'])
+        explain = plugin / 'skills/paprika-explain/scripts/explain.mjs'
+        result = subprocess.run(['node', str(explain), 'catalog'], cwd=self.base, capture_output=True, text=True, check=True)
+        self.assertEqual(len(json.loads(result.stdout)['presets']), 10)
+        request = self.base / 'explanation-request.json'
+        request.write_text(json.dumps({'topic': 'Queues', 'invocation': 'explicit', 'requested': {'format': 'interactive', 'style': 'eli5'}}))
+        result = subprocess.run(['node', str(explain), 'plan', '--input', str(request)], cwd=self.base, capture_output=True, text=True, check=True)
+        self.assertEqual(json.loads(result.stdout)['selection'], {'format': 'interactive', 'style': 'eli5'})
         self.assertFalse(first['installed'])
         self.assertFalse(first['deployed'])
 

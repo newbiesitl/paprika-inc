@@ -36,3 +36,10 @@ plus Best fit. Video has a style choice when unspecified. These instructions
 use available host tools, do not add a new MCP server, and cannot guarantee a
 particular popup presentation or install a video renderer. Package validation
 does not certify installed skill selection or native picker rendering.
+
+The contained [explanation helper](skills/paprika-explain/references/tools.md)
+provides a preset catalog, deterministic selection planner, interactive HTML
+export and storyboard/transcript export. It needs Node.js 24+, works without a
+company board, and preserves existing output files. Trigger interpretation and
+native-tool calls remain with the host agent; video rendering uses available
+tools after capability checks.

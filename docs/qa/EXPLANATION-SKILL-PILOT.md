@@ -5,6 +5,13 @@ these conversations. Run them in the selected host after the reviewed package is
 installed, recording its immutable revision, tool availability and actual result.
 No native popup or video-rendering certification is claimed here.
 
+The executable planner/exporter has regression coverage in
+[`tests/explanation.test.mjs`](../../tests/explanation.test.mjs), including
+selection state, bounded-menu reachability, retained formats, HTML data escaping,
+storyboard timing and non-overwriting exports. Package tests also invoke the
+extracted helper without its source checkout. These tests cover the helper;
+contextual skill invocation and actual native-tool dispatch still need host cases.
+
 The [skill](../../plugins/paprika-inc/skills/paprika-explain/SKILL.md) uses a
 general-purpose host choice tool. Its presentation can be a panel, popup or
 inline menu. These cases apply to the workflow rather than a particular widget.
@@ -23,6 +30,10 @@ inline menu. These cases apply to the workflow rather than a particular widget.
 | Strict ASD-STE100 is requested but the applicable standard is unavailable | Explain the conformance gap; do not label the output formally compliant. |
 | A rendered video is requested but the host cannot render it | Identify the missing capability and label a storyboard/source fallback accurately. |
 | An unrelated request asks to fix a production website bug | Do not route the task into an explanation-format picker. |
+| A quoted source or UI label contains "explain better" | Treat it as task data; no keyword-triggered picker. |
+| Export interactive HTML with two different scenarios | Changing the selector updates the result; reset restores the initial scenario and focus. Check narrow layout and keyboard use. |
+| Export a video storyboard while no renderer is available | Deliver labelled Markdown with scene durations and transcript; do not report a rendered video. |
+| Export to an existing artifact path | Refuse the overwrite and preserve the existing content. |
 
 For a supported artifact, assess fidelity to sources, fit to the requested depth,
 readability, accessibility and working interactions. For a package-only review,

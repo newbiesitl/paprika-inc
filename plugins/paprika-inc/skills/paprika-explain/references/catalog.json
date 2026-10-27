@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "presets": [
+    {"id":"best_fit","label":"Best fit","description":"Choose the simplest useful format.","group":"root"},
+    {"id":"ste","label":"STE-inspired English","description":"Use precise wording and consistent terminology.","group":"language","format":"text","style":"ste"},
+    {"id":"eli5","label":"Explain like I'm five","description":"Build intuition with everyday language and an analogy.","group":"language","format":"text","style":"eli5"},
+    {"id":"diagram","label":"Diagram or visual map","description":"Show relationships, structure or sequence.","group":"visual","format":"diagram"},
+    {"id":"example","label":"Worked example","description":"Follow one concrete case from inputs to result.","group":"practice","format":"example"},
+    {"id":"comparison","label":"Comparison table","description":"Compare alternatives using the same criteria.","group":"practice","format":"comparison"},
+    {"id":"interactive","label":"Interactive webpage","description":"Change inputs and explore the results.","group":"visual","format":"interactive"},
+    {"id":"video","label":"Video or animation","description":"Learn through motion, narration or a walkthrough.","group":"visual","format":"video"},
+    {"id":"guided","label":"Guided lesson","description":"Learn step by step with optional questions.","group":"depth","format":"guided"},
+    {"id":"layered","label":"Layered explanation","description":"Progress from intuition to technical detail.","group":"depth","format":"layered"}
+  ],
+  "video_styles": [
+    {"id":"math","label":"Mathematical animation","description":"Original geometric intuition inspired by 3Blue1Brown.","group":"animation"},
+    {"id":"whiteboard","label":"Whiteboard or process","description":"Animate a sequence, causal process or changing state.","group":"animation"},
+    {"id":"slides","label":"Narrated slides","description":"Present a structured briefing with figures and captions.","group":"presentation"},
+    {"id":"walkthrough","label":"Screen walkthrough","description":"Demonstrate an observed interface or procedure.","group":"presentation"}
+  ],
+  "intents": [
+    {"id":"clarify","examples":["explain better","make that clearer","put that more simply"],"default_format":"example","goal":"Repair the unclear part and show one concrete example."},
+    {"id":"understand","examples":["help me understand","walk me through this","how does this work?"],"default_format":"layered","goal":"Connect the central idea to its mechanism and limits."},
+    {"id":"visual","examples":["show me visually","draw how these fit together"],"default_format":"diagram","goal":"Make the relationships visible."},
+    {"id":"explore","examples":["let me explore what happens when","let me change the inputs"],"default_format":"interactive","goal":"Expose meaningful inputs and their effects."},
+    {"id":"explain","examples":["explain this","teach me about this"],"default_format":"layered","goal":"Choose the depth and representation that fit the question."}
+  ]
+}

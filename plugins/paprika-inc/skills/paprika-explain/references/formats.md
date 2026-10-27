@@ -5,6 +5,9 @@ interactive webpage can use ELI5 language, and a worked example can use a
 diagram. Keep language, medium and technical depth distinct when a combination
 matters. Use the user's language unless they request otherwise.
 
+Use [tool routing](tools.md#capability-routes-and-completion-checks) for the chosen
+medium. The [catalog](catalog.json) supplies stable preset and video-style IDs.
+
 ## STE-inspired technical English
 
 Use direct sentences, consistent terminology and one clear instruction at a
@@ -60,6 +63,11 @@ controls keyboard-accessible and labels readable on the user's device. Check a
 normal input, a boundary input and reset. Include the essential interpretation
 in text so the explanation survives a failed or unavailable renderer.
 
+For discrete scenarios, the contained [HTML exporter](tools.md#interactive-html-input)
+provides accessible controls and reset. For a continuous model, implement the
+actual calculation with suitable tools and check its assumptions and boundary
+behaviour; do not present a set of prewritten scenarios as a continuous simulation.
+
 Prefer local, self-contained behaviour when live data is unnecessary. State when
 a display is a simulation; fetching a real meeting's state or updating its budget
 requires the existing authorized service interface, not invented endpoints.
@@ -83,6 +91,8 @@ the actual interface before depicting a screen walkthrough.
 Check the storyboard/script, then render with available tools and inspect the
 result when the user requested a video. Missing narration or video capabilities
 must remain explicit. A storyboard is a useful fallback, not a completed video.
+The contained [storyboard exporter](tools.md#storyboard-input) preserves scene
+timing and narration while clearly identifying that intermediate artifact.
 Choose a sensible duration from the task or reuse the user's duration; ask only
 when it materially changes scope. Paid services and publication retain their
 actual authorization requirements.

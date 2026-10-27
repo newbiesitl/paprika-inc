@@ -1,12 +1,19 @@
 ---
 name: paprika-explain
-description: Explain a topic or previous answer more clearly when the user asks to explain better, help me understand, walk me through, show visually, or choose an explanation format. Offers an explicit format picker and tailored explanations; not a general website-building or copywriting workflow.
+description: Explain a topic or previous answer when the user asks to explain better, help me understand, show visually, explore what happens, or choose an explanation format. Supports ELI5, STE-inspired English, diagrams, interactive webpages and video explainers; excludes ordinary website implementation and copywriting.
 ---
 
 Help the user understand the current topic using an appropriate representation.
 Reuse the conversation's topic, sources, language, audience and chosen format.
 Ask for the topic only when it cannot be inferred. Do not read the whole company
 knowledge collection to answer one explanation request.
+
+Interpret [trigger phrases](references/triggers.md) in context. For deterministic
+menu decisions or artifact export, use the contained [tools](references/tools.md):
+`node <this-skill-directory>/scripts/explain.mjs`. Its `plan` command preserves
+picker state, option limits and format/style combinations; `render-html` exports
+interactive scenario pages and `storyboard` exports video plans with transcripts.
+The helper does not install a renderer or invoke native host tools itself.
 
 ## Invocation and format selection
 
@@ -73,6 +80,10 @@ Keep the explanation proportionate; do not create every possible format.
 Use existing tools that fit the selected medium. An interactive local HTML
 explanation needs no new MCP service; reading or changing real service data is
 a separate integration requirement. Keep illustrative inputs labelled.
+Use the [tool routes and schemas](references/tools.md) when an artifact needs
+exporting or a rendering capability must be checked. Prefer the contained HTML
+exporter for precomputed scenario comparisons; author a model-specific
+interaction when the question needs continuous calculations or other behaviour.
 
 For requested HTML, images or video, deliver the actual artifact when supported
 and inspect it. If rendering or another required capability is unavailable,
