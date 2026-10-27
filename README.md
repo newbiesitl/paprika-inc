@@ -322,6 +322,10 @@ The next step is to confirm the pilot owner and scope, verify measurement covera
 
 ## Reference and development
 
+Browse the [reusable knowledge index](docs/research/knowledge/README.md) for
+source-linked practices, starting with [clear human-AI communication](docs/research/knowledge/HUMAN-AI-COMMUNICATION.md).
+These are reviewable references; automatic knowledge loading remains future work.
+
 ### Browse the full catalog
 
 The generated reference below lists the current templates and skill-pack sources. Extension entries are starting points for refinement and domain review; their presence does not certify task performance or connected tools.
