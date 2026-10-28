@@ -55,8 +55,13 @@ For an actual answer, rerun `plan` with the same request and one `choice`:
 {"status":"selected","id":"eli5"}
 ```
 
-Group IDs such as `group:text` return a smaller menu. `video` opens the video
-style menu; a style ID such as `video:math` completes it. A custom combination is
+Group IDs such as `group:text` return a smaller menu. `video` selects the video
+medium: without a chosen style, scientific topics use `math` and legal topics
+use `sprouts`; otherwise it preserves a chosen style or opens the style menu.
+`group:video` explicitly opens that menu even for a topic with a default;
+a style ID such as `video:math` or `video:sprouts`
+completes it. When presenting a menu, mark its `recommended_id` as recommended.
+A custom combination is
 `{"status":"selected","selection":{"format":"interactive","style":"eli5"}}`.
 Pending/preselected choices use `status: "pending"`; cancellation uses
 `status: "cancelled"`. Never convert elapsed time or the default highlight into
@@ -66,9 +71,30 @@ actual answer rather than continuing an obsolete menu.
 For a format already named in the request, supply
 `requested: {"format":"interactive","style":"eli5"}`. For an ordinary
 follow-up, use `invocation: "implicit"` and pass the last selection as `previous`.
-Styles are `plain`, `ste` and `eli5`. Video styles are `math`, `whiteboard`,
+Styles are `plain`, `ste` and `eli5`. Video styles are `math`, `sprouts`, `whiteboard`,
 `slides` and `walkthrough`. Format IDs are listed in the catalog; `text` is also
 accepted for plain prose. Use `show_picker: true` to reopen selection.
+
+Set `topic_kind: "scientific"` for scientific/mathematical concepts, or
+`topic_kind: "legal"` for legal concepts, identified from the task context.
+The optional field otherwise defaults to `general` and
+does not scan the topic for keywords. For example:
+
+```json
+{
+  "topic": "How gradient descent updates model weights",
+  "topic_kind": "scientific",
+  "invocation": "explicit",
+  "requested": {"format":"video"}
+}
+```
+
+This returns `explain` with `video_style: "math"`. A legal topic with
+`topic_kind: "legal"` instead defaults to `video_style: "sprouts"`.
+A requested or previous style
+takes priority, pending/cancelled menus still wait/stop, and non-video selections
+are unchanged. Keep `topic_kind` when rerunning a picker request. This default
+does not imply a renderer or speech provider is installed.
 
 ## Capability routes and completion checks
 
@@ -90,6 +116,98 @@ guess package APIs or silently install tools. A video task is complete only when
 the requested rendered output exists and has been inspected. If a capability is
 missing, identify it and offer the clearly labelled storyboard or source fallback.
 Do not send data to a paid service or publish an artifact without applicable scope.
+
+### Narration and synchronization
+
+Speech generation is a separate capability from animation. Check the actual
+host/provider before promising a narrated video. Reuse a configured supported
+speech tool or API; a new MCP server is unnecessary for a local script workflow.
+Do not assume that a chat subscription supplies speech API credentials.
+
+For English narration rendered on Windows, prefer local **Microsoft David**.
+Enumerate enabled voices in the actual rendering environment and select
+`Microsoft David Desktop` when available, or `Microsoft David` when that is the
+available name. Check that its language is compatible with the narration.
+This preference applies to Paprika Explain output; keep the Windows system-wide
+voice setting unchanged. An explicit voice/provider choice, or a voice already
+chosen for the current explanation, takes precedence.
+
+An installed Windows voice can write WAV through
+[System.Speech](https://learn.microsoft.com/en-us/dotnet/api/system.speech.synthesis.speechsynthesizer.setoutputtowavefile).
+If the host's execution context restricts enumeration or synthesis, report that
+limit rather than treating a partial list as proof that David is not installed.
+If David is unavailable or fails, offer verified available alternatives; do not
+silently substitute Zira, Mark or a paid service and call the result David.
+Keep the requested language: the English voice preference does not authorize
+translation or forcing English pronunciation onto other-language narration.
+
+For English narration rendered on **macOS**, default to the installed voice
+selector **`Daniel`**, locale **`en_GB`**, at **175 words per minute**. An explicit
+voice, provider or rate choice, or one already chosen for the current explanation,
+takes precedence. Use the actual Mac's `/usr/bin/say`, passing `-v Daniel`
+explicitly so the result does not depend on its system-wide voice setting.
+Enumerate installed selectors with `/usr/bin/say -v '?'` and verify the exact
+case-sensitive selector before synthesis; do not infer a bundle ID from its name.
+
+Write narration to a UTF-8 text file. Invoke the programs with argument arrays,
+keeping narration text out of shell command interpolation. With fresh output
+paths, the corresponding commands are:
+
+```sh
+/usr/bin/say -v Daniel -r 175 -o narration.aiff -f narration.txt
+/usr/bin/afconvert -f WAVE -d LEI16 narration.aiff narration.wav
+```
+
+Preserve the original AIFF/AIFC output and its sample rate; the WAV conversion
+provides portable playback. Do not assume the `.aiff` extension proves the actual
+encoding, or that this WAV route establishes M4A support. Verify positive duration,
+decoded audio frames and nonzero audio levels. A successful process exit alone
+does not establish usable speech; restricted speech-service access can produce
+an empty file. Use the host's normal permission mechanism if access is blocked.
+
+If macOS, `say`, Daniel or speech-service access is unavailable, report the gap
+and offer verified alternatives rather than silently substituting another voice
+or cloud/browser speech. Preserve requested narration languages and explicit
+native-language voices; Daniel is the English default, not an instruction to
+translate Japanese or Chinese narration. Check availability on the host that
+actually renders the audio, regardless of where the user views it.
+
+Keep voice selector, locale, narration text, requested rate, output format,
+sample rate and measured duration alongside the generated artifacts. Return a
+playable file with the actual voice label. Keep this task-specific record private
+when its narration contains conversation material.
+
+For an explicitly selected hosted provider, verify current APIs, voices and
+account access. OpenAI's [deprecation schedule](https://developers.openai.com/api/docs/deprecations)
+retires the older Speech API models, including `gpt-4o-mini-tts`, on January 6,
+2027 and recommends `gpt-realtime-2.1-mini` through the
+[Realtime API](https://developers.openai.com/api/docs/guides/realtime-conversations).
+This is a different API workflow, not a model-name substitution in
+`/v1/audio/speech`. Use a standard synthetic voice, disclose AI-generated
+narration and keep keys outside artifacts. The local Windows David and macOS
+Daniel defaults need no hosted API key or paid service.
+
+Generate a short sample containing the lesson's difficult terms before the full
+track. Then synthesize per scene, measure the resulting audio duration, and use
+that duration to time the animation and captions. Keep the mathematical notation
+in the visuals while writing a pronounceable narration script. Retain the script
+and reusable audio keyed by text, provider/model, voice, language and delivery
+settings so visual edits do not require synthesizing unchanged speech again.
+
+When Manim is available, [Manim Voiceover](https://voiceover.manim.community/en/stable/quickstart.html)
+offers audio-duration tracking, subcaptions and bookmarks for synchronization;
+its [speech-service interface](https://voiceover.manim.community/en/stable/services.html)
+supports provider adapters. Check the installed adapter's API/model support;
+listing a provider does not prove support for every current speech model.
+Other renderers can consume the same measured audio/scene timeline.
+
+Inspect the final media's audio track and listen for terminology, pauses,
+clipping and alignment; check caption timing as well. Do not pad a silent file
+or claim browser playback controls provide a narrated MP4. If speech fails,
+identify the failure and offer the existing animation with captions/transcript
+as an explicitly unnarrated fallback. These routes are guidance, not bundled
+speech adapters or evidence of an end-to-end narration test. Official references
+checked 2026-10-28; recheck interfaces before implementation.
 
 ## Interactive HTML input
 

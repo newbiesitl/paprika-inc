@@ -66,9 +66,24 @@ preselected option is not the user's answer; do not begin the format-dependent
 artifact or silently choose after a timeout. A cancellation ends selection.
 "Best fit" is an actual choice to delegate the format decision.
 
-For Video without a specified style, offer a second choice: mathematical
-animation (3Blue1Brown-inspired), whiteboard/process animation, narrated slides,
-or screen walkthrough. Use the same host-limit handling and allow free text.
+When the user requests video without a style, use the topic's recommendation:
+
+- Scientific concepts: original 3Blue1Brown-inspired animation, building visual
+  intuition through evolving diagrams, models and equations where useful.
+- Legal concepts: original Sprouts-inspired illustrated stories, using simple
+  cartoon characters, concrete scenarios and plain-language narration.
+
+Preserve an explicitly requested style or the user's existing style choice on
+a follow-up. These defaults select a video style; subject matter alone does not
+request video. Pass `topic_kind: "scientific"` or `topic_kind: "legal"` to the
+planner after interpreting the topic in context.
+
+For other video topics without a specified style, offer a second choice:
+3Blue1Brown-inspired animation, Sprouts-inspired illustrated stories,
+whiteboard/process animation, narrated slides, or screen walkthrough. An explicit
+request to choose video styles still opens that menu; put the topic's
+recommendation first without treating it as an
+answer. Use the same host-limit handling and allow free text.
 Read only the relevant section of [format guidance](references/formats.md).
 
 ## Producing the explanation
@@ -84,6 +99,13 @@ Use the [tool routes and schemas](references/tools.md) when an artifact needs
 exporting or a rendering capability must be checked. Prefer the contained HTML
 exporter for precomputed scenario comparisons; author a model-specific
 interaction when the question needs continuous calculations or other behaviour.
+
+For requested English speech or narrated video, default to installed Microsoft
+David on Windows and Daniel (`en_GB`, 175 words per minute) on macOS. Explicit
+voice, provider and speaking-rate choices take precedence. Follow the
+[voice selection guidance](references/tools.md#narration-and-synchronization)
+to resolve availability on the host that renders the audio. These preferences
+do not add narration to an otherwise text-only explanation.
 
 For requested HTML, images or video, deliver the actual artifact when supported
 and inspect it. If rendering or another required capability is unavailable,
