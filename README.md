@@ -119,7 +119,7 @@ Meetings require a compatible private Paprika service. See the [meeting pilot an
 
 The first target is a saved **local Codex project on one selected machine**.
 
-1. **Install the Paprika Inc kit.** Use your host’s supported plugin installation flow and follow the [installation workflow](https://github.com/newbiesitl/paprika-inc/blob/main/plugins/paprika-inc/skills/setup-paprika-inc/references/mvp-workflow.md#installation-and-existing-service-binding); developers can [prepare the kit from source](https://github.com/newbiesitl/paprika-inc#work-from-source).
+1. **Install the Paprika Inc kit.** Download the standalone `paprika-inc-<version>.zip` asset from the [latest published release](https://github.com/newbiesitl/paprika-inc/releases/latest), check its version and `SHA256SUMS`, and use your host’s supported plugin installation flow. Follow the [installation workflow](https://github.com/newbiesitl/paprika-inc/blob/main/plugins/paprika-inc/skills/setup-paprika-inc/references/mvp-workflow.md#installation-and-existing-service-binding); developers can [prepare the kit from source](https://github.com/newbiesitl/paprika-inc#work-from-source).
 
    **Alternatively, install through a Codex conversation.** Open a session with Plugin Creator available and paste the prompt below. Paprika Inc and Paprika Messenger do not need to be installed beforehand.
 
@@ -128,8 +128,12 @@ The first target is a saved **local Codex project on one selected machine**.
    as one private personal account plugin for ChatGPT Work, mobile
    and my other devices.
 
-   Read its setup instructions directly from the repository and prepare
-   the current standalone kit. Record the source revision and version.
+   Read its setup instructions directly from the repository. Use the
+   standalone installation ZIP from the latest published GitHub release,
+   verify its version and SHA256SUMS, and record the tag/source revision.
+   If a source build is needed, use current main and verify that both
+   source manifests and the prepared kit match the latest release version.
+   Resolve a version mismatch before saving the plugin.
 
    Check my existing plugins and private Paprika services:
    - Messenger installed: preserve it and reuse its verified compatible
@@ -160,6 +164,8 @@ The first target is a saved **local Codex project on one selected machine**.
 4. **Assign work and collaborate.** Use `$paprika-inc help` to explore the workflow. Ask for a scoped handoff or a meeting when useful. Service-backed messages and meetings need a verified compatible Paprika service connection.
 
 Native onboarding can use the host's own tools without a separate Messenger plugin installation. If you already have a Paprika service, setup should inspect and reuse it. For status, recovery and host-specific requirements, follow the [concrete MVP workflow](plugins/paprika-inc/skills/setup-paprika-inc/references/mvp-workflow.md).
+
+A source build uses the version declared in the selected revision's manifests. Existing tags and older local marketplace copies keep their original contents; updating an account plugin does not replace those local copies. Verify the version in the intended host after its supported update/install flow.
 
 ## How Paprika Inc works
 

@@ -41,4 +41,14 @@ Role definitions and governance use the [self-development protocol](architecture
 
 Before the first Inc release, implement and verify packaging from a clean recursive checkout, owner-neutral contents, complete license notices, source/version provenance, compatibility, and rollback. Preserve published artifacts and tags. Do not label the repository bootstrap as an installable release.
 
+For each release, update both `plugins/paprika-inc/plugin.json` and
+`plugins/paprika-inc/.codex-plugin/plugin.json` to the intended version in the
+reviewed source before tagging and packaging. The source builder takes its
+version from these manifests. Verify the source manifests, prepared ZIP and
+published release agree; do not leave `main` at an older version by applying the
+version only to a release artifact. Historical tags and release assets remain
+immutable. Installation guidance should prefer the latest published standalone
+ZIP and verify its version and checksums; source builds record their exact
+revision and version separately from installation and client activation.
+
 Use [Security](../SECURITY.md) for private reports and [the Code of Conduct](../CODE_OF_CONDUCT.md) for moderation. Keep private operation and recovery evidence out of public Git.
