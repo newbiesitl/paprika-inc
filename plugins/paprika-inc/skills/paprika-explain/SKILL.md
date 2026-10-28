@@ -66,18 +66,23 @@ preselected option is not the user's answer; do not begin the format-dependent
 artifact or silently choose after a timeout. A cancellation ends selection.
 "Best fit" is an actual choice to delegate the format decision.
 
-For video explanations of scientific concepts, recommend original
-3Blue1Brown-inspired animation and use it when no style is specified. Build
-visual intuition through evolving diagrams, models and equations where useful.
+When the user requests video without a style, use the topic's recommendation:
+
+- Scientific concepts: original 3Blue1Brown-inspired animation, building visual
+  intuition through evolving diagrams, models and equations where useful.
+- Legal concepts: original Sprouts-inspired illustrated stories, using simple
+  cartoon characters, concrete scenarios and plain-language narration.
+
 Preserve an explicitly requested style or the user's existing style choice on
-a follow-up. This default selects the video style, not the explanation medium:
-a scientific question alone does not request a video. Pass
-`topic_kind: "scientific"` to the planner after interpreting the topic in context.
+a follow-up. These defaults select a video style; subject matter alone does not
+request video. Pass `topic_kind: "scientific"` or `topic_kind: "legal"` to the
+planner after interpreting the topic in context.
 
 For other video topics without a specified style, offer a second choice:
-3Blue1Brown-inspired animation, whiteboard/process animation, narrated slides,
-or screen walkthrough. An explicit request to choose video styles still opens
-that menu; put the scientific recommendation first without treating it as an
+3Blue1Brown-inspired animation, Sprouts-inspired illustrated stories,
+whiteboard/process animation, narrated slides, or screen walkthrough. An explicit
+request to choose video styles still opens that menu; put the topic's
+recommendation first without treating it as an
 answer. Use the same host-limit handling and allow free text.
 Read only the relevant section of [format guidance](references/formats.md).
 

@@ -83,20 +83,36 @@ why. Do not force equations or geometric analogies where they distort the scienc
 An explicit alternative or an existing choice on a follow-up takes precedence.
 Other explanation media keep their existing selection rules.
 
-When the user asks to choose a video style, mark this recommendation in the
-picker for scientific topics and wait for their selection. Use the following
+For legal concepts, recommend original Sprouts-inspired illustrated stories and
+use that style by default when no other video style was chosen. Build the lesson
+around simple cartoon characters and a concrete scenario: introduce the parties
+and problem, explain the relevant principle, compare an example with an exception
+or contrasting case, then state the takeaway. Use clean drawings, readable labels
+and plain-language narration. This adapts [Sprouts' use of cartoons and simple
+language](https://sproutsschools.com/about-us/) and [story-based teaching](https://www.patreon.com/sprouts/about)
+to legal explanations; it does not claim that Sprouts recommends this legal preset.
+
+Keep the jurisdiction, relevant date, legal terms and material exceptions clear.
+Verify substantive legal claims against current authoritative sources. Label
+fictional cases as illustrative and distinguish the legal rule from the analogy.
+Simplifying the presentation must not turn a conditional rule into a universal one.
+
+When the user asks to choose a video style, mark the topic's recommendation in
+the picker and wait for their selection. Use the following
 alternatives when requested or when selecting a style for other topics:
 
 | Style | Useful when |
 | --- | --- |
 | 3Blue1Brown-inspired animation | Scientific intuition benefits from evolving diagrams, transformations, models and synchronized equations. |
+| Sprouts-inspired illustrated story | Legal concepts benefit from relatable characters, a concrete scenario and clear explanation of rules and consequences. |
 | Whiteboard or process animation | The order of events, causal steps or a system's changing state is the main lesson. |
 | Narrated slides | A structured briefing needs figures, evidence and a reusable presentation sequence. |
 | Screen walkthrough | The user needs to learn an actual UI or tool procedure from observed behaviour. |
 
-Create an original script and visuals. For the mathematical option, use evolving
-geometric intuition rather than claiming to be the named creator or reproducing
-their voice. Preserve sources and labels; use captions or a transcript. Observe
+Create an original script, characters and visuals. For the mathematical option,
+use evolving geometric intuition; for the Sprouts option, use illustrated
+storytelling. Do not claim creator affiliation or reproduce their narration voice.
+Preserve sources and labels; use captions or a transcript. Observe
 the actual interface before depicting a screen walkthrough.
 
 For narrated video, check a working speech route early and follow

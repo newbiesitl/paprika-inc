@@ -56,9 +56,10 @@ For an actual answer, rerun `plan` with the same request and one `choice`:
 ```
 
 Group IDs such as `group:text` return a smaller menu. `video` selects the video
-medium: for scientific topics without a chosen style it uses `math`; otherwise
-it preserves a chosen style or opens the style menu. `group:video` explicitly
-opens that menu even for a scientific topic; a style ID such as `video:math`
+medium: without a chosen style, scientific topics use `math` and legal topics
+use `sprouts`; otherwise it preserves a chosen style or opens the style menu.
+`group:video` explicitly opens that menu even for a topic with a default;
+a style ID such as `video:math` or `video:sprouts`
 completes it. When presenting a menu, mark its `recommended_id` as recommended.
 A custom combination is
 `{"status":"selected","selection":{"format":"interactive","style":"eli5"}}`.
@@ -70,12 +71,13 @@ actual answer rather than continuing an obsolete menu.
 For a format already named in the request, supply
 `requested: {"format":"interactive","style":"eli5"}`. For an ordinary
 follow-up, use `invocation: "implicit"` and pass the last selection as `previous`.
-Styles are `plain`, `ste` and `eli5`. Video styles are `math`, `whiteboard`,
+Styles are `plain`, `ste` and `eli5`. Video styles are `math`, `sprouts`, `whiteboard`,
 `slides` and `walkthrough`. Format IDs are listed in the catalog; `text` is also
 accepted for plain prose. Use `show_picker: true` to reopen selection.
 
-Set `topic_kind: "scientific"` for scientific/mathematical concepts identified
-from the task context. The optional field otherwise defaults to `general` and
+Set `topic_kind: "scientific"` for scientific/mathematical concepts, or
+`topic_kind: "legal"` for legal concepts, identified from the task context.
+The optional field otherwise defaults to `general` and
 does not scan the topic for keywords. For example:
 
 ```json
@@ -87,7 +89,9 @@ does not scan the topic for keywords. For example:
 }
 ```
 
-This returns `explain` with `video_style: "math"`. A requested or previous style
+This returns `explain` with `video_style: "math"`. A legal topic with
+`topic_kind: "legal"` instead defaults to `video_style: "sprouts"`.
+A requested or previous style
 takes priority, pending/cancelled menus still wait/stop, and non-video selections
 are unchanged. Keep `topic_kind` when rerunning a picker request. This default
 does not imply a renderer or speech provider is installed.

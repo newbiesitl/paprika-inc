@@ -64,7 +64,7 @@ test('video style selection is bounded and concrete styles bypass a second quest
   const input = request({requested:{format:'video'},ui:{mode:'native',max_options:3}}), initial = plan(input);
   assert.equal(initial.menu,'video_style');
   const ids = initial.options.flatMap(group => plan({...input,choice:{status:'selected',id:group.id}}).options.map(item=>item.id));
-  assert.equal(ids.length,4);
+  assert.deepEqual(ids.slice().sort(),catalog.video_styles.map(item=>`video:${item.id}`).sort());
   for (const id of ids) {
     const result = plan({...input,choice:{status:'selected',id}});
     assert.equal(result.action,'explain'); assert.equal(result.selection.video_style,id.slice(6));
@@ -81,10 +81,11 @@ test('unknown selections and conflicting format/style inputs fail rather than qu
     assert.throws(()=>plan(request(extra)));
   }
 });
-test('scientific videos default to math while explicit choices and follow-ups take priority', () => {
-  const input = request({topic_kind:'scientific',requested:{format:'video',style:'eli5'}});
-  assert.deepEqual(plan(input).selection,{format:'video',style:'eli5',video_style:'math'});
-  for (const style of ['whiteboard','slides','walkthrough']) {
+for (const [topicKind,defaultStyle] of [['scientific','math'],['legal','sprouts']]) {
+test(`${topicKind} videos default to ${defaultStyle} while explicit choices and follow-ups take priority`, () => {
+  const input = request({topic_kind:topicKind,requested:{format:'video',style:'eli5'}});
+  assert.deepEqual(plan(input).selection,{format:'video',style:'eli5',video_style:defaultStyle});
+  for (const style of catalog.video_styles.map(item=>item.id).filter(id=>id!==defaultStyle)) {
     const explicit = plan({...input,requested:{format:'video',video_style:style}});
     assert.equal(explicit.selection.video_style,style);
     const follow = plan({...input,invocation:'implicit',intent:'clarify',requested:undefined,previous:explicit.selection});
@@ -98,40 +99,41 @@ test('scientific videos default to math while explicit choices and follow-ups ta
     assert.equal(plan({...input,topic_kind:kind}).menu,'video_style');
   }
 });
-test('scientific defaults do not choose the medium or resolve unanswered menus', () => {
-  const input = request({topic_kind:'scientific'});
+test(`${topicKind} defaults do not choose the medium or resolve unanswered menus`, () => {
+  const input = request({topic_kind:topicKind});
   assert.equal(plan(input).menu,'format');
   const prose = plan({...input,invocation:'implicit'});
   assert.equal(prose.selection.format,'layered'); assert.equal(prose.selection.video_style,undefined);
   assert.equal(plan({...input,requested:{format:'diagram'}}).selection.format,'diagram');
   const video = plan({...input,choice:{status:'selected',id:'video'}});
-  assert.equal(video.action,'explain'); assert.equal(video.selection.video_style,'math');
+  assert.equal(video.action,'explain'); assert.equal(video.selection.video_style,defaultStyle);
   assert.equal(plan({...input,requested:{format:'video'},show_picker:true}).action,'choose');
-  assert.equal(plan({...input,requested:{format:'video'},choice:{status:'pending',id:'video:math'}}).action,'waiting');
+  assert.equal(plan({...input,requested:{format:'video'},choice:{status:'pending',id:`video:${defaultStyle}`}}).action,'waiting');
   assert.equal(plan({...input,requested:{format:'video'},choice:{status:'cancelled'}}).action,'cancelled');
 });
-test('explicit scientific video menus recommend math and retain every alternative within host limits', () => {
-  for (const ui of [{mode:'native',max_options:3},{mode:'native',max_options:10},{mode:'native',max_options:2},{mode:'text'}]) {
-    const input = request({topic_kind:'scientific',requested:{format:'video'},ui});
+test(`explicit ${topicKind} video menus recommend ${defaultStyle} and retain every alternative within host limits`, () => {
+  for (const ui of [{mode:'native',max_options:3},{mode:'native',max_options:4},{mode:'native',max_options:10},{mode:'native',max_options:2},{mode:'native',max_options:1},{mode:'text'}]) {
+    const input = request({topic_kind:topicKind,requested:{format:'video'},ui});
     const root = plan({...input,choice:{status:'selected',id:'group:video'}});
-    assert.equal(root.action,'choose'); assert.equal(root.recommended_id,'video:math');
-    assert.equal(root.options[0].id,'video:math'); assert.equal(root.requires_user_answer,true);
+    assert.equal(root.action,'choose'); assert.equal(root.recommended_id,`video:${defaultStyle}`);
+    assert.equal(root.options[0].id,`video:${defaultStyle}`); assert.equal(root.requires_user_answer,true);
     assert.match(root.text_menu.split('\n')[0],/\(Recommended\)/);
-    const leaves = new Set();
+    const leaves = [];
     function visit(result) {
       if (result.mode === 'native') assert.ok(result.options.length <= ui.max_options);
       for (const option of result.options) {
         if (option.id.startsWith('group:')) visit(plan({...input,choice:{status:'selected',id:option.id}}));
         else {
-          leaves.add(option.id);
+          leaves.push(option.id);
           assert.equal(plan({...input,choice:{status:'selected',id:option.id}}).selection.video_style,option.id.slice(6));
         }
       }
     }
     visit(root);
-    assert.deepEqual([...leaves].sort(),catalog.video_styles.map(item=>`video:${item.id}`).sort());
+    assert.deepEqual(leaves.sort(),catalog.video_styles.map(item=>`video:${item.id}`).sort());
   }
 });
+}
 test('HTML preserves meaningful fallback content and treats supplied markup only as data', () => {
   const spec = htmlSpec(), attack = '</script><script>globalThis.injected=true</script>';
   spec.title = attack; spec.scenarios[1].explanation = attack;
@@ -157,6 +159,8 @@ test('CLI runs without a repository, writes both artifact types and never overwr
   const input=join(directory,'input.json'), html=join(directory,'lesson.html'), notes=join(directory,'storyboard.md');
   await writeFile(input,JSON.stringify(request({requested:{format:'eli5'}})));
   const planned=await run(['plan','--input',input]); assert.equal(planned.code,0); assert.equal(planned.value.selection.style,'eli5');
+  await writeFile(input,JSON.stringify(request({topic_kind:'legal',requested:{format:'video'}})));
+  const legal=await run(['plan','--input',input]); assert.equal(legal.code,0); assert.equal(legal.value.selection.video_style,'sprouts');
   await writeFile(input,JSON.stringify(htmlSpec()));
   const exported=await run(['render-html','--input',input,'--output',html]); assert.equal(exported.code,0);
   const original=await readFile(html,'utf8');
