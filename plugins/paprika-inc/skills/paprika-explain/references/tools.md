@@ -141,10 +141,41 @@ silently substitute Zira, Mark or a paid service and call the result David.
 Keep the requested language: the English voice preference does not authorize
 translation or forcing English pronunciation onto other-language narration.
 
-No Mac-specific voice is selected by this skill. Preserve an explicit choice or
-offer previews of available voices when selection is needed; Mac voice evaluation
-remains separate. Voice availability and sample quality must be checked on the
-host that actually renders the audio, regardless of where the user views it.
+For English narration rendered on **macOS**, default to the installed voice
+selector **`Daniel`**, locale **`en_GB`**, at **175 words per minute**. An explicit
+voice, provider or rate choice, or one already chosen for the current explanation,
+takes precedence. Use the actual Mac's `/usr/bin/say`, passing `-v Daniel`
+explicitly so the result does not depend on its system-wide voice setting.
+Enumerate installed selectors with `/usr/bin/say -v '?'` and verify the exact
+case-sensitive selector before synthesis; do not infer a bundle ID from its name.
+
+Write narration to a UTF-8 text file. Invoke the programs with argument arrays,
+keeping narration text out of shell command interpolation. With fresh output
+paths, the corresponding commands are:
+
+```sh
+/usr/bin/say -v Daniel -r 175 -o narration.aiff -f narration.txt
+/usr/bin/afconvert -f WAVE -d LEI16 narration.aiff narration.wav
+```
+
+Preserve the original AIFF/AIFC output and its sample rate; the WAV conversion
+provides portable playback. Do not assume the `.aiff` extension proves the actual
+encoding, or that this WAV route establishes M4A support. Verify positive duration,
+decoded audio frames and nonzero audio levels. A successful process exit alone
+does not establish usable speech; restricted speech-service access can produce
+an empty file. Use the host's normal permission mechanism if access is blocked.
+
+If macOS, `say`, Daniel or speech-service access is unavailable, report the gap
+and offer verified alternatives rather than silently substituting another voice
+or cloud/browser speech. Preserve requested narration languages and explicit
+native-language voices; Daniel is the English default, not an instruction to
+translate Japanese or Chinese narration. Check availability on the host that
+actually renders the audio, regardless of where the user views it.
+
+Keep voice selector, locale, narration text, requested rate, output format,
+sample rate and measured duration alongside the generated artifacts. Return a
+playable file with the actual voice label. Keep this task-specific record private
+when its narration contains conversation material.
 
 For an explicitly selected hosted provider, verify current APIs, voices and
 account access. OpenAI's [deprecation schedule](https://developers.openai.com/api/docs/deprecations)
@@ -153,8 +184,8 @@ retires the older Speech API models, including `gpt-4o-mini-tts`, on January 6,
 [Realtime API](https://developers.openai.com/api/docs/guides/realtime-conversations).
 This is a different API workflow, not a model-name substitution in
 `/v1/audio/speech`. Use a standard synthetic voice, disclose AI-generated
-narration and keep keys outside artifacts. The Windows David default needs no
-hosted API key or paid service.
+narration and keep keys outside artifacts. The local Windows David and macOS
+Daniel defaults need no hosted API key or paid service.
 
 Generate a short sample containing the lesson's difficult terms before the full
 track. Then synthesize per scene, measure the resulting audio duration, and use

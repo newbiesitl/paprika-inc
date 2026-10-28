@@ -100,11 +100,12 @@ exporting or a rendering capability must be checked. Prefer the contained HTML
 exporter for precomputed scenario comparisons; author a model-specific
 interaction when the question needs continuous calculations or other behaviour.
 
-For English narration rendered on Windows, default to the installed Microsoft
-David voice unless the user chooses another voice or provider. Follow the
+For requested English speech or narrated video, default to installed Microsoft
+David on Windows and Daniel (`en_GB`, 175 words per minute) on macOS. Explicit
+voice, provider and speaking-rate choices take precedence. Follow the
 [voice selection guidance](references/tools.md#narration-and-synchronization)
-to resolve its installed name and availability. No Mac-specific voice default
-is set; preserve the user's choice while Mac voices are evaluated separately.
+to resolve availability on the host that renders the audio. These preferences
+do not add narration to an otherwise text-only explanation.
 
 For requested HTML, images or video, deliver the actual artifact when supported
 and inspect it. If rendering or another required capability is unavailable,

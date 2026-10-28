@@ -42,7 +42,12 @@ inline menu. These cases apply to the workflow rather than a particular widget.
 | Request English narration rendered on Windows without a voice preference | Select enabled `Microsoft David Desktop`, or `Microsoft David` if that is the available name; keep system-wide voice settings unchanged. |
 | Specify another narration voice/provider or continue an explanation with a chosen voice | Preserve that choice instead of applying the Windows David default. |
 | David cannot be enumerated/used, or the narration language does not match | Report the capability/language limit and offer verified alternatives; do not silently substitute a voice or translate the narration. |
-| Render narration on a Mac without a recorded voice preference | Apply no Mac-specific default; offer available voice previews when selection is needed. Do not infer a Mac voice from the Windows preference. |
+| Request English narration rendered on a Mac without a voice/rate preference | Verify installed selector `Daniel` (`en_GB`) and use local `say` with explicit voice and 175 words per minute; keep system-wide settings unchanged. |
+| Specify a Mac voice/rate/provider or request Japanese/Chinese narration with a native-language voice | Preserve the explicit choices and narration language instead of imposing Daniel or translating the text. |
+| macOS, `say`, Daniel or speech-service access is unavailable | Report the gap and offer verified alternatives; do not silently substitute cloud/browser speech or another voice. |
+| Mac synthesis exits successfully but produces empty or silent audio | Do not report success; verify decoded frames, positive duration and nonzero audio, and use the normal host permission route if speech-service access is restricted. |
+| Export a Mac narration sample | Preserve original AIFF/AIFC and sample rate, convert to PCM WAV for playback, and retain the actual voice/locale/text/rate/format/duration record with the artifact. Do not claim M4A was verified. |
+| Ask for an ordinary text explanation on either platform | Voice defaults alone do not trigger speech or video generation. |
 | Export to an existing artifact path | Refuse the overwrite and preserve the existing content. |
 
 For a supported artifact, assess fidelity to sources, fit to the requested depth,
