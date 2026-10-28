@@ -52,7 +52,7 @@ class PluginPackageTests(unittest.TestCase):
         self.assertEqual(result['discovery'], {
             'plugin_name': 'paprika-inc', 'display_name': 'Paprika Inc',
             'manifest_paths': ['.codex-plugin/plugin.json', 'plugin.json'],
-            'public_skills': ['paprika-inc', 'setup-paprika-inc'], 'live_picker_verified': False,
+            'public_skills': ['paprika-explain', 'paprika-inc', 'setup-paprika-inc'], 'live_picker_verified': False,
         })
         self.assertEqual({entry['path'] for entry in result['files']}, package.expected_package_files(ROOT / package.PLUGIN))
 
@@ -227,7 +227,7 @@ class PluginPackageTests(unittest.TestCase):
                 for path in root.glob('skills/*/SKILL.md')
             }
         self.assertEqual(products, {'paprika-inc': 'Paprika Inc', 'paprika-messenger-private': 'Paprika Messenger'})
-        self.assertEqual(public_skills['paprika-inc'], {'paprika-inc', 'setup-paprika-inc'})
+        self.assertEqual(public_skills['paprika-inc'], {'paprika-explain', 'paprika-inc', 'setup-paprika-inc'})
         self.assertEqual(public_skills['paprika-messenger-private'], {'paprika-messenger', 'setup-paprika'})
         self.assertFalse(public_skills['paprika-inc'] & public_skills['paprika-messenger-private'])
         self.assertFalse(report['discovery']['live_picker_verified'])
@@ -276,7 +276,7 @@ class PluginPackageTests(unittest.TestCase):
         self.assertTrue(report['references_existing_service_app'])
         self.assertFalse(report['service_authentication_verified_by_builder'])
         self.assertFalse(report['installed']); self.assertFalse(report['deployed'])
-        self.assertEqual(verified['discovery']['public_skills'], ['paprika-inc', 'setup-paprika-inc'])
+        self.assertEqual(verified['discovery']['public_skills'], ['paprika-explain', 'paprika-inc', 'setup-paprika-inc'])
         with zipfile.ZipFile(report['archive']) as archive:
             apps = json.loads(archive.read('paprika-inc/.app.json'))
             self.assertEqual(apps, {'apps': {'paprika-service': {'id': binding['app_id']}}})
@@ -325,6 +325,13 @@ class PluginPackageTests(unittest.TestCase):
         self.assertEqual(json.loads(result.stdout)['command'], 'help')
         result = subprocess.run(['node', str(helper), 'validate', '--repo', str(ROOT)], cwd=self.base, capture_output=True, text=True, check=True)
         self.assertTrue(json.loads(result.stdout)['definition_valid'])
+        explain = plugin / 'skills/paprika-explain/scripts/explain.mjs'
+        result = subprocess.run(['node', str(explain), 'catalog'], cwd=self.base, capture_output=True, text=True, check=True)
+        self.assertEqual(len(json.loads(result.stdout)['presets']), 10)
+        request = self.base / 'explanation-request.json'
+        request.write_text(json.dumps({'topic': 'Queues', 'invocation': 'explicit', 'requested': {'format': 'interactive', 'style': 'eli5'}}))
+        result = subprocess.run(['node', str(explain), 'plan', '--input', str(request)], cwd=self.base, capture_output=True, text=True, check=True)
+        self.assertEqual(json.loads(result.stdout)['selection'], {'format': 'interactive', 'style': 'eli5'})
         self.assertFalse(first['installed'])
         self.assertFalse(first['deployed'])
 

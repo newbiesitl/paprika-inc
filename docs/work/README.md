@@ -32,6 +32,15 @@ The default privacy exception permits only direct Markdown summaries under
 reviewed and tested rules. Ignoring files does not protect already tracked data.
 Keep private evidence and bindings in the approved shared private store.
 
+## Reusable knowledge
+
+The [research knowledge index](../research/knowledge/README.md) collects portable,
+source-linked practices separately from task checkpoints. Its first entry covers
+[human-AI communication](../research/knowledge/HUMAN-AI-COMMUNICATION.md): clear
+writing and selecting useful explanation formats. Entries retain their source
+limits and review status; repository storage does not automatically load them
+into live chats.
+
 ## Review and merge handoff
 
 Follow the existing [implementation handoff](../DEVELOPMENT.md#implementation-to-review-handoff):

@@ -4,7 +4,7 @@ Inc 0.3.0 carries an internal, reviewed four-skill subset of Scientific Agent
 Skills 2.72.0 at commit `a1043ef544e3a100c28e70a736b6cf32554d0677`:
 paper-lookup, literature-review, citation-management and scientific-critical-thinking.
 Installing Inc does not activate this collection or install the upstream plugin.
-Only the two Inc skills are public plugin entry points. Project-local selected
+Only the three Inc skills are public plugin entry points. Project-local selected
 skills may become visible to other chats in that project after host discovery.
 Role selection guides use; it is not an access control.
 

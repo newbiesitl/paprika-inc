@@ -65,7 +65,7 @@ class EngineeringPackageTests(unittest.TestCase):
             self.assertTrue(json.loads(subprocess.check_output(args, cwd=root))['no_op'])
             self.assertFalse((kit / 'vendor').exists())
             self.assertFalse((project / 'vendor').exists())
-            self.assertEqual(package.verify_package(kit, True)['discovery']['public_skills'], ['paprika-inc','setup-paprika-inc'])
+            self.assertEqual(package.verify_package(kit, True)['discovery']['public_skills'], ['paprika-explain','paprika-inc','setup-paprika-inc'])
 
     def test_unselected_files_and_tampered_resources_are_rejected(self):
         for case in ['extra', 'changed', 'missing', 'duplicate']:

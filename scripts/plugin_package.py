@@ -44,6 +44,12 @@ PACKAGE_FILES = frozenset({
     'skills/paprika-inc/assets/paprika-inc-icon.png',
     'skills/paprika-inc/scripts/inc.mjs', 'skills/paprika-inc/references/commands.md',
     'skills/paprika-inc/references/definition-profile.md',
+    'skills/paprika-explain/SKILL.md', 'skills/paprika-explain/agents/openai.yaml',
+    'skills/paprika-explain/references/formats.md',
+    'skills/paprika-explain/references/catalog.json',
+    'skills/paprika-explain/references/triggers.md', 'skills/paprika-explain/references/tools.md',
+    'skills/paprika-explain/scripts/explain.mjs', 'skills/paprika-explain/scripts/render.mjs',
+    'skills/paprika-explain/assets/paprika-inc-icon.png',
     'skills/setup-paprika-inc/SKILL.md', 'skills/setup-paprika-inc/agents/openai.yaml',
     'skills/setup-paprika-inc/references/boundaries.md',
     'skills/setup-paprika-inc/references/coexistence.md',
@@ -65,7 +71,7 @@ PACKAGE_FILES = frozenset({
     'skills/setup-paprika-inc/assets/work-checkpoints/checkpoint-index.md',
     'skills/setup-paprika-inc/assets/work-checkpoints/role.md',
 })
-PUBLIC_SKILLS = ('paprika-inc', 'setup-paprika-inc')
+PUBLIC_SKILLS = ('paprika-explain', 'paprika-inc', 'setup-paprika-inc')
 MANIFEST_FIELDS = {'name', 'version', 'description', 'author', 'homepage', 'license', 'keywords', 'extensions'}
 INTERFACE_FIELDS = {'displayName', 'shortDescription', 'longDescription', 'developerName', 'category',
                     'capabilities', 'websiteURL', 'supportURL', 'defaultPrompt', 'logo', 'composerIcon'}
