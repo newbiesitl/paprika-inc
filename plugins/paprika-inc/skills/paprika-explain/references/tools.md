@@ -124,15 +124,37 @@ host/provider before promising a narrated video. Reuse a configured supported
 speech tool or API; a new MCP server is unnecessary for a local script workflow.
 Do not assume that a chat subscription supplies speech API credentials.
 
-For a hosted implementation, OpenAI's [Speech API](https://developers.openai.com/api/docs/guides/text-to-speech)
-is a candidate: `gpt-4o-mini-tts` supports delivery instructions and WAV output;
-the official guide recommends trying `marin` or `cedar` for quality. Verify
-current model/voice availability and actual account access. Use a standard
-synthetic voice, disclose AI-generated narration and keep keys outside artifacts.
-For a local Windows fallback, an installed voice can write WAV through
+For English narration rendered on Windows, prefer local **Microsoft David**.
+Enumerate enabled voices in the actual rendering environment and select
+`Microsoft David Desktop` when available, or `Microsoft David` when that is the
+available name. Check that its language is compatible with the narration.
+This preference applies to Paprika Explain output; keep the Windows system-wide
+voice setting unchanged. An explicit voice/provider choice, or a voice already
+chosen for the current explanation, takes precedence.
+
+An installed Windows voice can write WAV through
 [System.Speech](https://learn.microsoft.com/en-us/dotnet/api/system.speech.synthesis.speechsynthesizer.setoutputtowavefile).
-Check the voice/language and sample quality on that host; availability does not
-establish naturalness or suitability for a finished explainer.
+If the host's execution context restricts enumeration or synthesis, report that
+limit rather than treating a partial list as proof that David is not installed.
+If David is unavailable or fails, offer verified available alternatives; do not
+silently substitute Zira, Mark or a paid service and call the result David.
+Keep the requested language: the English voice preference does not authorize
+translation or forcing English pronunciation onto other-language narration.
+
+No Mac-specific voice is selected by this skill. Preserve an explicit choice or
+offer previews of available voices when selection is needed; Mac voice evaluation
+remains separate. Voice availability and sample quality must be checked on the
+host that actually renders the audio, regardless of where the user views it.
+
+For an explicitly selected hosted provider, verify current APIs, voices and
+account access. OpenAI's [deprecation schedule](https://developers.openai.com/api/docs/deprecations)
+retires the older Speech API models, including `gpt-4o-mini-tts`, on January 6,
+2027 and recommends `gpt-realtime-2.1-mini` through the
+[Realtime API](https://developers.openai.com/api/docs/guides/realtime-conversations).
+This is a different API workflow, not a model-name substitution in
+`/v1/audio/speech`. Use a standard synthetic voice, disclose AI-generated
+narration and keep keys outside artifacts. The Windows David default needs no
+hosted API key or paid service.
 
 Generate a short sample containing the lesson's difficult terms before the full
 track. Then synthesize per scene, measure the resulting audio duration, and use

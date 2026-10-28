@@ -100,6 +100,12 @@ exporting or a rendering capability must be checked. Prefer the contained HTML
 exporter for precomputed scenario comparisons; author a model-specific
 interaction when the question needs continuous calculations or other behaviour.
 
+For English narration rendered on Windows, default to the installed Microsoft
+David voice unless the user chooses another voice or provider. Follow the
+[voice selection guidance](references/tools.md#narration-and-synchronization)
+to resolve its installed name and availability. No Mac-specific voice default
+is set; preserve the user's choice while Mac voices are evaluated separately.
+
 For requested HTML, images or video, deliver the actual artifact when supported
 and inspect it. If rendering or another required capability is unavailable,
 identify the gap and provide a clearly labelled fallback such as a diagram,

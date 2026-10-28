@@ -39,6 +39,10 @@ inline menu. These cases apply to the workflow rather than a particular widget.
 | Export interactive HTML with two different scenarios | Changing the selector updates the result; reset restores the initial scenario and focus. Check narrow layout and keyboard use. |
 | Export a video storyboard while no renderer is available | Deliver labelled Markdown with scene durations and transcript; do not report a rendered video. |
 | Request narration but no working speech route is available | Identify the missing provider/voice/access and label any existing animation as unnarrated. A script or captions alone do not establish generated speech. |
+| Request English narration rendered on Windows without a voice preference | Select enabled `Microsoft David Desktop`, or `Microsoft David` if that is the available name; keep system-wide voice settings unchanged. |
+| Specify another narration voice/provider or continue an explanation with a chosen voice | Preserve that choice instead of applying the Windows David default. |
+| David cannot be enumerated/used, or the narration language does not match | Report the capability/language limit and offer verified alternatives; do not silently substitute a voice or translate the narration. |
+| Render narration on a Mac without a recorded voice preference | Apply no Mac-specific default; offer available voice previews when selection is needed. Do not infer a Mac voice from the Windows preference. |
 | Export to an existing artifact path | Refuse the overwrite and preserve the existing content. |
 
 For a supported artifact, assess fidelity to sources, fit to the requested depth,
