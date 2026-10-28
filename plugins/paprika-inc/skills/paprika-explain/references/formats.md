@@ -74,11 +74,22 @@ requires the existing authorized service interface, not invented endpoints.
 
 ## Video or animation
 
-Select a style based on what motion adds:
+For scientific concepts, recommend original 3Blue1Brown-inspired animation and
+use it by default when the user requested video without another style. This
+includes mathematics, physics and computing/ML mechanisms, and extends to other
+sciences through accurate evolving diagrams and models. Build intuition first,
+connect the visual model to the formal explanation, and show what changes and
+why. Do not force equations or geometric analogies where they distort the science.
+An explicit alternative or an existing choice on a follow-up takes precedence.
+Other explanation media keep their existing selection rules.
+
+When the user asks to choose a video style, mark this recommendation in the
+picker for scientific topics and wait for their selection. Use the following
+alternatives when requested or when selecting a style for other topics:
 
 | Style | Useful when |
 | --- | --- |
-| Mathematical animation, 3Blue1Brown-inspired | Geometry, transformations, probability or algebra benefit from synchronized shapes and equations. |
+| 3Blue1Brown-inspired animation | Scientific intuition benefits from evolving diagrams, transformations, models and synchronized equations. |
 | Whiteboard or process animation | The order of events, causal steps or a system's changing state is the main lesson. |
 | Narrated slides | A structured briefing needs figures, evidence and a reusable presentation sequence. |
 | Screen walkthrough | The user needs to learn an actual UI or tool procedure from observed behaviour. |
@@ -87,6 +98,10 @@ Create an original script and visuals. For the mathematical option, use evolving
 geometric intuition rather than claiming to be the named creator or reproducing
 their voice. Preserve sources and labels; use captions or a transcript. Observe
 the actual interface before depicting a screen walkthrough.
+
+For narrated video, check a working speech route early and follow
+[narration and synchronization](tools.md#narration-and-synchronization). A
+written narration track does not establish that speech synthesis is available.
 
 Check the storyboard/script, then render with available tools and inspect the
 result when the user requested a video. Missing narration or video capabilities

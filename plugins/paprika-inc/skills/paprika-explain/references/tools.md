@@ -55,8 +55,12 @@ For an actual answer, rerun `plan` with the same request and one `choice`:
 {"status":"selected","id":"eli5"}
 ```
 
-Group IDs such as `group:text` return a smaller menu. `video` opens the video
-style menu; a style ID such as `video:math` completes it. A custom combination is
+Group IDs such as `group:text` return a smaller menu. `video` selects the video
+medium: for scientific topics without a chosen style it uses `math`; otherwise
+it preserves a chosen style or opens the style menu. `group:video` explicitly
+opens that menu even for a scientific topic; a style ID such as `video:math`
+completes it. When presenting a menu, mark its `recommended_id` as recommended.
+A custom combination is
 `{"status":"selected","selection":{"format":"interactive","style":"eli5"}}`.
 Pending/preselected choices use `status: "pending"`; cancellation uses
 `status: "cancelled"`. Never convert elapsed time or the default highlight into
@@ -69,6 +73,24 @@ follow-up, use `invocation: "implicit"` and pass the last selection as `previous
 Styles are `plain`, `ste` and `eli5`. Video styles are `math`, `whiteboard`,
 `slides` and `walkthrough`. Format IDs are listed in the catalog; `text` is also
 accepted for plain prose. Use `show_picker: true` to reopen selection.
+
+Set `topic_kind: "scientific"` for scientific/mathematical concepts identified
+from the task context. The optional field otherwise defaults to `general` and
+does not scan the topic for keywords. For example:
+
+```json
+{
+  "topic": "How gradient descent updates model weights",
+  "topic_kind": "scientific",
+  "invocation": "explicit",
+  "requested": {"format":"video"}
+}
+```
+
+This returns `explain` with `video_style: "math"`. A requested or previous style
+takes priority, pending/cancelled menus still wait/stop, and non-video selections
+are unchanged. Keep `topic_kind` when rerunning a picker request. This default
+does not imply a renderer or speech provider is installed.
 
 ## Capability routes and completion checks
 
@@ -90,6 +112,45 @@ guess package APIs or silently install tools. A video task is complete only when
 the requested rendered output exists and has been inspected. If a capability is
 missing, identify it and offer the clearly labelled storyboard or source fallback.
 Do not send data to a paid service or publish an artifact without applicable scope.
+
+### Narration and synchronization
+
+Speech generation is a separate capability from animation. Check the actual
+host/provider before promising a narrated video. Reuse a configured supported
+speech tool or API; a new MCP server is unnecessary for a local script workflow.
+Do not assume that a chat subscription supplies speech API credentials.
+
+For a hosted implementation, OpenAI's [Speech API](https://developers.openai.com/api/docs/guides/text-to-speech)
+is a candidate: `gpt-4o-mini-tts` supports delivery instructions and WAV output;
+the official guide recommends trying `marin` or `cedar` for quality. Verify
+current model/voice availability and actual account access. Use a standard
+synthetic voice, disclose AI-generated narration and keep keys outside artifacts.
+For a local Windows fallback, an installed voice can write WAV through
+[System.Speech](https://learn.microsoft.com/en-us/dotnet/api/system.speech.synthesis.speechsynthesizer.setoutputtowavefile).
+Check the voice/language and sample quality on that host; availability does not
+establish naturalness or suitability for a finished explainer.
+
+Generate a short sample containing the lesson's difficult terms before the full
+track. Then synthesize per scene, measure the resulting audio duration, and use
+that duration to time the animation and captions. Keep the mathematical notation
+in the visuals while writing a pronounceable narration script. Retain the script
+and reusable audio keyed by text, provider/model, voice, language and delivery
+settings so visual edits do not require synthesizing unchanged speech again.
+
+When Manim is available, [Manim Voiceover](https://voiceover.manim.community/en/stable/quickstart.html)
+offers audio-duration tracking, subcaptions and bookmarks for synchronization;
+its [speech-service interface](https://voiceover.manim.community/en/stable/services.html)
+supports provider adapters. Check the installed adapter's API/model support;
+listing a provider does not prove support for every current speech model.
+Other renderers can consume the same measured audio/scene timeline.
+
+Inspect the final media's audio track and listen for terminology, pauses,
+clipping and alignment; check caption timing as well. Do not pad a silent file
+or claim browser playback controls provide a narrated MP4. If speech fails,
+identify the failure and offer the existing animation with captions/transcript
+as an explicitly unnarrated fallback. These routes are guidance, not bundled
+speech adapters or evidence of an end-to-end narration test. Official references
+checked 2026-10-28; recheck interfaces before implementation.
 
 ## Interactive HTML input
 

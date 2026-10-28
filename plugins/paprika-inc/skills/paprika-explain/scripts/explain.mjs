@@ -15,7 +15,7 @@ const groups = {
   animation: ['video:math', 'video:whiteboard'], presentation: ['video:slides', 'video:walkthrough'],
 };
 const groupLabels = {text:'Text and learning', visual:'Visual and media', language:'Language style',
-  practice:'Examples and comparisons', depth:'Lessons and depth', animation:'Animation', presentation:'Presentations and walkthroughs'};
+  practice:'Examples and comparisons', depth:'Lessons and depth', video:'Video styles', animation:'Animation', presentation:'Presentations and walkthroughs'};
 const routes = {
   text:['chat_markdown'], example:['chat_markdown', 'calculation_if_needed'],
   comparison:['chat_markdown'], guided:['chat_markdown'], layered:['chat_markdown'],
@@ -51,7 +51,8 @@ function option(id) {
   const item = catalog.presets.find(item => item.id === id);
   return {id, label:item.label, description:item.description};
 }
-export function menu(topic, ui = {}, group = 'root') {
+export function menu(topic, ui = {}, group = 'root', topicKind = 'general') {
+  check(['scientific','general'].includes(topicKind), 'Topic kind must be scientific or general.');
   object(ui, ['mode','max_options'], 'UI');
   check(ui.mode === undefined || ['native','text'].includes(ui.mode), 'UI mode must be native or text.');
   const max = ui.max_options ?? 10;
@@ -63,18 +64,24 @@ export function menu(topic, ui = {}, group = 'root') {
     : group === 'video' ? catalog.video_styles.map(item => `video:${item.id}`)
     : group === 'text' ? catalog.presets.filter(item => ['language','practice','depth'].includes(item.group)).map(item => item.id)
     : groups[group];
-  const options = (native && all.length > max ? groups[group] : all).map(option);
+  const grouped = group === 'video' && topicKind === 'scientific'
+    ? ['video:math', 'video:whiteboard', 'group:presentation'] : groups[group];
+  const options = (native && all.length > max ? grouped : all).map(option);
+  const recommended = topicKind === 'scientific' && options.some(item => item.id === 'video:math') ? 'video:math' : null;
+  const recommendedId = group === 'root' ? 'best_fit' : recommended;
   return {action:'choose', menu:video ? 'video_style' : 'format', topic, mode:native ? 'native' : 'text', group,
     question:`How would you like me to explain ${topic}? Choose ${video ? 'a video style' : 'a preset'} or describe a combination.`,
-    options, recommended_id:group === 'root' ? 'best_fit' : null, accepts_custom:true,
-    text_menu:options.map((item, index) => `${index + 1}. ${item.label} — ${item.description}`).join('\n'),
+    options, recommended_id:recommendedId, accepts_custom:true,
+    text_menu:options.map((item, index) => `${index + 1}. ${item.label}${item.id === recommendedId ? ' (Recommended)' : ''} — ${item.description}`).join('\n'),
     requires_user_answer:true};
 }
 
 // The agent interprets the current user's intent in context. This planner never
 // treats a keyword in a quote, document or code block as a user instruction.
 export function plan(input) {
-  object(input, ['topic','invocation','intent','requested','previous','show_picker','choice','ui'], 'request');
+  object(input, ['topic','topic_kind','invocation','intent','requested','previous','show_picker','choice','ui'], 'request');
+  const topicKind = input.topic_kind === undefined ? 'general' : input.topic_kind;
+  check(['scientific','general'].includes(topicKind), 'Topic kind must be scientific or general.');
   check(['explicit','implicit'].includes(input.invocation), 'Invocation must be explicit or implicit.');
   check(input.intent === undefined || input.intent === 'unrelated' || catalog.intents.some(item => item.id === input.intent), 'Unknown explanation intent.');
   check(input.show_picker === undefined || typeof input.show_picker === 'boolean', 'show_picker must be boolean.');
@@ -103,7 +110,7 @@ export function plan(input) {
       if (choice.id.startsWith('group:')) {
         const group = choice.id.slice(6);
         check(Object.hasOwn(groupLabels, group), 'Unknown selected group.');
-        return {...menu(topic, input.ui, group), read_only:true};
+        return {...menu(topic, input.ui, group, topicKind), read_only:true};
       }
       if (choice.id.startsWith('video:')) selected = selection({...selected, format:'video', video_style:choice.id.slice(6)});
       else {
@@ -114,12 +121,13 @@ export function plan(input) {
       }
     }
   } else if (input.show_picker || (input.invocation === 'explicit' && !requested.format && !requested.style)) {
-    return {...menu(topic, input.ui), read_only:true};
+    return {...menu(topic, input.ui, 'root', topicKind), read_only:true};
   }
   selected.format ??= requested.style ? 'text' : intent?.default_format ?? 'layered';
   selected.style ??= 'plain';
   if (selected.format !== 'video') delete selected.video_style;
-  if (selected.format === 'video' && !selected.video_style) return {...menu(topic, input.ui, 'video'), selection:selected, read_only:true};
+  if (selected.format === 'video' && !selected.video_style && topicKind === 'scientific') selected.video_style = 'math';
+  if (selected.format === 'video' && !selected.video_style) return {...menu(topic, input.ui, 'video', topicKind), selection:selected, read_only:true};
   return {action:'explain', topic, selection:selected, goal:intent?.goal ?? 'Explain the topic in the selected format.',
     guidance:'references/formats.md', tool_guidance:'references/tools.md', tools:routes[selected.format], read_only:true};
 }

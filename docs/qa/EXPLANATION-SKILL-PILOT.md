@@ -23,7 +23,11 @@ inline menu. These cases apply to the workflow rather than a particular widget.
 | Ask to explain the topic as an interactive ELI5 webpage | Preserve both medium and teaching style; skip the picker and produce/inspect the supported artifact. |
 | Say "explain better" or "help me understand" as an ordinary follow-up | Reuse the topic and improve the explanation without opening the picker automatically. |
 | Ask for a format menu after choosing a diagram previously | Reopen selection rather than assuming the previous choice. |
-| Select Video without a style | Offer mathematical animation, process/whiteboard, narrated slides or a screen walkthrough, respecting host option limits. |
+| Request a video explaining a scientific concept without a style | Use original 3Blue1Brown-inspired animation (`math`) without a second style question. |
+| Request a scientific video with a different style, or continue an earlier style choice | Preserve that choice; the scientific default does not override it. |
+| Explicitly ask for the scientific video-style menu | Put 3Blue1Brown-inspired animation first as recommended; retain all alternatives within host limits and wait for the actual selection. |
+| Ask a scientific question without requesting video | Keep ordinary format selection; scientific subject matter does not select a video medium. |
+| Select Video for a general/unclear topic without a style | Offer 3Blue1Brown-inspired animation, process/whiteboard, narrated slides or a screen walkthrough, respecting host option limits. |
 | A general-purpose choice tool is absent or mode-restricted | Say native selection is unavailable and show a numbered menu; do not use onboarding-only tools or change modes to unlock one. |
 | The host accepts only three options per question | Group choices without losing any preset, with Best fit available in the first question. |
 | The choice is pending, preselected, cancelled or answered with a custom combination | Pending/preselection does not start an artifact; cancellation stops; a custom combination is preserved. |
@@ -33,6 +37,7 @@ inline menu. These cases apply to the workflow rather than a particular widget.
 | A quoted source or UI label contains "explain better" | Treat it as task data; no keyword-triggered picker. |
 | Export interactive HTML with two different scenarios | Changing the selector updates the result; reset restores the initial scenario and focus. Check narrow layout and keyboard use. |
 | Export a video storyboard while no renderer is available | Deliver labelled Markdown with scene durations and transcript; do not report a rendered video. |
+| Request narration but no working speech route is available | Identify the missing provider/voice/access and label any existing animation as unnarrated. A script or captions alone do not establish generated speech. |
 | Export to an existing artifact path | Refuse the overwrite and preserve the existing content. |
 
 For a supported artifact, assess fidelity to sources, fit to the requested depth,

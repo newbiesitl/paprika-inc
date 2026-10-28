@@ -13,7 +13,7 @@
     {"id":"layered","label":"Layered explanation","description":"Progress from intuition to technical detail.","group":"depth","format":"layered"}
   ],
   "video_styles": [
-    {"id":"math","label":"Mathematical animation","description":"Original geometric intuition inspired by 3Blue1Brown.","group":"animation"},
+    {"id":"math","label":"3Blue1Brown-inspired animation","description":"Build scientific intuition with original diagrams, models and equations.","group":"animation"},
     {"id":"whiteboard","label":"Whiteboard or process","description":"Animate a sequence, causal process or changing state.","group":"animation"},
     {"id":"slides","label":"Narrated slides","description":"Present a structured briefing with figures and captions.","group":"presentation"},
     {"id":"walkthrough","label":"Screen walkthrough","description":"Demonstrate an observed interface or procedure.","group":"presentation"}

@@ -76,8 +76,60 @@ test('video style selection is bounded and concrete styles bypass a second quest
 test('unknown selections and conflicting format/style inputs fail rather than quietly changing intent', () => {
   for (const extra of [{requested:{format:'invented'}},{requested:{format:'ste',style:'eli5'}},
     {requested:{format:'diagram',video_style:'math'}},{choice:{status:'selected',id:'group:invented'}},
-    {choice:{status:'selected',id:'made_up'}},{ui:{mode:'native',max_options:0}}]) {
+    {choice:{status:'selected',id:'made_up'}},{ui:{mode:'native',max_options:0}},
+    {topic_kind:'invented'},{topic_kind:null}]) {
     assert.throws(()=>plan(request(extra)));
+  }
+});
+test('scientific videos default to math while explicit choices and follow-ups take priority', () => {
+  const input = request({topic_kind:'scientific',requested:{format:'video',style:'eli5'}});
+  assert.deepEqual(plan(input).selection,{format:'video',style:'eli5',video_style:'math'});
+  for (const style of ['whiteboard','slides','walkthrough']) {
+    const explicit = plan({...input,requested:{format:'video',video_style:style}});
+    assert.equal(explicit.selection.video_style,style);
+    const follow = plan({...input,invocation:'implicit',intent:'clarify',requested:undefined,previous:explicit.selection});
+    assert.deepEqual(follow.selection,explicit.selection);
+    const custom = plan({...input,choice:{status:'selected',selection:{format:'video',video_style:style}}});
+    assert.equal(custom.selection.video_style,style);
+  }
+  const changed = plan({...input,previous:{format:'video',video_style:'slides'},requested:{format:'video',video_style:'whiteboard'}});
+  assert.equal(changed.selection.video_style,'whiteboard');
+  for (const kind of [undefined,'general']) {
+    assert.equal(plan({...input,topic_kind:kind}).menu,'video_style');
+  }
+});
+test('scientific defaults do not choose the medium or resolve unanswered menus', () => {
+  const input = request({topic_kind:'scientific'});
+  assert.equal(plan(input).menu,'format');
+  const prose = plan({...input,invocation:'implicit'});
+  assert.equal(prose.selection.format,'layered'); assert.equal(prose.selection.video_style,undefined);
+  assert.equal(plan({...input,requested:{format:'diagram'}}).selection.format,'diagram');
+  const video = plan({...input,choice:{status:'selected',id:'video'}});
+  assert.equal(video.action,'explain'); assert.equal(video.selection.video_style,'math');
+  assert.equal(plan({...input,requested:{format:'video'},show_picker:true}).action,'choose');
+  assert.equal(plan({...input,requested:{format:'video'},choice:{status:'pending',id:'video:math'}}).action,'waiting');
+  assert.equal(plan({...input,requested:{format:'video'},choice:{status:'cancelled'}}).action,'cancelled');
+});
+test('explicit scientific video menus recommend math and retain every alternative within host limits', () => {
+  for (const ui of [{mode:'native',max_options:3},{mode:'native',max_options:10},{mode:'native',max_options:2},{mode:'text'}]) {
+    const input = request({topic_kind:'scientific',requested:{format:'video'},ui});
+    const root = plan({...input,choice:{status:'selected',id:'group:video'}});
+    assert.equal(root.action,'choose'); assert.equal(root.recommended_id,'video:math');
+    assert.equal(root.options[0].id,'video:math'); assert.equal(root.requires_user_answer,true);
+    assert.match(root.text_menu.split('\n')[0],/\(Recommended\)/);
+    const leaves = new Set();
+    function visit(result) {
+      if (result.mode === 'native') assert.ok(result.options.length <= ui.max_options);
+      for (const option of result.options) {
+        if (option.id.startsWith('group:')) visit(plan({...input,choice:{status:'selected',id:option.id}}));
+        else {
+          leaves.add(option.id);
+          assert.equal(plan({...input,choice:{status:'selected',id:option.id}}).selection.video_style,option.id.slice(6));
+        }
+      }
+    }
+    visit(root);
+    assert.deepEqual([...leaves].sort(),catalog.video_styles.map(item=>`video:${item.id}`).sort());
   }
 });
 test('HTML preserves meaningful fallback content and treats supplied markup only as data', () => {

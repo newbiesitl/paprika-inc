@@ -15,6 +15,7 @@ implement a button labelled "explain better" remains a coding task.
 | Explain like I'm five; ELI5; educate me as if I'm five | As appropriate above | Style `eli5`; keep an explicitly requested medium. |
 | Use STE100; simplified technical English | As appropriate above | Style `ste`; check whether strict conformance is required. |
 | Make a 3b1b-style explainer | As appropriate above | Format `video`, video style `math`. |
+| Explain this scientific concept in a video | As appropriate above | Format `video`, `topic_kind: "scientific"`; default video style `math` unless another style was chosen. |
 | Compare these so I can understand the difference | `understand` | Format `comparison`. |
 | Show the explanation formats; let me choose the format | As appropriate above | Set `show_picker: true`, even after an earlier choice. |
 
@@ -23,6 +24,15 @@ Paprika Inc for an explanation. Loading the skill implicitly does not make a
 request explicit. Ordinary implicit requests keep the previous format unless the
 user changes it. For a new explicit invocation without a format, show the picker.
 Choosing Best fit delegates the format decision; a preselected Best fit does not.
+
+Set `topic_kind: "scientific"` when the explanation concerns a scientific or
+mathematical concept, including computing/ML mechanisms. Interpret the task,
+not keywords: a tutorial on clicking through a science app is a UI walkthrough,
+not automatically a scientific animation. Leave the field out or use `general`
+when the topic does not fit or is unclear. The planner does not classify prose.
+Retain this field while resolving a picker. For an explicit video-style menu,
+use `choice: {"status":"selected","id":"group:video"}` to represent the
+user's request to see that group; this does not select a style.
 
 Identify the part the user found unclear, preserve the topic and audience, and
 repair that part rather than paraphrasing the entire answer. Do not claim that a

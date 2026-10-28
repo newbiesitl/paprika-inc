@@ -66,9 +66,19 @@ preselected option is not the user's answer; do not begin the format-dependent
 artifact or silently choose after a timeout. A cancellation ends selection.
 "Best fit" is an actual choice to delegate the format decision.
 
-For Video without a specified style, offer a second choice: mathematical
-animation (3Blue1Brown-inspired), whiteboard/process animation, narrated slides,
-or screen walkthrough. Use the same host-limit handling and allow free text.
+For video explanations of scientific concepts, recommend original
+3Blue1Brown-inspired animation and use it when no style is specified. Build
+visual intuition through evolving diagrams, models and equations where useful.
+Preserve an explicitly requested style or the user's existing style choice on
+a follow-up. This default selects the video style, not the explanation medium:
+a scientific question alone does not request a video. Pass
+`topic_kind: "scientific"` to the planner after interpreting the topic in context.
+
+For other video topics without a specified style, offer a second choice:
+3Blue1Brown-inspired animation, whiteboard/process animation, narrated slides,
+or screen walkthrough. An explicit request to choose video styles still opens
+that menu; put the scientific recommendation first without treating it as an
+answer. Use the same host-limit handling and allow free text.
 Read only the relevant section of [format guidance](references/formats.md).
 
 ## Producing the explanation
